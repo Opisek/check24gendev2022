@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+    <%- include("partials/commonHead.ejs") %>
+    <%- include("partials/navbarHead.ejs") %>
+    <%- include("partials/footerHead.ejs") %>
+    <link rel="stylesheet" href="css/pages/index.css">
+    <link rel="stylesheet" href="css/colors/default.css">
+</head>
+<body>
+    <%- include("partials/navbarBody.ejs") %>
+    <main>
+        <div class="mainSearch colorAccent">
+            <h1>Whereto will you go next?</h1>
+            <form class="adjacentRow" action="<%=host%>/search">
+                <input id="query" name="query" placeholder="Find your next destination...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="mainPopular colorPrimary"><h1>Popular Destinations</h1></div>
+        <div class="mainList colorPlain"><h1>My List</h1></div>
+        <div class="mainTrivia colorSecondary"><h1>Did you know?</h1></div>
+    </main>
+    <%- include("partials/footerBody.ejs") %>
+</body>

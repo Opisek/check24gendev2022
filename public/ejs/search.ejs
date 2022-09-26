@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+    <%- include("partials/commonHead.ejs") %>
+    <link rel="stylesheet" href="css/pages/search.css">
+    <link rel="stylesheet" href="css/colors/default.css">
+    <%- include("partials/navbarHead.ejs") %>
+    <%- include("partials/footerHead.ejs") %>
+</head>
+<body>
+    <%- include("partials/navbarBody.ejs") %>
+    <main>
+        <div class="mainSearch colorAccent">
+            <form class="adjacentRow">
+                <input placeholder="Find your next destination...">
+                <button>Submit</button>
+            </form>
+        </div>
+        <div class="mainFilters colorSecondary">
+            <h1>Filters</h1>
+            <div class="column"></div>
+        </div>
+        <div class="mainList colorPlain">List</div>
+    </main>
+    <%- include("partials/footerBody.ejs") %>
+</body>

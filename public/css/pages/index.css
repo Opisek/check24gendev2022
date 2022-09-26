@@ -1,0 +1,39 @@
+main {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto 2fr 1fr;
+    grid-template-areas:
+        "search search search"
+        "popular list list"
+        "trivia trivia trivia";
+}
+
+main > .mainSearch {
+    grid-area: search;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 2em;
+}
+main > .mainPopular {
+    grid-area: popular;
+}
+main > .mainList {
+    grid-area: list;
+}
+main > .mainTrivia {
+    grid-area: trivia;
+}
+
+@media screen and (max-width: 1000px) {
+    main {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+        grid-template-areas:
+            "search"
+            "list"
+            "popular"
+            "trivia";
+    }
+}

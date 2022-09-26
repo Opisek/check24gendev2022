@@ -1,0 +1,32 @@
+main {
+    max-height: calc(100vh - 12em);
+    grid-template-columns: 20em auto;
+    grid-template-rows: 5em auto;
+    grid-template-areas:
+        "filters search"
+        "filters list";
+}
+
+main > .mainSearch {
+    grid-area: search;
+    text-align: center;
+}
+
+main > .mainFilters {
+    grid-area: filters;
+}
+
+main > .mainList {
+    grid-area: list;
+}
+
+@media screen and (max-width: 1000px) {
+    main {
+        grid-template-columns: 1fr;
+        grid-template-rows: 5em auto;
+        grid-template-areas:
+            "search"
+            "list"
+            "filters";
+    }
+}

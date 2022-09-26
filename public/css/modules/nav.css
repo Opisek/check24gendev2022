@@ -1,0 +1,101 @@
+nav {
+    display: grid;
+    grid-template-columns: 15em auto auto; 
+    grid-template-rows: 100%;
+    width: 100%;
+    height: 5em;
+    text-align: center;
+    position: fixed;
+    margin-top: -5em;
+    padding: .5em;
+}
+
+nav > span {
+    display: block;
+    height: 100%;
+    line-height: calc(300% + .75em);
+}
+
+nav > div {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    gap: .25em;
+}
+
+nav > div > a {
+    display: block;
+    height: auto;
+    width: auto;
+    margin: 0em;
+    height: 100%;
+    line-height: calc(300% + .25em);
+    width: auto;
+    padding: .25em 1em;
+    border-radius: .5em;
+}
+
+nav > .navRight {
+    margin-left: auto;
+}
+
+.navHidden {
+    display: none;
+}
+
+.navExpand {
+    height: 3em;
+    width: 3em;
+    float: right;
+    margin-top: .5em;
+    display: none;
+}
+
+.navBlackout {
+    background-color: #000000aa;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(1em) opacity(1);
+    transition: backdrop-filter .5s, background-color .5s;
+    cursor: pointer;
+}
+.navBlackout.navFaded {
+    background-color: #00000000;
+    backdrop-filter: blur(1em) opacity(0);
+}
+
+nav > div.navFaded {
+    transform: translateY(100vh);
+}
+
+@media screen and (max-width: 1000px) {
+    nav {
+        display: grid;
+        grid-template-columns: 100%; 
+        grid-template-rows: 4em auto auto;
+    }
+    nav > div {
+        flex-direction: column;
+        transition: transform .5s ease-out;
+    }
+    nav > div.navFaded {
+        transition: transform .4s ease-in;
+    }
+    nav > .navRight {
+        margin-left: 0;
+        border-radius: 0em 0em .5em .5em;
+    }
+    nav > .navLeft {
+        border-radius: .5em .5em 0em 0em;
+    }
+    nav > div {
+        margin-top: 1.5em;
+    }
+    nav > span {
+        padding-left: 3em;
+    }
+    .navExpand {
+        display: block;
+    }
+}
