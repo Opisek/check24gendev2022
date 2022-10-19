@@ -14,31 +14,8 @@ async function initializeDatabase() {
 
 async function main() {
     let connection = await pool.getConnection();
-    await connection.query("CREATE TABLE IF NOT EXISTS hotels(\
-        id INT PRIMARY KEY DEFAULT,\
-        name VARCHAR,\
-        latitude DOUBLE,\
-        longitude DOUBLE,\
-        category_stars TINYINT\
-    )");
-    await connection.query("CREATE TABLE IF NOT EXISTS offers (\
-        id INT PRIMARY KEY DEFAULT,\
-        hotelid INT,\
-        departuredate DATETIME,\
-        returndate DATETIME,\
-        countadults TINYINT,\
-        countchildren TINYINT,\
-        price SMALLINT,\
-        inbounddepartureairport CHAR(3),\
-        inboundarrivalairport CHAR(3),\
-        inboundarrivaldatetime DATETIME,\
-        outbounddepartureairport CHAR(3),\
-        outboundarrivalairport CHAR(3),\
-        outboundarrivaldatetime DATETIME,\
-        mealtype VARCHAR\
-        oceanview BOOL\
-        roomtype VARCHAR\
-    )");
+    await connection.query("CREATE TABLE IF NOT EXISTS hotels (id INT PRIMARY KEY, name VARCHAR(64), latitude DOUBLE, longitude DOUBLE, category_stars TINYINT)");
+    await connection.query("CREATE TABLE IF NOT EXISTS offers (id INT PRIMARY KEY AUTO_INCREMENT, hotelid INT, departuredate DATETIME, returndate DATETIME, countadults TINYINT, countchildren TINYINT, price SMALLINT, inbounddepartureairport CHAR(3), inboundarrivalairport CHAR(3), inboundarrivaldatetime DATETIME, outbounddepartureairport CHAR(3), outboundarrivalairport CHAR(3), outboundarrivaldatetime DATETIME, mealtype VARCHAR(64), oceanview BOOL, roomtype VARCHAR(64))");
 }
 
 main();
