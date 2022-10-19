@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const http = require("http");
+require("dotenv").config();
 
 const useHttps = true;
 const host = "test.opisek.ddnsgeek.com";
@@ -53,5 +54,5 @@ server.get("/search/", function(req, res) {
 });*/
 
 const httpServer = http.createServer(server);
-httpServer.listen(localPort);
-console.log("listening on " + localPort);
+httpServer.listen(process.env.PORT);
+console.log("listening on " + process.env.PORT);
