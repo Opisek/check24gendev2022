@@ -48,5 +48,5 @@ server.get("/search/", function(req, res) {
 });*/
 
 const httpServer = http.createServer(server);
-httpServer.listen(process.env.PORT);
-console.log("listening on " + process.env.PORT);
+httpServer.listen(process.env.WEB_PORT);
+console.log("listening on " + process.env.WEB_PORT);
