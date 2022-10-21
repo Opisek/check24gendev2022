@@ -18,7 +18,7 @@ async function loadData(databaseConnection) {
             .pipe(csv())
             .on("data", async data => {
                 ++i;
-                await databaseConnection.query("INSERT INTO hotels value (?, ?, ?, ?, ?)", [parseInt(data[Object.keys(data)[0]]), data.name, parseFloat(data.latitude), parseFloat(data.longitude), parseInt(data.category_stars)]);
+                //await databaseConnection.query("INSERT INTO hotels value (?, ?, ?, ?, ?)", [parseInt(data[Object.keys(data)[0]]), data.name, parseFloat(data.latitude), parseFloat(data.longitude), parseInt(data.category_stars)]);
             })
             .on("end", () => resolve(i));
     });
@@ -35,30 +35,25 @@ async function loadData(databaseConnection) {
                     oldPercentage = percentage;
                     console.log(`${percentage}%`);
                 }
-                console.log("---");
-                console.log(data.departureDate.substri(19));
-                let departureDate = moment(data.departureDate.substr(19));
-                console.log(departureDate);
-                console.log(departureDate.format("YYYY-MM-DD HH:mm:ss"));
                 await databaseConnection.query("INSERT INTO offers value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
                     [
                         i,
                         data.hotelid,
-                        data.departuredate,
-                        data.returndate,
+                        moment(data.departuredate).format("YYYY-MM-DD HH:mm:ss"),
+                        moment(data.returndate).format("YYYY-MM-DD HH:mm:ss"),
                         data.countadults,
                         data.countchildren,
                         data.price,
                         data.inbounddepartureairport,
                         data.inboundarrivalairport,
                         data.inboundairline,
-                        data.inboundarrivaldatetime,
+                        moment(data.inboundarrivaldatetime).format("YYYY-MM-DD HH:mm:ss"),
                         data.outbounddepartureairport,
                         data.outboundarrivalairport,
                         data.outboundairline,
-                        data.outboundarrivaldatetime,
+                        moment(data.outboundarrivaldatetime).format("YYYY-MM-DD HH:mm:ss"),
                         data.mealtype,
-                        data.oceanview,
+                        data.oceanview & 1,
                         data.roomtype
                     ]
                 );
@@ -82,20 +77,23 @@ departuredate DATETIME,\
 returndate DATETIME,\
 countadults TINYINT,\
 countchildren TINYINT,\
-price SMALLINT,\
+price MEDIUMINT,\
 inbounddepartureairport CHAR(3),\
 inboundarrivalairport CHAR(3),\
-inboundarrivaldatetime DATETIME,\
 inboundairline CHAR(3),\
+inboundarrivaldatetime DATETIME,\
 outbounddepartureairport CHAR(3),\
 outboundarrivalairport CHAR(3),\
-outboundarrivaldatetime DATETIME,\
 outboundairline CHAR(3),\
+outboundarrivaldatetime DATETIME,\
 mealtype VARCHAR(64),\
 oceanview BOOL,\
 roomtype VARCHAR(64)\
-)");
+)"); // todo: add foreign key constraint
     await loadData(connection);
 }
+
+// LOAD DATA LOCAL INFILE 'C:/Users/darow/desktop/check24gendev/csv/hotels.csv' INTO TABLE hotels
+// LOAD DATA LOCAL INFILE 'C:/Users/darow/desktop/check24gendev/csv/offers.csv' INTO TABLE offers FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' (id, hotelid, departuredate, returndate, countadults, countchildren, price, inbounddepartureairport, inboundarrivalairport, inboundairline, inboundarrivaldatetime, outbounddepartureairport, outboundarrivalairport, outboundairline, outboundarrivaldatetime, mealtype, oceanview, roomtype) SET ID = NULL
 
 main();
