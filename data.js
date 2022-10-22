@@ -5,7 +5,7 @@ const postgress = require("pg");
 const moment = require("moment-timezone");
 
 async function main() {
-    const sql = new postgress.Client({
+    const sql = new postgress.Pool({
         host: process.env.DB_HOST,
         port: process.env.DB_PORT, 
         user: process.env.DB_USER,
@@ -28,10 +28,11 @@ async function main() {
     await sql.query("DROP TABLE IF EXISTS offers, hotels");
 
     console.log("create hotels");
-    await sql.query("CREATE TABLE IF NOT EXISTS hotels (id INT PRIMARY KEY, name VARCHAR(256), latitude NUMERIC(12, 10), longitude NUMERIC(12, 10), category_stars NUMERIC(2, 1))");
+    await sql.query("CREATE TABLE IF NOT EXISTS hotels (id INT PRIMARY KEY, name VARCHAR(256), latitude NUMERIC(12, 10), longitude NUMERIC(12, 10), stars NUMERIC(2, 1))");
 
     console.log("create offers");
-    const maxAdultsCount = 10;
+    const maxAdultsCount = 6;
+    const maxChildrenCount = 6;
     await sql.query(`
 CREATE TABLE IF NOT EXISTS offers\
 (\
@@ -59,9 +60,9 @@ roomtype VARCHAR(64)\
 // CONSTRAINT hotelreference FOREIGN KEY(hotelid) REFERENCES hotels(id), // not supported by partitions
 
     console.log("partition offers");
-    for (let i = 0; i <= maxAdultsCount; ++i) {
-        console.log(`partition ${i}`);
-        sql.query(`CREATE TABLE ${`offers_${i}`} PARTITION OF offers FOR VALUES IN (${i})`);
+    for (let i = 1; i <= maxAdultsCount; ++i) {
+        await sql.query(`CREATE TABLE ${`offers_${i}`} PARTITION OF offers FOR VALUES IN (${i}) PARTITION BY LIST(countchildren)`);
+        for (let j = 0; j <= maxChildrenCount; ++j) await sql.query(`CREATE TABLE ${`offers_${i}_${j}`} PARTITION OF offers_${i} FOR VALUES IN (${j})`);
     }
 
     console.log("load hotels");
@@ -75,7 +76,7 @@ roomtype VARCHAR(64)\
     let lastProgress = 0;
     while (!done) {
         let progress = await sql.query("SELECT bytes_processed, bytes_total FROM pg_stat_progress_copy");
-        let currentProgress = progress[0].bytes_processed / progress[0].bytes_total;
+        let currentProgress = progress.rows[0].bytes_processed / progress.rows[0].bytes_total;
         differences.push(currentProgress - lastProgress);
         if (differences.length > 20) differences.shift();
         lastProgress = currentProgress;
