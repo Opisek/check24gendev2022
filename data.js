@@ -10,6 +10,14 @@ async function main() {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE
     });
+    await sql`SET client_encoding='UTF8'`;
+
+    /*let cases = "";
+    for (let i = 0; i < 20; ++i) {
+        cases += `when price between ${i * 1000} and ${(i + 1) * 1000 - 1} then '${i * 1000}-${(i + 1) * 1000 - 1}' `;
+    }
+    let query = `SELECT MIN(c.amount), AVG(c.amount), MAX(c.amount) FROM (SELECT COUNT(*) as amount from (select case ${cases}else 'other' end as range, countadults, countchildren from offers) t group by t.range, countadults, countchildren) c;`;
+    console.log(query);*/
     
     console.log("resetting");
     await sql`DROP TABLE IF EXISTS offers, hotels`;
@@ -86,10 +94,6 @@ roomtype VARCHAR(64)\
     process.stdout.cursorTo(0);
     process.stdout.write(`done`);
     // SELECT bytes_processed, bytes_total FROM pg_stat_progress_copy
-}
-
-function reportProgress() {
-
 }
 
 main();
