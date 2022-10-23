@@ -7,3 +7,7 @@ footer {
     background-color: var(--primaryBackgroundColor);
     color: var(--primaryForegroundColor);
 }
+footer > * {
+    font-size: var(--footerFontSize);
+    font-weight: var(--footerFontWeight);
+}

@@ -1,9 +1,13 @@
 :root {
     /* Height */
     --navHeight: 4em;
-    --footerHeight: 3.5em;
+    --footerHeight: 3em;
     
     /* Font Size */
     --fontSize: 1.2rem;
+    --fontWeight: 400;
     --headerFontSize: 1.7rem;
+    --headerFontWeight: 700;
+    --footerFontSize: 1rem;
+    --footerFontWeight: 500;
 }

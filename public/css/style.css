@@ -12,6 +12,7 @@ body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
     font-size: var(--fontSize);
+    font-weight: var(--fontWeight);
 }
 
 a {
@@ -22,7 +23,7 @@ a {
 
 h1 {
     font-size: var(--headerFontSize);
-    font-weight: 700;
+    font-weight: var(--headerFontWeight);
 }
 
 main {
@@ -81,7 +82,8 @@ input {
     border: none;
     outline: none;
     padding: 1em;
-    font-size: large;
+    font-size: var(--fontSize);
+    font-weight: var(--fontWeight);
 }
 input:focus {
     border: none;
@@ -91,6 +93,7 @@ button {
     color: var(--plainContrastForegroundColor);
     width: 10em;
     font-size: var(--fontSize);
+    font-weight: var(--fontWeight);
     cursor: pointer;
 }
 button:hover {
