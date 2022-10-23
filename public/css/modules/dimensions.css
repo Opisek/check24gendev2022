@@ -11,4 +11,7 @@
     --headerFontWeight: 700;
     --footerFontSize: 1rem;
     --footerFontWeight: 500;
+
+    /* Flexboxes */
+    --flexGap: .25em
 }

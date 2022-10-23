@@ -39,6 +39,11 @@ nav > div > a {
     border-radius: .5em;
 }
 
+nav > div > a:hover {
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
+}
+
 nav > .navRight {
     margin-left: auto;
 }

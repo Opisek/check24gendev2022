@@ -1,6 +1,8 @@
 :root {
     --primaryBackgroundColor:#5a41bf;
     --primaryForegroundColor: #f0f8ff;
+    --primaryLighterBackgroundColor: #8570d8;
+    --primaryLighterForegroundColor: #f0f8ff;
     --secondaryBackgroundColor: #3f2999;
     --secondaryForegroundColor: #f0f8ff; 
     --accentBackgroundColor: #efc22f;

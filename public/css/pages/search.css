@@ -7,16 +7,22 @@ main {
         "filters list";
 }
 
-main > .mainSearch {
+.mainSearch {
     grid-area: search;
     text-align: center;
 }
 
-main > .mainFilters {
+.mainFilters {
     grid-area: filters;
 }
 
-main > .mainList {
+.mainFilters > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flexGap);
+}
+
+.mainList {
     grid-area: list;
 }
 
