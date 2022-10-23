@@ -35,21 +35,6 @@ main > div {
     padding: 1em 2em 1em 2em;
 }
 
-input {
-    border: none;
-    outline: none;
-    padding: 1em;
-    font-size: large;
-}
-input:focus {
-    border: none;
-}
-button {
-    width: 10em;
-    font-size: large;
-    cursor: pointer;
-}
-
 .adjacentRow {
     display: flex;
     flex-direction: row;
@@ -71,4 +56,44 @@ button {
 
 @media screen and (max-width: 1000px) {
 
+}
+
+.colorAccent {
+    background-color: var(--accentBackgroundColor);
+    color: var(--accentForegroundColor);
+}
+.colorPrimary {
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryForegroundColor);
+}
+.colorSecondary {
+    background-color: var(--secondaryBackgroundColor);
+    color: var(--secondaryForegroundColor);
+}
+.colorPlain {
+    background-color: var(--plainBackgroundColor);
+    color: var(--plainForegroundColor);
+}
+
+input {
+    background-color: var(--plainBackgroundColor);
+    color: var(--plainForegroundColor);
+    border: none;
+    outline: none;
+    padding: 1em;
+    font-size: large;
+}
+input:focus {
+    border: none;
+}
+button {
+    background-color: var(--plainContrastBackgroundColor);
+    color: var(--plainContrastForegroundColor);
+    width: 10em;
+    font-size: var(--fontSize);
+    cursor: pointer;
+}
+button:hover {
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryForegroundColor);
 }

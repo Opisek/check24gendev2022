@@ -1,48 +1,12 @@
-nav {
-    background-color: #5a41bf;
-    color: #f0f8ff;
-}
-footer {
-    background-color: #5a41bf;
-    color: #f0f8ff;
-}
-
-nav > div > a:hover {
-    background-color: #8570d8;
-}
-
-main > .colorAccent {
-    background-color: #efc22f;
-    color: #f0f8ff;
-}
-main > .colorPrimary {
-    background-color: #5a41bf;
-    color: #f0f8ff;
-}
-main > .colorPlain {
-    background-color: white;
-    color: #000000;
-}
-main > .colorSecondary {
-    background-color: #3f2999;
-    color: #f0f8ff;
-}
-
-input {
-    background-color: #ffffff;
-    color: #000000;
-}
-button {
-    background-color: #f3f3f3;
-    color: #000000;
-}
-button:hover {
-    background-color: #5a41bf;
-    color: #f0f8ff;
-}
-
-@media screen and (max-width: 1000px) {
-    nav > div {
-        background-color: #5a41bf;
-    }
+:root {
+    --primaryBackgroundColor:#5a41bf;
+    --primaryForegroundColor: #f0f8ff;
+    --secondaryBackgroundColor: #3f2999;
+    --secondaryForegroundColor: #f0f8ff; 
+    --accentBackgroundColor: #efc22f;
+    --accentForegroundColor: #f0f8ff;
+    --plainBackgroundColor: #ffffff;
+    --plainForegroundColor: #000000;
+    --plainContrastBackgroundColor: #f3f3f3;
+    --plainContrastForegroundColor: #000000;
 }

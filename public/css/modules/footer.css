@@ -4,4 +4,6 @@ footer {
     align-items: center;
     gap: 1em;
     height: var(--footerHeight);
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryForegroundColor);
 }
