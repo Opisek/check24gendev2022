@@ -1,14 +1,28 @@
 :root {
     --primaryBackgroundColor:#5a41bf;
     --primaryForegroundColor: #f0f8ff;
+
     --primaryLighterBackgroundColor: #8570d8;
     --primaryLighterForegroundColor: #f0f8ff;
+
+    --primaryDarkerBackgroundColor: #3f2999;
+    --primaryDarkerForegroundColor: #f0f8ff;
+
     --secondaryBackgroundColor: #3f2999;
-    --secondaryForegroundColor: #f0f8ff; 
+    --secondaryForegroundColor: #f0f8ff;
+
+    --secondaryLighterBackgroundColor:#5a41bf;
+    --secondaryLighterForegroundColor: #f0f8ff;
+
+    --secondaryDarkerBackgroundColor:#2e1d71;
+    --secondaryDarkerForegroundColor: #f0f8ff;
+
     --accentBackgroundColor: #efc22f;
     --accentForegroundColor: #f0f8ff;
+
     --plainBackgroundColor: #ffffff;
     --plainForegroundColor: #000000;
+
     --plainContrastBackgroundColor: #f3f3f3;
     --plainContrastForegroundColor: #000000;
 }

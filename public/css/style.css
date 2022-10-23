@@ -2,7 +2,9 @@
     box-sizing: border-box;
     transition:
         background-color .25s,
-        color .25s;
+        color .25s,
+        border .25s,
+        box-shadow .25s;
 }
 
 body {
@@ -33,7 +35,7 @@ main {
 }
 
 main > div {
-    padding: 1em 2em 1em 2em;
+    padding: var(--boxPadding) var(--boxPaddingLarge) var(--boxPadding) var(--boxPaddingLarge);
 }
 
 @media screen and (max-width: 1000px) {
@@ -93,10 +95,10 @@ button:hover {
     min-width: 50%;
 }
 .adjacentRow > *:first-child {
-    border-radius: 1em 0em 0em 1em;
+    border-radius: var(--boxBorderRadius) 0em 0em var(--boxBorderRadius);
     border: none;
 }
 .adjacentRow > *:last-child {
-    border-radius: 0em 1em 1em 0em;
+    border-radius: 0em var(--boxBorderRadius) var(--boxBorderRadius) 0em;
     border: none;
 }

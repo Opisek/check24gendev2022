@@ -7,7 +7,7 @@ nav {
     text-align: center;
     position: fixed;
     margin-top: calc(var(--navHeight) * -1);
-    --navPaddingHeight: .5em;
+    --navPaddingHeight: var(--boxPaddingSmall);
     padding: var(--navPaddingHeight);
     background-color: var(--primaryBackgroundColor);
     color: var(--primaryForegroundColor);
@@ -23,7 +23,7 @@ nav > div {
     display: flex;
     flex-direction: row;
     height: 100%;
-    gap: .25em;
+    gap: var(--flexGap);
     position: relative
 }
 
@@ -34,9 +34,9 @@ nav > div > a {
     margin: 0em;
     height: 100%;
     width: auto;
-    line-height: calc(var(--navHeight) - 2 * var(--navPaddingHeight) - .5em);
-    padding: .25em 1em;
-    border-radius: .5em;
+    line-height: calc(var(--navHeight) - 2 * var(--navPaddingHeight) - var(--boxPaddingTiny) * 2);
+    padding: var(--boxPaddingTiny) var(--boxPadding);
+    border-radius: var(--boxBorderRadiusSmall);
 }
 
 nav > div > a:hover {
@@ -94,10 +94,10 @@ nav > div.navFaded {
     }
     nav > .navRight {
         margin-left: 0;
-        border-radius: 0em 0em .5em .5em;
+        border-radius: 0em 0em var(--boxBorderRadiusSmall) var(--boxBorderRadiusSmall);
     }
     nav > .navLeft {
-        border-radius: .5em .5em 0em 0em;
+        border-radius: var(--boxBorderRadiusSmall) var(--boxBorderRadiusSmall) 0em 0em;
     }
     nav > div {
         margin-top: 1.5em;

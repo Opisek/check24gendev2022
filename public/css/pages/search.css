@@ -20,6 +20,74 @@ main {
     display: flex;
     flex-direction: column;
     gap: var(--flexGap);
+    width: 100%;
+}
+
+.mainFilters > div > div:nth-child(even) {
+    background-color: var(--secondaryLighterBackgroundColor);
+    color: var(--secondaryLighterForegroundColor);
+}
+
+.mainFilters > div > div {
+    height: var(--interactiveHeight);
+    line-height: calc(var(--interactiveHeight) - 2 * var(--boxPadding));
+    display: grid;
+    grid-template-columns: 3fr 1fr 3fr 1fr;
+    width: 100%;
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+    gap: var(--flexGap);
+    padding: var(--boxPadding);
+    border-radius: var(--boxBorderRadiusSmall);
+}
+
+.filterName {
+    text-align: left;
+    width: inherit;
+}
+
+.filterInput {
+    width: 2em;
+    height: 100%;
+    display: inline;
+    padding: .5em;
+    margin: 0;
+    text-align: center;
+    color: inherit;
+    background-color: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    border-bottom: var(--boxPaddingTiny) solid transparent !important;
+    transition: width .25s, box-shadow .2s;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.filterInput:hover {
+    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
+}
+
+.filterInput:focus {
+    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
+}
+
+.mainFilters > div > div:nth-child(even) > .filterInput:hover {
+    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
+}
+
+.mainFilters > div > div:nth-child(even) > .filterInput:focus {
+    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
 }
 
 .mainList {

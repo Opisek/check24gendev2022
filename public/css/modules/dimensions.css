@@ -13,5 +13,16 @@
     --footerFontWeight: 500;
 
     /* Flexboxes */
-    --flexGap: .25em
+    --flexGap: .25em;
+
+    /* Boxes */
+    --boxPaddingTiny: .25em;
+    --boxPaddingSmall: .5em;
+    --boxPadding: 1em;
+    --boxPaddingLarge: 2em;
+    --boxBorderRadius: 1em;
+    --boxBorderRadiusSmall: .5em;
+
+    /* Decoration */
+    --borderWidth: .3em;
 }

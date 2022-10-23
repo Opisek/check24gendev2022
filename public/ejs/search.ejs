@@ -18,14 +18,34 @@
         <div class="mainFilters colorSecondary">
             <h1>Filters</h1>
             <div>
-                <span>test1</span>
-                <span>test2</span>
-                <span>test3</span>
-                <span>test4</span>
-                <span>test5</span>
+                <div>
+                    <span class="filterName">Adults</span>
+                    <span>-</span>
+                    <input class="filterInput" placeholder="0" value="" type="number">
+                    <span>+</span>
+                </div>
+                <div>
+                    <span class="filterName">Children</span>
+                    <span>-</span>
+                    <input class="filterInput" placeholder="0" value="" type="number">
+                    <span>+</span>
+                </div>
+                <div>
+                    <span class="filterName">Price Min</span>
+                    <span>-</span>
+                    <input class="filterInput" placeholder="0" value="" type="number">
+                    <span>+</span>
+                </div>
+                <div>
+                    <span class="filterName">Price Max</span>
+                    <span>-</span>
+                    <input class="filterInput" placeholder="0" value="" type="number">
+                    <span>+</span>
+                </div>
             </div>
         </div>
         <div class="mainList colorPlain">List</div>
+        <script type="text/javascript" src="js/pages/search.js"></script>
     </main>
     <%- include("partials/footerBody.ejs") %>
 </body>
