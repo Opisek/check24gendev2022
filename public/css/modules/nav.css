@@ -3,17 +3,18 @@ nav {
     grid-template-columns: 15em auto auto; 
     grid-template-rows: 100%;
     width: 100%;
-    height: 5em;
+    height: var(--navHeight);
     text-align: center;
     position: fixed;
-    margin-top: -5em;
-    padding: .5em;
+    margin-top: calc(var(--navHeight) * -1);
+    --navPaddingHeight: .5em;
+    padding: var(--navPaddingHeight);
 }
 
 nav > span {
     display: block;
     height: 100%;
-    line-height: calc(300% + .75em);
+    line-height: calc(var(--navHeight) - 2 * var(--navPaddingHeight));
 }
 
 nav > div {
@@ -21,16 +22,17 @@ nav > div {
     flex-direction: row;
     height: 100%;
     gap: .25em;
+    position: relative
 }
 
 nav > div > a {
     display: block;
-    height: auto;
+    height: inherit;
     width: auto;
     margin: 0em;
     height: 100%;
-    line-height: calc(300% + .25em);
     width: auto;
+    line-height: calc(var(--navHeight) - 2 * var(--navPaddingHeight) - .5em);
     padding: .25em 1em;
     border-radius: .5em;
 }

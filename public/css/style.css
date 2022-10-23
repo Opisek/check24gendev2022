@@ -8,10 +8,10 @@
 body {
     display: grid;
     grid-template-rows: auto auto;
-    padding-top: 5em;
+    padding-top: var(--navHeight);
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    font-size: large;
+    font-size: var(--fontSize);
 }
 
 a {
@@ -21,12 +21,12 @@ a {
 }
 
 h1 {
-    font-size: xx-large;
+    font-size: var(--headerFontSize);
     font-weight: 700;
 }
 
 main {
-    min-height: calc(100vh - 10em);
+    min-height: calc(100vh - var(--navHeight) - var(--footerHeight));
     text-align: justify;
     display: grid;
 }

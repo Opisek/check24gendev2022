@@ -3,5 +3,5 @@ footer {
     justify-content: center;
     align-items: center;
     gap: 1em;
-    height: 5em;
+    height: var(--footerHeight);
 }
