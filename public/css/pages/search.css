@@ -16,21 +16,21 @@ main {
     grid-area: filters;
 }
 
-.mainFilters > div {
+.mainFilters > form {
     display: flex;
     flex-direction: column;
     gap: var(--flexGap);
     width: 100%;
 }
 
-.mainFilters > div > div:nth-child(even) {
+.mainFilters > form > div:nth-child(even) {
     background-color: var(--secondaryLighterBackgroundColor);
     color: var(--secondaryLighterForegroundColor);
 }
 
-.mainFilters > div > div {
-    height: var(--interactiveHeight);
-    line-height: calc(var(--interactiveHeight) - 2 * var(--boxPadding));
+.mainFilters > form > div {
+    height: var(--interactiveHeightLarge);
+    line-height: calc(var(--interactiveHeightLarge) - 2 * var(--boxPadding));
     display: grid;
     grid-template-columns: 3fr 1fr 3fr 1fr;
     width: 100%;
@@ -62,6 +62,35 @@ main {
     border-bottom: var(--boxPaddingTiny) solid transparent !important;
     transition: width .25s, box-shadow .2s;
 }
+
+.filterButton {
+    background-color: transparent;
+    width: inherit;
+    outline: 0;
+    border: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    border-radius: var(--boxBorderRadiusSmall);
+    padding: var(--boxPaddingTiny);
+}
+.mainFilters > form > div:nth-child(even) > .filterButton {
+    background-color: var(--secondaryBackgroundColor);
+    color: var(--secondaryForegroundColor);
+}
+.mainFilters > form > div:nth-child(even) > .filterButton:hover {
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
+}
+.mainFilters > form > div:nth-child(odd) > .filterButton {
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryForegroundColor);
+}
+.mainFilters > form > div:nth-child(odd) > .filterButton:hover {
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
+}
+
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
