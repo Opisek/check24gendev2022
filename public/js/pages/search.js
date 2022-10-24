@@ -1,4 +1,4 @@
-function changeValue(input, change) {
+function changeValue(input, change=0) {
     let currentValue = parseInt(input.value);
     if (isNaN(currentValue)) currentValue = 0;
     currentValue += change;
@@ -15,11 +15,10 @@ function changeInputWidth(input) {
 
 window.addEventListener("load", () => {
     for (let input of document.getElementsByClassName("filterInput")) {
-        input.addEventListener("keyup", () => changeInputWidth(input));
-        input.addEventListener("keydown", () => changeInputWidth(input));
-        input.addEventListener("input", () => changeInputWidth(input));
-        for (let button of input.parentElement.getElementsByClassName("filterButton")) {
-            button.addEventListener("click", () => changeValue(input, parseInt(button.value)))
-        }
+        input.addEventListener("keyup", () => changeValue(input));
+        input.addEventListener("keydown", () => changeValue(input));
+        input.addEventListener("input", () => changeValue(input));
+        for (let button of input.parentElement.getElementsByClassName("filterButton")) button.addEventListener("click", () => changeValue(input, parseInt(button.value)))
+        changeValue(input);
     }
 });
