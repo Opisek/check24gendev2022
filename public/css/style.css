@@ -117,6 +117,7 @@ a.link::after {
     height: var(--borderWidth);
     transition: transform var(--animationSpeedFast) ease-out;
     background-color: currentColor;
+    border-radius: var(--boxBorderRadiusSmall);
 }
 a.link:hover::after {
     /*width: 100%;*/
@@ -135,4 +136,5 @@ a.link::before {
     background-color: currentColor;
     opacity: .1;
     bottom: calc(-1 * var(--borderWidth));
+    border-radius: var(--boxBorderRadiusSmall);
 }

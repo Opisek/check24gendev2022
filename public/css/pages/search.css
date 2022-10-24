@@ -92,13 +92,11 @@ main {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    appearance: none;
+    margin: 0;
 }
-
-/* Firefox */
 input[type=number] {
-  -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .mainFilters > form > div:nth-child(odd) > .filterInput:hover {
