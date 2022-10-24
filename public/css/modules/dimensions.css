@@ -26,4 +26,9 @@
 
     /* Decoration */
     --borderWidth: .3em;
+
+    /* Timing */
+    --animationSpeed: .25s;
+    --animationSpeedSlow: .5s;
+    --animationSpeedFast: .2s;
 }

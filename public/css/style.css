@@ -1,10 +1,10 @@
 * { 
     box-sizing: border-box;
     transition:
-        background-color .25s,
-        color .25s,
-        border .25s,
-        box-shadow .25s;
+        background-color var(--animationSpeed),
+        color var(--animationSpeed),
+        border var(--animationSpeed),
+        box-shadow var(--animationSpeed);
 }
 
 body {
@@ -101,4 +101,38 @@ button:hover {
 .adjacentRow > *:last-child {
     border-radius: 0em var(--boxBorderRadius) var(--boxBorderRadius) 0em;
     border: none;
+}
+
+a.link {
+    position: relative !important;
+    overflow: visible !important;
+}
+a.link::after {
+    content: "";
+    display: block;
+    position: absolute;
+    /*width: 0%;*/
+    transform: scaleX(0%);
+    width: 100%;
+    height: var(--borderWidth);
+    transition: transform var(--animationSpeedFast) ease-out;
+    background-color: currentColor;
+}
+a.link:hover::after {
+    /*width: 100%;*/
+    transform: scaleX(100%);
+}
+a.link:focus::after {
+    /*width: 100%;*/
+    transform: scaleX(100%);
+}
+a.link::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: var(--borderWidth);
+    background-color: currentColor;
+    opacity: .1;
+    bottom: calc(-1 * var(--borderWidth));
 }

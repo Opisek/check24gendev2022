@@ -60,7 +60,7 @@ main {
     font-size: inherit;
     font-weight: inherit;
     border-bottom: var(--boxPaddingTiny) solid transparent !important;
-    transition: width .25s, box-shadow .2s;
+    transition: width var(--animationSpeed), box-shadow var(--animationSpeed);
 }
 
 .filterButton {
