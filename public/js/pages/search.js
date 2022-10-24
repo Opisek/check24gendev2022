@@ -2,7 +2,8 @@ function changeValue(input, change) {
     let currentValue = parseInt(input.value);
     if (isNaN(currentValue)) currentValue = 0;
     currentValue += change;
-    if (currentValue < 0) currentValue = 0;
+    if (currentValue < input.min) currentValue = input.min;
+    if (currentValue > input.max) currentValue = input.max;
     input.value = currentValue;
     changeInputWidth(input);
 }
