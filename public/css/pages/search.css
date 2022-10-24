@@ -1,10 +1,12 @@
+/* Layout */
+
 main {
     max-height: calc(100vh - 12em);
     grid-template-columns: 20em auto;
     grid-template-rows: 5em auto;
     grid-template-areas:
-        "filters search"
-        "filters list";
+    "filters search"
+    "filters list";
 }
 
 .mainSearch {
@@ -15,6 +17,25 @@ main {
 .mainFilters {
     grid-area: filters;
 }
+
+.mainList {
+    grid-area: list;
+}
+
+@media screen and (max-width: 1000px) {
+    main {
+        max-height: none;
+        grid-template-columns: 1fr;
+        grid-template-rows: 5em auto auto;
+        grid-template-areas:
+        "search"
+            "list"
+            "filters";
+            overflow-y: visible;
+       }
+}
+
+/* Filters Sidebar */
 
 .mainFilters > form {
     display: flex;
@@ -48,20 +69,7 @@ main {
     width: inherit;
 }
 
-.filterInput {
-    width: 2em;
-    height: 100%;
-    display: inline;
-    padding: .5em;
-    margin: 0;
-    text-align: center;
-    color: inherit;
-    background-color: transparent;
-    font-size: inherit;
-    font-weight: inherit;
-    border-bottom: var(--boxPaddingTiny) solid transparent !important;
-    transition: width var(--animationSpeed), box-shadow var(--animationSpeed);
-}
+/* Button */
 
 .filterButton {
     background-color: transparent;
@@ -90,6 +98,8 @@ main {
     color: var(--primaryLighterForegroundColor);
 }
 
+/* Number Input */
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     appearance: none;
@@ -97,6 +107,21 @@ input::-webkit-inner-spin-button {
 }
 input[type=number] {
     appearance: textfield;
+}
+
+.filterInput {
+    width: 2em;
+    height: 100%;
+    display: inline;
+    padding: .5em;
+    margin: 0;
+    text-align: center;
+    color: inherit;
+    background-color: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    border-bottom: var(--boxPaddingTiny) solid transparent !important;
+    transition: width var(--animationSpeed), box-shadow var(--animationSpeed);
 }
 
 .mainFilters > form > div:nth-child(odd) > .filterInput:hover {
@@ -113,21 +138,4 @@ input[type=number] {
 
 .mainFilters > form > div:nth-child(even) > .filterInput:focus {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
-}
-
-.mainList {
-    grid-area: list;
-}
-
-@media screen and (max-width: 1000px) {
-    main {
-        max-height: none;
-        grid-template-columns: 1fr;
-        grid-template-rows: 5em auto auto;
-        grid-template-areas:
-            "search"
-            "list"
-            "filters";
-        overflow-y: visible;
-    }
 }
