@@ -64,10 +64,10 @@ window.addEventListener("load", () => {
     priceElements.lowerField = document.getElementById("filterInputPriceLowerField");
     priceElements.upperSlider.max = Math.ceil(maxPrice / priceRounding);
     priceElements.lowerSlider.max = Math.ceil(maxPrice / priceRounding);
-    priceElements.upperField.max = maxPrice;
-    priceElements.lowerField.max = maxPrice;
     priceElements.upperSlider.min = 0;
     priceElements.lowerSlider.min = 0;
+    priceElements.upperField.max = maxPrice;
+    priceElements.lowerField.max = maxPrice;
     priceElements.upperField.min = 0;
     priceElements.lowerField.min = 0;
     priceElements.upperField.value = maxPrice;
@@ -88,6 +88,8 @@ window.addEventListener("load", () => {
         }
     }
 
+    priceElements.lowerField.max = priceElements.upperField.value;
+    priceElements.upperField.min = priceElements.lowerField.value;
     priceElements.upperSlider.value = Math.ceil(priceElements.upperField.value / priceRounding);
     priceElements.lowerSlider.value = Math.floor(priceElements.lowerField.value / priceRounding);
     changeInputWidth(priceElements.upperField);
