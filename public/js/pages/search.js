@@ -48,9 +48,8 @@ window.addEventListener("load", () => {
     for (let input of document.getElementsByClassName("filterInput")) {
         if (input.type != "number") continue;
         console.log("found");
-        input.addEventListener("keyup", () => changeValue(input));
-        input.addEventListener("keydown", () => changeValue(input));
-        input.addEventListener("input", () => changeValue(input));
+        input.addEventListener("input", () => changeInputWidth(input));
+        input.addEventListener("change", () => changeValue(input));
         for (let button of input.parentElement.getElementsByClassName("filterButton")) button.addEventListener("click", () => changeValue(input, parseInt(button.value)))
         changeValue(input);
     }
@@ -75,6 +74,6 @@ window.addEventListener("load", () => {
     changeInputWidth(priceElements.lowerField);
     priceElements.upperSlider.addEventListener("input", () => upperSliderChange());
     priceElements.lowerSlider.addEventListener("input", () => lowerSliderChange());
-    priceElements.upperField.addEventListener("input", () => upperFieldChange());
-    priceElements.lowerField.addEventListener("input", () => lowerFieldChange());
+    priceElements.upperField.addEventListener("change", () => upperFieldChange());
+    priceElements.lowerField.addEventListener("change", () => lowerFieldChange());
 });
