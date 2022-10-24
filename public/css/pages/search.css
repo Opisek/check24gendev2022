@@ -90,8 +90,6 @@ main {
     color: var(--primaryLighterForegroundColor);
 }
 
-
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -103,19 +101,19 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.filterInput:hover {
+.mainFilters > form > div:nth-child(odd) > .filterInput:hover {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
 }
 
-.filterInput:focus {
+.mainFilters > form > div:nth-child(odd) > .filterInput:focus {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
 }
 
-.mainFilters > div > div:nth-child(even) > .filterInput:hover {
+.mainFilters > form > div:nth-child(even) > .filterInput:hover {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
 }
 
-.mainFilters > div > div:nth-child(even) > .filterInput:focus {
+.mainFilters > form > div:nth-child(even) > .filterInput:focus {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
 }
 
