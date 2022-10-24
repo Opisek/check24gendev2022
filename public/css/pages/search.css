@@ -51,9 +51,10 @@ main {
 
 .mainFilters > form > div {
     height: var(--interactiveHeightLarge);
+    --interactiveHeightInside: calc(var(--interactiveHeightLarge) - 2 * var(--boxPadding));
     line-height: calc(var(--interactiveHeightLarge) - 2 * var(--boxPadding));
     display: grid;
-    grid-template-columns: 3fr 1fr 3fr 1fr;
+    grid-template-columns: 3fr 1fr 2fr 1fr;
     width: 100%;
     grid-template-rows: 1fr;
     text-align: center;
@@ -62,6 +63,9 @@ main {
     gap: var(--flexGap);
     padding: var(--boxPadding);
     border-radius: var(--boxBorderRadiusSmall);
+}
+.filterInputRangeDiv {
+    grid-template-columns: 3fr 1fr 4fr 1fr !important;
 }
 
 .filterName {
@@ -98,44 +102,156 @@ main {
     color: var(--primaryLighterForegroundColor);
 }
 
-/* Number Input */
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    appearance: none;
-    margin: 0;
-}
-input[type=number] {
-    appearance: textfield;
-}
+/* General Input */
 
 .filterInput {
-    width: 2em;
+    width: 100%;
     height: 100%;
     display: inline;
-    padding: .5em;
+    padding: var(--boxPaddingSmall);
     margin: 0;
     text-align: center;
     color: inherit;
     background-color: transparent;
     font-size: inherit;
     font-weight: inherit;
-    border-bottom: var(--boxPaddingTiny) solid transparent !important;
+}
+
+/* Number Input */
+
+.filterInput[type=number] {
+    appearance: textfield;
     transition: width var(--animationSpeed), box-shadow var(--animationSpeed);
 }
 
-.mainFilters > form > div:nth-child(odd) > .filterInput:hover {
+.filterInput::-webkit-outer-spin-button,
+.filterInput::-webkit-inner-spin-button {
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.mainFilters > form > div:nth-child(odd) > .filterInput[type=number]:hover {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
 }
 
-.mainFilters > form > div:nth-child(odd) > .filterInput:focus {
+.mainFilters > form > div:nth-child(odd) > .filterInput[type=number]:focus {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
 }
 
-.mainFilters > form > div:nth-child(even) > .filterInput:hover {
+.mainFilters > form > div:nth-child(even) > .filterInput[type=number]:hover {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
 }
 
-.mainFilters > form > div:nth-child(even) > .filterInput:focus {
+.mainFilters > form > div:nth-child(even) > .filterInput[type=number]:focus {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
+}
+
+/* Range Input */
+
+div.filterInput {
+    position: relative !important;
+    padding: 0;
+    margin: 0;
+    border-radius: var(--boxBorderRadius);
+}
+
+.filterInput[type=range] {
+    position: absolute !important;
+    display: inline;
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    /*pointer-events: none;*/
+}
+#filterInputPriceUpperSlider {
+    top: -33%;
+}
+#filterInputPriceLowerSlider {
+    top: 33%;
+}
+
+.mainFilters > form > div:nth-child(odd) > div.filterInput {
+    background-color: var(--secondaryLighterBackgroundColor);
+}
+.mainFilters > form > div:nth-child(even) > div.filterInput {
+    background-color: var(--primaryLighterBackgroundColor);
+}
+
+.filterInput[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    outline: 0;
+    border: 0;
+    height: 100%;
+    box-shadow: inset 0 100% 0 0 black;
+}
+.filterInput[type=range]::-moz-range-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: white;
+    outline: 0;
+    border: 0;
+    height: calc(var(--interactiveHeightInside) * .75);
+    /*width: var(--interactiveHeightInside);*/
+    /*border-radius: var(--interactiveHeightInside);*/
+    border-radius: 0;
+    width: .5em;
+    border-radius: .5em;
+    pointer-events: auto;
+    position: relative !important;
+    box-shadow: none;
+}
+.filterInput[type=range]::-ms-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    outline: 0;
+    border: 0;
+    box-shadow: 0 0 2px 0 #555;
+    height: 100%;
+    box-shadow: inset 0 100% 0 0 black;
+}
+
+/*.mainFilters > form > div:nth-child(odd) > .filterInput[type=range]::-webkit-slider-thumb,
+.mainFilters > form > div:nth-child(odd) > .filterInput[type=range]::-moz-range-thumb,
+.mainFilters > form > div:nth-child(odd) > .filterInput[type=range]::-ms-thumb {
+    color: var(--secondaryLighterBackgroundColor);
+}
+
+.mainFilters > form > div:nth-child(even) > .filterInput[type=range]::-webkit-slider-thumb,
+.mainFilters > form > div:nth-child(even) > .filterInput[type=range]::-moz-range-thumb,
+.mainFilters > form > div:nth-child(even) > .filterInput[type=range]::-ms-thumb {
+    display: none;
+    color: var(--secondaryLighterBackgroundColor);
+}*/
+
+.filterInput[type=range]::-webkit-slider-runnable-track {
+    appearance: none;
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: none;
+    pointer-events: none;
+}
+.filterInput[type=range]::-moz-range-track {
+    appearance: none;
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: none;
+    pointer-events: none;
+}
+.filterInput[type=range]::-ms-track {
+    appearance: none;
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: none;
+    pointer-events: none;
 }

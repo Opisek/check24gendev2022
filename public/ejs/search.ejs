@@ -42,11 +42,14 @@
                     <input class="filterInput" placeholder="0" value="" type="number" min="0" max="10000">
                     <button class="filterButton" type="button" tabindex="-100" value="100">+</button>
                 </div>
-                <div>
+                <div class="filterInputRangeDiv">
                     <label class="filterName">Price</label>
-                    <input class="filterInput" placeholder="0" value="" type="number" min="0" max="10000">
-                    <input class="filterInput" placeholder="0" value="" type="range" min="0" max="10000">
-                    <input class="filterInput" placeholder="0" value="" type="number" min="0" max="10000">
+                    <input class="filterInput" id="filterInputPriceLowerField" placeholder="0" value="" type="number">
+                    <div class="filterInput">
+                        <input class="filterInput" id="filterInputPriceLowerSlider" placeholder="0" value="" type="range">
+                        <input class="filterInput" id="filterInputPriceUpperSlider" placeholder="0" value="" type="range">
+                    </div>
+                    <input class="filterInput" id="filterInputPriceUpperField" placeholder="0" value="" type="number">
                 </div>
             </form>
         </div>
