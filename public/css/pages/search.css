@@ -123,11 +123,13 @@ input[type=number] {
 
 @media screen and (max-width: 1000px) {
     main {
+        max-height: none;
         grid-template-columns: 1fr;
-        grid-template-rows: 5em auto;
+        grid-template-rows: 5em auto auto;
         grid-template-areas:
             "search"
             "list"
             "filters";
+        overflow-y: visible;
     }
 }
