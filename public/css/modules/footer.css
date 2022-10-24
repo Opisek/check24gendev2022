@@ -1,5 +1,6 @@
 footer {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 1em;
@@ -10,4 +11,11 @@ footer {
 footer > * {
     font-size: var(--footerFontSize);
     font-weight: var(--footerFontWeight);
+}
+@media screen and (max-width: 1000px) {
+    footer {
+        height: auto;
+        flex-direction: column;
+        padding: var(--boxPadding);
+    }
 }
