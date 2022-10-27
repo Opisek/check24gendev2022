@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const http = require("http");
+const socketio = require("socket.io");
 require("dotenv").config();
 
 // Web Server
@@ -25,6 +26,8 @@ server.use("/js", express.static(path.join(publicPath + '/js')));
 
 server.set("trust proxy", "loopback, linklocal, uniquelocal");
 
+const httpServer = http.createServer(server);
+
 server.get("/", function(req, res) {
     //if (authenticate(req, res)) return;
 
@@ -39,14 +42,18 @@ server.get("/search/", function(req, res) {
     res.end();
 });
 
-/*(require('socket.io')(server)).on("connection", function(socket) {
-    socket.on("authenticate", function(token) {
-  
+socketio(httpServer).on("connection", socket => {
+    console.log("client connected");
+
+    socket.on("authenticate", token => {
+        // not yet supported
     });
 
-    socket.emit("init", "hi");
-});*/
+    socket.on("requestOffers", filters => {
+        console.log(`offers requested:\n${JSON.stringify(filters)}`);
+    });
+});
 
-const httpServer = http.createServer(server);
+
 httpServer.listen(process.env.WEB_PORT);
 console.log("listening on " + process.env.WEB_PORT);

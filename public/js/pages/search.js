@@ -56,6 +56,8 @@ function lowerFieldChange (sliderChange = false) {
 }
 
 window.addEventListener("load", () => {
+    const socket = io();
+
     const url = new URL(window.location.href);
 
     priceElements.upperSlider = document.getElementById("filterInputPriceUpperSlider");
@@ -100,4 +102,10 @@ window.addEventListener("load", () => {
     priceElements.lowerSlider.addEventListener("change", () => changeValue(priceElements.lowerField));
     priceElements.upperField.addEventListener("change", () => upperFieldChange());
     priceElements.lowerField.addEventListener("change", () => lowerFieldChange());
+
+    document.getElementById("filterButtonSubmit").addEventListener("click", () => {
+        let filterParameters = {}
+        for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.value != "") filterParameters[input.name] = input.value;
+        socket.emit("requestOffers", filterParameters);
+    });
 });

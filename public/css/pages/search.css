@@ -42,6 +42,7 @@ main {
     flex-direction: column;
     gap: var(--flexGap);
     width: 100%;
+    align-items: center;
 }
 
 .mainFilters > form > div:nth-child(even) {
@@ -98,6 +99,16 @@ main {
     color: var(--primaryForegroundColor);
 }
 .mainFilters > form > div:nth-child(odd) > .filterButton:hover {
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
+}
+.filterSubmit {
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryForegroundColor);
+    width: 50%;
+    padding: var(--boxPaddingSmall);
+}
+.filterSubmit:hover {
     background-color: var(--primaryLighterBackgroundColor);
     color: var(--primaryLighterForegroundColor);
 }
