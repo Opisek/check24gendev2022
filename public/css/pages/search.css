@@ -107,6 +107,7 @@ main {
     color: var(--primaryForegroundColor);
     width: 50%;
     padding: var(--boxPaddingSmall);
+    border-radius: var(--boxBorderRadius);
 }
 .filterSubmit:hover {
     background-color: var(--primaryLighterBackgroundColor);
