@@ -12,11 +12,21 @@ const socketio = require("socket.io");
 //const urlParser = require("parseurl");
 //const cookieParser = require("cookie-parser");
 
-const serverPath = __dirname;
-const publicPath = path.join(serverPath + '/public');
+const serverPath = path.resolve(__dirname, "../../");
+const publicPath = path.join(serverPath + "/public");
 
 module.exports = class WebServer {
+    addEventListener(name, callback) {
+        this._events[name].push(callback);
+    }
+    
+    _emit(name, data) {
+        for (const callback of this._events[name]) callback(data);
+    }
+
     constructor(port) {
+        this._events = {"offersRequest":[]};
+
         server.set("views", path.join(publicPath + '/ejs'))
         server.set("/partials", path.join(publicPath + '/partials'))
         server.use("/css", express.static(path.join(publicPath + '/css')));
@@ -47,8 +57,8 @@ module.exports = class WebServer {
                 // not yet supported
             });
 
-            socket.on("requestOffers", filters => {
-                console.log(`offers requested:\n${JSON.stringify(filters)}`);
+            socket.on("requestOffers", async filters => {
+                this._emit("offersRequest", filters);
             });
         });
 
