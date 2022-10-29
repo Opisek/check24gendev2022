@@ -40,6 +40,14 @@ module.exports = class Database {
             conditions.push(`price<=$${conditions.length+1}`);
             paramaters.push(filters.priceMax);
         }
+        if ("startMin" in filters && !Number.isNaN(Number.parseInt(filters.startMin))) {
+            conditions.push(`stars=$${conditions.length+1}`);
+            paramaters.push(filters.startMin);
+        }
+        if ("starsMax" in filters && !Number.isNaN(Number.parseInt(filters.starsMax))) {
+            conditions.push(`stars<=$${conditions.length+1}`);
+            paramaters.push(filters.starsMax);
+        }
 
         if (conditions.length != 0) query += ` WHERE ${conditions.join(" AND ")}`;
 
