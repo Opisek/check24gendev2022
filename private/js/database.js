@@ -20,7 +20,7 @@ module.exports = class Database {
     }
 
     async offersRequest(filters, page=1) {
-        let query = "SELECT * FROM offers";
+        let query = "SELECT * FROM offers INNER JOIN hotels ON offers.hotelid=hotels.id";
         
         let conditions = [];
         let paramaters = [];
