@@ -3,7 +3,7 @@ const moment = require("moment-timezone");
 
 module.exports = class Database {
     constructor(host, port, user, password, database) {
-        this.sql = new postgress.Pool({
+        this._sql = new postgress.Pool({
             host: host,
             port: port,
             user: user,
@@ -13,7 +13,7 @@ module.exports = class Database {
     }
 
     async connect() {
-        await this.sql.connect();
-        await this.sql.query("SET client_encoding='UTF8'");
+        await this._sql.connect();
+        await this._sql.query("SET client_encoding='UTF8'");
     }
 }
