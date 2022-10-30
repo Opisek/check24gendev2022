@@ -34,15 +34,34 @@
                     <label class="filterName">Price</label>
                     <input class="filterInput" id="filterInputPriceLowerField" placeholder="0" value="" type="number" name="priceMin">
                     <div class="filterInput">
-                        <input class="filterInput" id="filterInputPriceLowerSlider" placeholder="0" value="" type="range" tabindex="-1">
-                        <input class="filterInput" id="filterInputPriceUpperSlider" placeholder="0" value="" type="range" tabindex="-1">
+                        <input class="filterInput filterInputUpperSlider" id="filterInputPriceUpperSlider" placeholder="0" value="" type="range" tabindex="-1">
+                        <input class="filterInput filterInputLowerSlider" id="filterInputPriceLowerSlider" placeholder="0" value="" type="range" tabindex="-1">
                     </div>
                     <input class="filterInput" id="filterInputPriceUpperField" placeholder="0" value="" type="number" name="priceMax">
+                </div>
+                <div class="filterInputRangeDiv">
+                    <label class="filterName">Stars</label>
+                    <input class="filterInput" id="filterInputStarsLowerField" placeholder="0" value="" type="number" name="starsMin">
+                    <div class="filterInput">
+                        <input class="filterInput filterInputUpperSlider" id="filterInputStarsUpperSlider" placeholder="0" value="" type="range" tabindex="-1">
+                        <input class="filterInput filterInputLowerSlider" id="filterInputStarsLowerSlider" placeholder="0" value="" type="range" tabindex="-1">
+                    </div>
+                    <input class="filterInput" id="filterInputStarsUpperField" placeholder="0" value="" type="number" name="starsMax">
                 </div>
                 <button class="filterButton filterSubmit" type="button" id="filterButtonSubmit">Show Results</button>
             </form>
         </div>
-        <div class="mainList colorPlain">List</div>
+        <div class="mainList colorPlain">
+            <div>
+                <span>Mallorca</span>
+                <span>Hotelname</span>
+                <span>Preis</spar>
+                <span>a</span>
+                <span>b</span>
+            </div>
+            <div>test 2</div>
+            <div>test 3</div>
+        </div>
         <script type="text/javascript" src="js/pages/search.js"></script>
     </main>
     <%- include("partials/footerBody.ejs") %>

@@ -2,7 +2,7 @@
 
 main {
     max-height: calc(100vh - 12em);
-    grid-template-columns: 20em auto;
+    grid-template-columns: 25em auto;
     grid-template-rows: 5em auto;
     grid-template-areas:
     "filters search"
@@ -16,10 +16,6 @@ main {
 
 .mainFilters {
     grid-area: filters;
-}
-
-.mainList {
-    grid-area: list;
 }
 
 @media screen and (max-width: 1000px) {
@@ -64,9 +60,6 @@ main {
     gap: var(--flexGap);
     padding: var(--boxPadding);
     border-radius: var(--boxBorderRadiusSmall);
-}
-.filterInputRangeDiv {
-    grid-template-columns: 3fr 1fr 4fr 1fr !important;
 }
 
 .filterName {
@@ -161,6 +154,11 @@ main {
 
 /* Range Input */
 
+.filterInputRangeDiv {
+    display: grid;
+    grid-template-columns: 2fr 2fr 3fr 2fr !important;
+}
+
 div.filterInput {
     position: relative !important;
     padding: 0;
@@ -179,12 +177,14 @@ div.filterInput {
     padding: 0;
     margin: 0;
     /*pointer-events: none;*/
+    width: 100% !important;
+    max-width: 100%;
 }
-#filterInputPriceUpperSlider {
-    top: -33%;
+.filterInputUpperSlider {
+    top: -33% !important;
 }
-#filterInputPriceLowerSlider {
-    top: 33%;
+.filterInputLowerSlider {
+    top: 33% !important;
 }
 
 .mainFilters > form > div:nth-child(odd) > div.filterInput {
@@ -266,4 +266,20 @@ div.filterInput {
     border: none;
     background: none;
     pointer-events: none;
+}
+
+/* Offers */
+
+.mainList {
+    grid-area: list;
+    display: flex;
+    flex-direction: column;
+    gap: var(--flexGap);
+}
+
+.mainList > div {
+    background-color: var(--plainContrastBackgroundColor);
+    color: var(--plainContrastForegroundColor);
+    border-radius: var(--boxBorderRadiusSmall);
+    padding: var(--boxPadding);
 }

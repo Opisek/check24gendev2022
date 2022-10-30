@@ -5,7 +5,7 @@ function setUrlParameter(paramater, value) {
 }
 
 function changeValue(input, change=0, apply=true) {
-    let currentValue = parseInt(input.value);
+    let currentValue = parseFloat(input.value);
     if (isNaN(currentValue)) currentValue = 0;
     currentValue += change;
     if (currentValue < input.min) currentValue = input.min;
@@ -20,39 +20,74 @@ function changeInputWidth(input) {
     input.style.width = `${2+.4*input.value.length}em`;
 }
 
-let priceElements = {};
-const maxPrice = 10000;
-const priceRounding = 100;
+function upperSliderChange (elements, correction) {
+    elements.upperField.value = elements.upperSlider.value / correction;
+    console.log(elements.upperSlider.value);
+    upperFieldChange(elements, correction, true);
+}
+function lowerSliderChange (elements, correction) {
+    elements.lowerField.value = elements.lowerSlider.value / correction;
+    lowerFieldChange(elements, correction, true);
+}
+function upperFieldChange (elements, correction, sliderChange = false) {
+    changeValue(elements.upperField, 0, false);
+    elements.upperSlider.value = elements.upperField.value * correction;
+    elements.lowerField.max = elements.upperField.value;
+    changeValue(elements.lowerField, 0, false);
+    elements.lowerSlider.value = elements.lowerField.value * correction;
+    if (!sliderChange) {
+        setUrlParameter(elements.upperField.name, elements.upperField.value);
+        setUrlParameter(elements.lowerField.name, elements.lowerField.value);
+    }
+}
+function lowerFieldChange (elements, correction, sliderChange = false) {
+    changeValue(elements.lowerField, 0, false);
+    elements.lowerSlider.value = elements.lowerField.value * correction;
+    elements.upperField.min = elements.lowerField.value;
+    changeValue(elements.upperField, 0, false);
+    elements.upperSlider.value = elements.upperField.value * correction;
+    if (!sliderChange) {
+        setUrlParameter(elements.upperField.name, elements.upperField.value);
+        setUrlParameter(elements.lowerField.name, elements.lowerField.value);
+    }
+}
 
-function upperSliderChange () {
-    priceElements.upperField.value = priceElements.upperSlider.value * priceRounding;
-    upperFieldChange(true);
+function initRange(name, min, max, step, correction) {
+    let elements = {};
+
+    elements.upperSlider = document.getElementById(`filterInput${name}UpperSlider`);
+    elements.lowerSlider = document.getElementById(`filterInput${name}LowerSlider`);
+    elements.upperField = document.getElementById(`filterInput${name}UpperField`);
+    elements.lowerField = document.getElementById(`filterInput${name}LowerField`);
+    elements.upperSlider.max = max * correction;
+    elements.lowerSlider.max = max * correction;
+    elements.upperSlider.min = min * correction;
+    elements.lowerSlider.min = min * correction;
+    elements.upperField.max = max;
+    elements.lowerField.max = max;
+    elements.upperField.min = min;
+    elements.lowerField.min = min;
+    elements.upperField.value = max * correction;
+    elements.lowerField.value = min * correction;
+    elements.upperSlider.step = step * correction;
+    elements.lowerSlider.step = step * correction;
+
+    return elements;
 }
-function lowerSliderChange () {
-    priceElements.lowerField.value = priceElements.lowerSlider.value * priceRounding;
-    lowerFieldChange(true);
-}
-function upperFieldChange (sliderChange = false) {
-    changeValue(priceElements.upperField, 0, false);
-    priceElements.upperSlider.value = Math.ceil(priceElements.upperField.value / priceRounding);
-    priceElements.lowerField.max = priceElements.upperField.value;
-    changeValue(priceElements.lowerField, 0, false);
-    priceElements.lowerSlider.value = Math.floor(priceElements.lowerField.value / priceRounding);
-    if (!sliderChange) {
-        setUrlParameter(priceElements.upperField.name, priceElements.upperField.value);
-        setUrlParameter(priceElements.lowerField.name, priceElements.lowerField.value);
-    }
-}
-function lowerFieldChange (sliderChange = false) {
-    changeValue(priceElements.lowerField, 0, false);
-    priceElements.lowerSlider.value = Math.floor(priceElements.lowerField.value / priceRounding);
-    priceElements.upperField.min = priceElements.lowerField.value;
-    changeValue(priceElements.upperField, 0, false);
-    priceElements.upperSlider.value = Math.ceil(priceElements.upperField.value / priceRounding);
-    if (!sliderChange) {
-        setUrlParameter(priceElements.upperField.name, priceElements.upperField.value);
-        setUrlParameter(priceElements.lowerField.name, priceElements.lowerField.value);
-    }
+
+function readyRange(elements, correction) {
+    elements.lowerField.max = elements.upperField.value;
+    elements.upperField.min = elements.lowerField.value;
+    elements.upperSlider.value = elements.upperField.value * correction;
+    elements.lowerSlider.value = elements.lowerField.value * correction;
+    changeInputWidth(elements.upperField);
+    changeInputWidth(elements.lowerField);
+    elements.upperSlider.addEventListener("input", () => upperSliderChange(elements, correction));
+    elements.lowerSlider.addEventListener("input", () => lowerSliderChange(elements, correction));
+    elements.upperSlider.addEventListener("change", () => changeValue(elements.upperField));
+    elements.lowerSlider.addEventListener("change", () => changeValue(elements.lowerField));
+    elements.upperField.addEventListener("change", () => upperFieldChange(elements, correction));
+    elements.lowerField.addEventListener("change", () => lowerFieldChange(elements, correction));
 }
 
 window.addEventListener("load", () => {
@@ -60,20 +95,8 @@ window.addEventListener("load", () => {
 
     const url = new URL(window.location.href);
 
-    priceElements.upperSlider = document.getElementById("filterInputPriceUpperSlider");
-    priceElements.lowerSlider = document.getElementById("filterInputPriceLowerSlider");
-    priceElements.upperField = document.getElementById("filterInputPriceUpperField");
-    priceElements.lowerField = document.getElementById("filterInputPriceLowerField");
-    priceElements.upperSlider.max = Math.ceil(maxPrice / priceRounding);
-    priceElements.lowerSlider.max = Math.ceil(maxPrice / priceRounding);
-    priceElements.upperSlider.min = 0;
-    priceElements.lowerSlider.min = 0;
-    priceElements.upperField.max = maxPrice;
-    priceElements.lowerField.max = maxPrice;
-    priceElements.upperField.min = 0;
-    priceElements.lowerField.min = 0;
-    priceElements.upperField.value = maxPrice;
-    priceElements.lowerField.value = 0;
+    const priceRange = initRange("Price", 0, 10000, 100, 1);
+    const startRange = initRange("Stars", .5, 5, .5, 2);
 
     for (let input of document.getElementsByClassName("filterInput")) {
         if (input.type == "number") {
@@ -90,18 +113,8 @@ window.addEventListener("load", () => {
         }
     }
 
-    priceElements.lowerField.max = priceElements.upperField.value;
-    priceElements.upperField.min = priceElements.lowerField.value;
-    priceElements.upperSlider.value = Math.ceil(priceElements.upperField.value / priceRounding);
-    priceElements.lowerSlider.value = Math.floor(priceElements.lowerField.value / priceRounding);
-    changeInputWidth(priceElements.upperField);
-    changeInputWidth(priceElements.lowerField);
-    priceElements.upperSlider.addEventListener("input", () => upperSliderChange());
-    priceElements.lowerSlider.addEventListener("input", () => lowerSliderChange());
-    priceElements.upperSlider.addEventListener("change", () => changeValue(priceElements.upperField));
-    priceElements.lowerSlider.addEventListener("change", () => changeValue(priceElements.lowerField));
-    priceElements.upperField.addEventListener("change", () => upperFieldChange());
-    priceElements.lowerField.addEventListener("change", () => lowerFieldChange());
+    readyRange(priceRange, 1);
+    readyRange(startRange, 2);
 
     document.getElementById("filterButtonSubmit").addEventListener("click", () => {
         let filterParameters = {}
