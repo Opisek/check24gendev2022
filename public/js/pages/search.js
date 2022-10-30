@@ -118,7 +118,7 @@ window.addEventListener("load", () => {
 
     document.getElementById("filterButtonSubmit").addEventListener("click", () => {
         let filterParameters = {}
-        for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.value != "") filterParameters[input.name] = input.value;
+        for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
         socket.emit("requestOffers", filterParameters);
     });
 });
