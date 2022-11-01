@@ -1,0 +1,37 @@
+main {
+    background-color: var(--secondaryBackgroundColor);
+    color: var(--secondaryForegroundColor);
+    padding: var(--boxPaddingLarge);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+}
+
+.container {
+    margin: 0;
+    overflow: hidden;
+    max-width: 65em;
+    line-height: var(--lineHeightText);
+}
+
+.container > h1 {
+    margin: 0;
+}
+
+.container > img {
+    grid-area: photo;
+    max-height: 35vh;
+    max-width: 30vw;
+    min-height: 6em !important;
+    min-width: 3em !important;
+    float: left;
+    margin: 0 var(--flexGapLarger) var(--flexGapLarge) 0;
+}
+
+@media screen and (max-width: 1000px) {
+    main {
+        max-height: none;
+        text-align: left;
+    }
+}

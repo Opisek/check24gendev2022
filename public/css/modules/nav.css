@@ -1,4 +1,5 @@
 nav {
+    z-index: 100;
     display: grid;
     grid-template-columns: 15em auto auto; 
     grid-template-rows: 100%;

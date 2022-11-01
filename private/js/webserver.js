@@ -38,14 +38,21 @@ module.exports = class WebServer {
         server.get("/", function(req, res) {
             //if (authenticate(req, res)) return;
 
-            res.render(`index`, { host: `${req.protocol}://${req.hostname}` });
+            res.render("index", { host: `${req.protocol}://${req.hostname}` });
             res.end();
         });
 
         server.get("/search/", function(req, res) {
             //if (authenticate(req, res)) return;
 
-            res.render(`search`, {host: `${req.protocol}://${req.hostname}` });
+            res.render("search", {host: `${req.protocol}://${req.hostname}` });
+            res.end();
+        });
+
+        server.get("/contact/", function(req, res) {
+            //if (authenticate(req, res)) return;
+
+            res.render("contact", { host: `${req.protocol}://${req.hostname}` });
             res.end();
         });
 

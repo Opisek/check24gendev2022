@@ -16,16 +16,19 @@
     --subHeaderFontWeight: 700;
     --footerFontSize: 1rem;
     --footerFontWeight: 500;
+    --lineHeightText: 2rem;
 
     /* Flexboxes */
     --flexGap: .25em;
     --flexGapLarge: .5em;
+    --flexGapLarger: 2em;
 
     /* Boxes */
     --boxPaddingTiny: .25em;
     --boxPaddingSmall: .5em;
     --boxPadding: 1em;
     --boxPaddingLarge: 2em;
+    --boxPaddingHuge: 20em;
     --boxBorderRadius: 1em;
     --boxBorderRadiusSmall: .5em;
 

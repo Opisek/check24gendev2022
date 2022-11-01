@@ -110,7 +110,6 @@ button:hover {
 
 a.link {
     position: relative !important;
-    overflow: visible !important;
 }
 a.link::after {
     content: "";
@@ -119,6 +118,8 @@ a.link::after {
     /*width: 0%;*/
     transform: scaleX(0%);
     width: 100%;
+    left: 0;
+    bottom: calc(-1 * var(--borderWidth));
     height: var(--borderWidth);
     transition: transform var(--animationSpeedFast) ease-out;
     background-color: currentColor;
@@ -142,4 +143,5 @@ a.link::before {
     opacity: .1;
     bottom: calc(-1 * var(--borderWidth));
     border-radius: var(--boxBorderRadiusSmall);
+    left: 0;
 }

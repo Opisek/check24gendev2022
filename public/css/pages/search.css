@@ -1,7 +1,7 @@
 /* Layout */
 
 main {
-    max-height: calc(100vh - 12em);
+    max-height: calc(100vh - var(--navHeight) - var(--footerHeight));
     grid-template-columns: 25em auto;
     grid-template-rows: 4em auto;
     grid-template-areas:
