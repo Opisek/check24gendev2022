@@ -40,11 +40,11 @@ module.exports = class Database {
             conditions.push(`price<=$${conditions.length+1}`);
             paramaters.push(filters.priceMax);
         }
-        if ("startMin" in filters && !Number.isNaN(Number.parseInt(filters.startMin))) {
-            conditions.push(`stars=$${conditions.length+1}`);
-            paramaters.push(filters.startMin);
+        if ("starsMin" in filters && !Number.isNaN(Number.parseFloat(filters.starsMin))) {
+            conditions.push(`stars>=$${conditions.length+1}`);
+            paramaters.push(filters.starsMin);
         }
-        if ("starsMax" in filters && !Number.isNaN(Number.parseInt(filters.starsMax))) {
+        if ("starsMax" in filters && !Number.isNaN(Number.parseFloat(filters.starsMax))) {
             conditions.push(`stars<=$${conditions.length+1}`);
             paramaters.push(filters.starsMax);
         }
