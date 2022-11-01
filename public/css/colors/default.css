@@ -25,4 +25,10 @@
 
     --plainContrastBackgroundColor: #f3f3f3;
     --plainContrastForegroundColor: #000000;
+
+    --plainContrastSecondBackgroundColor: #f9f9f9;
+    --plainContrastSecondForegroundColor: #000000;
+
+    --plainCommentBackgroundColor: #ffffff;
+    --plainCommentForegroundColor: #6d6d6d;
 }

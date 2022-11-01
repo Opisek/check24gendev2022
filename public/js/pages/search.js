@@ -89,9 +89,43 @@ function readyRange(elements, correction) {
     elements.lowerField.addEventListener("change", () => lowerFieldChange(elements, correction));
 }
 
-window.addEventListener("load", () => {
-    const socket = io();
+function getOffers() {
+    let filterParameters = {}
+    for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
+    socket.emit("requestOffers", filterParameters, results => displayOffers(results));
+}
 
+function displayOffers(offers) {
+    const container = document.getElementsByClassName("mainList")[0];
+    container.innerHTML = "";
+
+    for (offer of offers) {
+        const offerDiv = document.createElement("div");
+        offerDiv.className = "offer";
+        const offerName = document.createElement("h2");
+        offerName.innerHTML = offer.name;
+        offerDiv.appendChild(offerName);
+        const offerPrice = document.createElement("b");
+        offerPrice.innerHTML = `${offer.price}€`;
+        offerDiv.appendChild(offerPrice);
+        const offerDetails = document.createElement("div");
+        const offerAdults = document.createElement("span");
+        offerAdults.innerHTML = `${offer.countadults} adult(s)`;
+        offerDetails.appendChild(offerAdults);
+        const offerChildren = document.createElement("span");
+        offerChildren.innerHTML = `${offer.countchildren} child(ren)`;
+        offerDetails.appendChild(offerChildren);
+        const offerStars = document.createElement("span");
+        offerStars.innerHTML = `${offer.stars} star(s)`;
+        offerDetails.appendChild(offerStars);
+        offerDiv.appendChild(offerDetails);
+        container.appendChild(offerDiv);
+    }
+}
+
+const socket = io();
+
+window.addEventListener("load", () => {
     const url = new URL(window.location.href);
 
     const priceRange = initRange("Price", 0, 10000, 100, 1);
@@ -105,7 +139,8 @@ window.addEventListener("load", () => {
         }
         // todo: add search bar query from and to url
         if (input.name != undefined) {
-            input.value = url.searchParams.get(input.name);
+            const urlValue = url.searchParams.get(input.name);
+            if (urlValue != "" && urlValue != undefined) input.value = urlValue;
         }
         if (input.type != "range") {
             changeValue(input, 0, false);
@@ -115,11 +150,7 @@ window.addEventListener("load", () => {
     readyRange(priceRange, 1);
     readyRange(startRange, 2);
 
-    document.getElementById("filterButtonSubmit").addEventListener("click", () => {
-        let filterParameters = {}
-        for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
-        socket.emit("requestOffers", filterParameters, results => {
-            console.log(JSON.stringify(results, null, 2));
-        });
-    });
+    document.getElementById("filterButtonSubmit").addEventListener("click", () => getOffers());
+
+    getOffers();
 });

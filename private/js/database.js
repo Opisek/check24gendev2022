@@ -1,7 +1,7 @@
 const postgress = require("pg");
 const moment = require("moment-timezone");
 
-const pagination = 10;
+const pagination = 20;
 
 module.exports = class Database {
     constructor(host, port, user, password, database) {

@@ -3,7 +3,7 @@
 main {
     max-height: calc(100vh - 12em);
     grid-template-columns: 25em auto;
-    grid-template-rows: 5em auto;
+    grid-template-rows: 4em auto;
     grid-template-areas:
     "filters search"
     "filters list";
@@ -12,6 +12,8 @@ main {
 .mainSearch {
     grid-area: search;
     text-align: center;
+    display: flex;
+    align-items: center;
 }
 
 .mainFilters {
@@ -23,12 +25,9 @@ main {
         max-height: none;
         grid-template-columns: 1fr;
         grid-template-rows: 5em auto auto;
-        grid-template-areas:
-        "search"
-            "list"
-            "filters";
-            overflow-y: visible;
-       }
+        grid-template-areas: "search" "list" "filters";
+        overflow-y: visible;
+    }
 }
 
 /* Filters Sidebar */
@@ -287,12 +286,43 @@ div.filterInput {
     grid-area: list;
     display: flex;
     flex-direction: column;
-    gap: var(--flexGap);
+    gap: var(--flexGapLarge);
+    overflow-y: scroll;
 }
 
 .mainList > div {
+    border-radius: var(--boxBorderRadiusSmall);
+    padding: var(--boxPaddingSmall) var(--boxPadding);
+    height: var(--offerHeight);
+}
+
+.mainList > div:nth-child(odd) {
     background-color: var(--plainContrastBackgroundColor);
     color: var(--plainContrastForegroundColor);
-    border-radius: var(--boxBorderRadiusSmall);
-    padding: var(--boxPadding);
+}
+
+.mainList > div:nth-child(even) {
+    background-color: var(--plainContrastSecondBackgroundColor);
+    color: var(--plainContrastSecondForegroundColor);
+}
+
+.offer {
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas: "name price" "data data";
+    align-items: center;
+}
+
+.offer > b {
+    text-align: right;
+}
+
+.offer > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    grid-area: data;
+    color: var(--plainCommentForegroundColor);
+    font-size: var(--fontSizeSmall);
 }

@@ -4,17 +4,22 @@
     --footerHeight: 3em;
     --interactiveHeight: 3em;
     --interactiveHeightLarge: 3.5em;
+    --offerHeight: 7em;
     
     /* Font Size */
     --fontSize: 1.2rem;
+    --fontSizeSmall: 1rem;
     --fontWeight: 400;
     --headerFontSize: 1.7rem;
     --headerFontWeight: 700;
+    --subHeaderFontSize: 1.5rem;
+    --subHeaderFontWeight: 700;
     --footerFontSize: 1rem;
     --footerFontWeight: 500;
 
     /* Flexboxes */
     --flexGap: .25em;
+    --flexGapLarge: .5em;
 
     /* Boxes */
     --boxPaddingTiny: .25em;
