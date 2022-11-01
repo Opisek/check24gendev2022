@@ -93,6 +93,7 @@ button:hover {
     display: flex;
     flex-direction: row;
     width: 100%;
+    max-width: 90vw !important;
     max-height: var(--interactiveHeight);
     justify-content: center;
 }
