@@ -129,7 +129,7 @@ window.addEventListener("load", () => {
     const url = new URL(window.location.href);
 
     const priceRange = initRange("Price", 0, 10000, 100, 1);
-    const startRange = initRange("Stars", .5, 5, .5, 2);
+    const startRange = initRange("Stars", 1, 5, .5, 2);
 
     for (let input of document.getElementsByClassName("filterInput")) {
         if (input.type == "number") {

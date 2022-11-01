@@ -50,7 +50,8 @@ main {
     --interactiveHeightInside: calc(var(--interactiveHeightLarge) - 2 * var(--boxPadding));
     line-height: calc(var(--interactiveHeightLarge) - 2 * var(--boxPadding));
     display: grid;
-    grid-template-columns: 1fr 4fr; /* 3 1 2 1 */
+    /*grid-template-columns: 8fr 24fr 1fr;*/
+    grid-template-columns: 1fr 4fr;
     width: 100%;
     text-align: center;
     align-items: center;
@@ -63,7 +64,7 @@ main {
 .mainFilters > form > div > div {
     height: var(--interactiveHeightLarge);
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr; /* 3 1 2 1 */
+    grid-template-columns: 1fr 2fr 1fr;
     width: 100%;
     height: var(--interactiveHeightInside);
     grid-template-rows: 1fr;
@@ -77,6 +78,17 @@ main {
 .filterName {
     text-align: left;
     width: inherit;
+}
+
+.mainFilters > form > div > img {
+    display: none;
+    width: 100%;
+    opacity: 50%;
+    cursor: pointer;
+    transition: transform var(--animationSpeed);
+}
+.mainFilters > form > div > img:hover {
+    transform: rotate(90deg);
 }
 
 /* Button */

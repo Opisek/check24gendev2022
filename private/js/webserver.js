@@ -29,8 +29,7 @@ module.exports = class WebServer {
 
         server.set("views", path.join(publicPath + '/ejs'))
         server.set("/partials", path.join(publicPath + '/partials'))
-        server.use("/css", express.static(path.join(publicPath + '/css')));
-        server.use("/js", express.static(path.join(publicPath + '/js')));
+        server.use("/", express.static(path.join(publicPath)));
 
         server.set("trust proxy", "loopback, linklocal, uniquelocal");
 
