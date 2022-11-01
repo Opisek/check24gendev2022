@@ -19,6 +19,7 @@ function changeValue(input, change=0, apply=true) {
     else if (currentValue > input.max) currentValue = input.max;
     input.value = currentValue;
     changeInputWidth(input);
+
     if (apply) setUrlParameter(input.name, input.value);
 
     if (input.name != "page") {
@@ -27,7 +28,7 @@ function changeValue(input, change=0, apply=true) {
         changeInputWidth(pageField);
     }
 
-    if (loaded) getOffers();
+    if (loaded && apply) getOffers();
 }
 
 function changeInputWidth(input) {
@@ -43,7 +44,7 @@ function lowerSliderChange (elements, correction) {
     elements.lowerField.value = elements.lowerSlider.value / correction;
     lowerFieldChange(elements, correction, true);
 }
-function upperFieldChange (elements, correction, sliderChange = falsee) {
+function upperFieldChange (elements, correction, sliderChange = false) {
     changeValue(elements.upperField, 0, false);
     elements.upperSlider.value = elements.upperField.value * correction;
     elements.lowerField.max = elements.upperField.value;
@@ -116,6 +117,9 @@ function getOffers() {
     container.scrollTo(0, 0);
     window.scrollTo(0, 0);
     container.innerHTML = "";
+    const loadingDiv = document.createElement("div");
+    loadingDiv.innerHTML = "Loading... Please wait."
+    container.appendChild(loadingDiv);
 
     document.getElementsByClassName("mainFilters")[0].classList.add("hidden");
 
@@ -149,20 +153,27 @@ function getOffers() {
     socket.emit("getHotelsByFilters", filterParameters, results => {
         if (requestIndex != myRequestIndex) return;
         let startingPage = page - (page - 1) % (dbPagination / pagination);
-        console.log(startingPage);
-        for (let i = startingPage; i < startingPage + dbPagination / pagination; ++i) {
+        for (let i = 0; i < dbPagination / pagination; ++i) {
             let newCache = [];
-            for (let j = i; j < i + pagination; ++j) newCache.push(results[j]);
-            cachedRows[i] = newCache;
+            for (let j = i; j < i + pagination && j < results.length; ++j) newCache.push(results[j]);
+            cachedRows[i + startingPage] = newCache;
         }
-        displayOffers(cachedRows[page]);
+        displayOffers(cachedRows[page], page);
     });
 }
 
-function displayOffers(offers) {
-    if (offers.length == 0 && page > 1) {
-        document.getElementById("pageField").value = document.getElementById("pageField").value - 1;
-        getOffers();
+function displayOffers(offers, page) {
+    if (offers.length == 0) {
+        if (page > 1) {
+            document.getElementById("pageField").value = page - 1;
+            getOffers();
+        } else {
+            const container = document.getElementsByClassName("mainList")[0];
+            container.innerHTML = "";
+            const emptyDiv = document.createElement("div");
+            emptyDiv.innerHTML = "No results found."
+            container.appendChild(emptyDiv);
+        }
         return;
     }
     
@@ -171,7 +182,7 @@ function displayOffers(offers) {
     window.scrollTo(0, 0);
     container.innerHTML = "";
 
-    for (offer of offers) {
+    for (let offer of offers) {
         const offerDiv = document.createElement("div");
         offerDiv.className = "offer";
         const offerName = document.createElement("h2");

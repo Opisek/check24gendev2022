@@ -379,6 +379,9 @@ div.filterInput {
     border-radius: var(--boxBorderRadiusSmall);
     padding: var(--boxPaddingSmall) var(--boxPadding);
     min-height: var(--offerHeight);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .mainList > div:nth-child(odd) {
@@ -392,7 +395,7 @@ div.filterInput {
 }
 
 .offer {
-    display: grid;
+    display: grid !important;
     grid-template-rows: 2fr 1fr;
     grid-template-columns: 2fr 1fr;
     grid-template-areas: "name price" "data data";
