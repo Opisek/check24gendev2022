@@ -9,11 +9,14 @@
 <body>
     <%- include("partials/navbarBody.ejs") %>
     <main>
-        <div class="mainSearch colorAccent">
-            <form class="adjacentRow">
-                <input placeholder="Find your next destination...">
-                <button>Submit</button>
-            </form>
+        <div class="mainPagination colorAccent">
+            <h1>Browse Hotels</h1>
+            <div class="page">
+                <span>Page</span>
+                <button class="filterButton" type="button" tabindex="-1" value="-1" id="pageButtonDecrement">-</button>
+                <input class="filterInput" placeholder="0" value="" type="number" min="1" max="100000" name="page" id="pageField">
+                <button class="filterButton" type="button" tabindex="-1" value="1" id="pageButtonIncrement">+</button>
+            </div>
         </div>
         <div class="mainFilters colorSecondary">
             <h1>Filters</h1>

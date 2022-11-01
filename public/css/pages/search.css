@@ -5,8 +5,9 @@ main {
     grid-template-columns: 25em auto;
     grid-template-rows: 4em auto;
     grid-template-areas:
-    "filters search"
+    "filters pagination"
     "filters list";
+    position: relative;
 }
 
 .mainSearch {
@@ -14,6 +15,23 @@ main {
     text-align: center;
     display: flex;
     align-items: center;
+}
+
+.mainPagination {
+    grid-area: pagination;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-items: center;
+}
+.page {
+    display: flex;
+    gap: var(--flexGap);
+    align-items: center;
+}
+.page > span {
+    margin-right: var(--flexGapLarge);
 }
 
 .mainFilters {
@@ -92,6 +110,14 @@ main {
     font-weight: inherit;
     border-radius: var(--boxBorderRadiusSmall);
     padding: var(--boxPaddingTiny);
+}
+.page > .filterButton {
+    background-color: var(--accentBackgroundColor);
+    color: var(--accentForegroundColor);
+}
+.page > .filterButton:hover {
+    background-color: var(--plainBackgroundColor);
+    color: var(--plainForegroundColor);
 }
 .mainFilters > form > div:nth-child(even) > div > .filterButton {
     background-color: var(--secondaryBackgroundColor);
@@ -335,10 +361,14 @@ div.filterInput {
         max-height: none;
         grid-template-columns: 1fr;
         grid-template-rows: 5em auto auto;
-        grid-template-areas: "search" "list" "filters";
+        grid-template-areas: "pagination" "list" "filters";
         overflow-y: visible;
     }
     .mainList {
         overflow-y: visible;
+    }
+    .mainPagination {
+        position: fixed;
+        width: 100%;
     }
 }

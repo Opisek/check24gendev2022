@@ -63,6 +63,10 @@ main > div {
     background-color: var(--plainBackgroundColor);
     color: var(--plainForegroundColor);
 }
+.colorPlainContrast {
+    background-color: var(--plainContrastBackgroundColor);
+    color: var(--plainContrastForegroundColor);
+}
 
 input {
     background-color: var(--plainBackgroundColor);

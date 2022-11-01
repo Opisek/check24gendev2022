@@ -19,9 +19,11 @@ module.exports = class Database {
         await this._sql.query("SET client_encoding='UTF8'");
     }
 
-    async offersRequest(filters, page=1) {
+    async offersRequest(filters) {
         let query = "SELECT * FROM offers INNER JOIN hotels ON offers.hotelid=hotels.id";
-        
+
+        console.log(filters);
+
         let conditions = [];
         let paramaters = [];
         if ("adults" in filters && !Number.isNaN(Number.parseInt(filters.adults))) {
@@ -48,6 +50,9 @@ module.exports = class Database {
             conditions.push(`stars<=$${conditions.length+1}`);
             paramaters.push(filters.starsMax);
         }
+
+        let page = 1;
+        if ("page" in filters && !Number.isNaN(Number.parseInt(filters.page)) && filters.page > 0) page = filters.page;
 
         if (conditions.length != 0) query += ` WHERE ${conditions.join(" AND ")}`;
 

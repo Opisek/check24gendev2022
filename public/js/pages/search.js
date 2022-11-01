@@ -97,6 +97,8 @@ function getOffers() {
 
 function displayOffers(offers) {
     const container = document.getElementsByClassName("mainList")[0];
+    container.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     container.innerHTML = "";
 
     for (offer of offers) {
@@ -151,6 +153,9 @@ window.addEventListener("load", () => {
     readyRange(startRange, 2);
 
     document.getElementById("filterButtonSubmit").addEventListener("click", () => getOffers());
+    document.getElementById("pageField").addEventListener("input", () => getOffers());
+    document.getElementById("pageButtonDecrement").addEventListener("click", () => getOffers());
+    document.getElementById("pageButtonIncrement").addEventListener("click", () => getOffers());
 
     getOffers();
 });
