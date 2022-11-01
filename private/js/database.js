@@ -55,6 +55,6 @@ module.exports = class Database {
 
         let result = await this._sql.query(query, paramaters);
 
-        console.log(result.rows);
+        return result.rows;
     }
 }

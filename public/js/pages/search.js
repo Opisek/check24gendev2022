@@ -22,7 +22,6 @@ function changeInputWidth(input) {
 
 function upperSliderChange (elements, correction) {
     elements.upperField.value = elements.upperSlider.value / correction;
-    console.log(elements.upperSlider.value);
     upperFieldChange(elements, correction, true);
 }
 function lowerSliderChange (elements, correction) {
@@ -119,6 +118,8 @@ window.addEventListener("load", () => {
     document.getElementById("filterButtonSubmit").addEventListener("click", () => {
         let filterParameters = {}
         for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
-        socket.emit("requestOffers", filterParameters);
+        socket.emit("requestOffers", filterParameters, results => {
+            console.log(JSON.stringify(results, null, 2));
+        });
     });
 });

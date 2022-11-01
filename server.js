@@ -6,8 +6,7 @@ const database = new (require("./private/js/database"))(process.env.DB_HOST, pro
     await database.connect();
     console.log("database connected!");
 
-    webServer.addEventListener("offersRequest", filters => {
-        console.log("requesting offers", filters);
-        database.offersRequest(filters, 1);
+    webServer.addEventListener("offersRequest", async (filters, callback) => {
+        callback(await database.offersRequest(filters, 1));
     });
 })();

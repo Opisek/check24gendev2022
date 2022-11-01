@@ -20,8 +20,8 @@ module.exports = class WebServer {
         this._events[name].push(callback);
     }
     
-    _emit(name, data) {
-        for (const callback of this._events[name]) callback(data);
+    _emit(name, data, callback = null) {
+        for (const listener of this._events[name]) listener(data, callback);
     }
 
     constructor(port) {
@@ -57,8 +57,8 @@ module.exports = class WebServer {
                 // not yet supported
             });
 
-            socket.on("requestOffers", async filters => {
-                this._emit("offersRequest", filters);
+            socket.on("requestOffers", async (filters, callback) => {
+                this._emit("offersRequest", filters, callback);
             });
         });
 
