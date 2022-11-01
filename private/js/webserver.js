@@ -65,15 +65,20 @@ module.exports = class WebServer {
                 // not yet supported
             });
 
-            socket.on("getHotelsByFilters", async (filters, callback) => {
+            socket.on("getHotelsByFilters", (filters, callback) => {
                 let myRequestIndex = requestIndex++;
-                if (currentRequest) this._emit("abortRequest", `${socket.id}/${currentRequest}`);
+                let lastCurrentRequest = currentRequest;
                 currentRequest = myRequestIndex;
-                this._emit("getHotelsByFilters", filters, `${socket.id}/${myRequestIndex}`, result => {
+                setTimeout(async () => {
                     if (myRequestIndex != currentRequest) return;
-                    currentRequest = null;
-                    callback(result);
-                });
+                    if (lastCurrentRequest) await this._emit("abortRequest", `${socket.id}/${lastCurrentRequest}`);
+                    if (myRequestIndex != currentRequest) return;
+                    this._emit("getHotelsByFilters", filters, `${socket.id}/${myRequestIndex}`, result => {
+                        if (myRequestIndex != currentRequest) return;
+                        currentRequest = null;
+                        callback(result);
+                    });
+                }, 100);
             });
         });
 
