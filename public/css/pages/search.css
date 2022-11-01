@@ -51,15 +51,28 @@ main {
     --interactiveHeightInside: calc(var(--interactiveHeightLarge) - 2 * var(--boxPadding));
     line-height: calc(var(--interactiveHeightLarge) - 2 * var(--boxPadding));
     display: grid;
-    grid-template-columns: 3fr 1fr 2fr 1fr;
+    grid-template-columns: 1fr 4fr; /* 3 1 2 1 */
     width: 100%;
-    grid-template-rows: 1fr;
     text-align: center;
     align-items: center;
     justify-items: center;
     gap: var(--flexGap);
     padding: var(--boxPadding);
     border-radius: var(--boxBorderRadiusSmall);
+}
+
+.mainFilters > form > div > div {
+    height: var(--interactiveHeightLarge);
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* 3 1 2 1 */
+    width: 100%;
+    height: var(--interactiveHeightInside);
+    grid-template-rows: 1fr;
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+    gap: var(--flexGap);
+    padding: 0% 15%;
 }
 
 .filterName {
@@ -79,19 +92,19 @@ main {
     border-radius: var(--boxBorderRadiusSmall);
     padding: var(--boxPaddingTiny);
 }
-.mainFilters > form > div:nth-child(even) > .filterButton {
+.mainFilters > form > div:nth-child(even) > div > .filterButton {
     background-color: var(--secondaryBackgroundColor);
     color: var(--secondaryForegroundColor);
 }
-.mainFilters > form > div:nth-child(even) > .filterButton:hover {
+.mainFilters > form > div:nth-child(even) > div > .filterButton:hover {
     background-color: var(--primaryLighterBackgroundColor);
     color: var(--primaryLighterForegroundColor);
 }
-.mainFilters > form > div:nth-child(odd) > .filterButton {
+.mainFilters > form > div:nth-child(odd) > div > .filterButton {
     background-color: var(--primaryBackgroundColor);
     color: var(--primaryForegroundColor);
 }
-.mainFilters > form > div:nth-child(odd) > .filterButton:hover {
+.mainFilters > form > div:nth-child(odd) > div > .filterButton:hover {
     background-color: var(--primaryLighterBackgroundColor);
     color: var(--primaryLighterForegroundColor);
 }
@@ -136,27 +149,27 @@ main {
     margin: 0;
 }
 
-.mainFilters > form > div:nth-child(odd) > .filterInput[type=number]:hover {
+.mainFilters > form > div:nth-child(odd) > div > .filterInput[type=number]:hover {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
 }
 
-.mainFilters > form > div:nth-child(odd) > .filterInput[type=number]:focus {
+.mainFilters > form > div:nth-child(odd) > div > .filterInput[type=number]:focus {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
 }
 
-.mainFilters > form > div:nth-child(even) > .filterInput[type=number]:hover {
+.mainFilters > form > div:nth-child(even) > div > .filterInput[type=number]:hover {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
 }
 
-.mainFilters > form > div:nth-child(even) > .filterInput[type=number]:focus {
+.mainFilters > form > div:nth-child(even) > div > .filterInput[type=number]:focus {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
 }
 
 /* Range Input */
 
 .filterInputRangeDiv {
-    display: grid;
-    grid-template-columns: 2fr 2fr 3fr 2fr !important;
+    grid-template-columns: 1fr 2fr 1fr !important;
+    padding: 0 !important;
 }
 
 div.filterInput {
@@ -187,10 +200,10 @@ div.filterInput {
     top: 33% !important;
 }
 
-.mainFilters > form > div:nth-child(odd) > div.filterInput {
+.mainFilters > form > div:nth-child(odd) > div > div.filterInput {
     background-color: var(--secondaryLighterBackgroundColor);
 }
-.mainFilters > form > div:nth-child(even) > div.filterInput {
+.mainFilters > form > div:nth-child(even) > div > div.filterInput {
     background-color: var(--primaryLighterBackgroundColor);
 }
 

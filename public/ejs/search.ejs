@@ -20,33 +20,41 @@
             <form>
                 <div>
                     <label class="filterName">Adults</label>
-                    <button class="filterButton" type="button" tabindex="-1" value="-1">-</button>
-                    <input class="filterInput" placeholder="0" value="" type="number" min="0" max="10" name="adults">
-                    <button class="filterButton" type="button" tabindex="-1" value="1">+</button>
+                    <div>
+                        <button class="filterButton" type="button" tabindex="-1" value="-1">-</button>
+                        <input class="filterInput" placeholder="0" value="" type="number" min="0" max="10" name="adults">
+                        <button class="filterButton" type="button" tabindex="-1" value="1">+</button>
+                    </div>
                 </div>
                 <div>
                     <label class="filterName">Children</label>
-                    <button class="filterButton" type="button" tabindex="-1" value="-1">-</button>
-                    <input class="filterInput" placeholder="0" value="" type="number" min="0" max="10" name="children">
-                    <button class="filterButton" type="button" tabindex="-1" value="1">+</button>
+                    <div>
+                        <button class="filterButton" type="button" tabindex="-1" value="-1">-</button>
+                        <input class="filterInput" placeholder="0" value="" type="number" min="0" max="10" name="children">
+                        <button class="filterButton" type="button" tabindex="-1" value="1">+</button>
+                    </div>
                 </div>
-                <div class="filterInputRangeDiv">
+                <div>
                     <label class="filterName">Price</label>
-                    <input class="filterInput" id="filterInputPriceLowerField" placeholder="0" value="" type="number" name="priceMin">
-                    <div class="filterInput">
-                        <input class="filterInput filterInputUpperSlider" id="filterInputPriceUpperSlider" placeholder="0" value="" type="range" tabindex="-1">
-                        <input class="filterInput filterInputLowerSlider" id="filterInputPriceLowerSlider" placeholder="0" value="" type="range" tabindex="-1">
+                    <div class="filterInputRangeDiv">
+                        <input class="filterInput" id="filterInputPriceLowerField" placeholder="0" value="" type="number" name="priceMin">
+                        <div class="filterInput">
+                            <input class="filterInput filterInputUpperSlider" id="filterInputPriceUpperSlider" placeholder="0" value="" type="range" tabindex="-1">
+                            <input class="filterInput filterInputLowerSlider" id="filterInputPriceLowerSlider" placeholder="0" value="" type="range" tabindex="-1">
+                        </div>
+                        <input class="filterInput" id="filterInputPriceUpperField" placeholder="0" value="" type="number" name="priceMax">
                     </div>
-                    <input class="filterInput" id="filterInputPriceUpperField" placeholder="0" value="" type="number" name="priceMax">
                 </div>
-                <div class="filterInputRangeDiv">
+                <div>
                     <label class="filterName">Stars</label>
-                    <input class="filterInput" id="filterInputStarsLowerField" placeholder="0" value="" type="number" name="starsMin">
-                    <div class="filterInput">
-                        <input class="filterInput filterInputUpperSlider" id="filterInputStarsUpperSlider" placeholder="0" value="" type="range" tabindex="-1">
-                        <input class="filterInput filterInputLowerSlider" id="filterInputStarsLowerSlider" placeholder="0" value="" type="range" tabindex="-1">
+                    <div class="filterInputRangeDiv">
+                        <input class="filterInput" id="filterInputStarsLowerField" placeholder="0" value="" type="number" name="starsMin">
+                        <div class="filterInput">
+                            <input class="filterInput filterInputUpperSlider" id="filterInputStarsUpperSlider" placeholder="0" value="" type="range" tabindex="-1">
+                            <input class="filterInput filterInputLowerSlider" id="filterInputStarsLowerSlider" placeholder="0" value="" type="range" tabindex="-1">
+                        </div>
+                        <input class="filterInput" id="filterInputStarsUpperField" placeholder="0" value="" type="number" name="starsMax">
                     </div>
-                    <input class="filterInput" id="filterInputStarsUpperField" placeholder="0" value="" type="number" name="starsMax">
                 </div>
                 <button class="filterButton filterSubmit" type="button" id="filterButtonSubmit">Show Results</button>
             </form>
