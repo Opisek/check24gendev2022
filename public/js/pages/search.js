@@ -16,6 +16,12 @@ function changeValue(input, change=0, apply=true) {
     changeInputWidth(input);
     if (apply) setUrlParameter(input.name, input.value);
 
+    if (input.name != "page") {
+        const pageField = document.getElementById("pageField");
+        pageField.value = 1;
+        changeInputWidth(pageField);
+    }
+
     if (loaded) getOffers();
 }
 
