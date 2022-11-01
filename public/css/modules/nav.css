@@ -54,10 +54,10 @@ nav > .navRight {
 }
 
 .navExpand {
-    height: 3em;
-    width: 3em;
+    margin-top: calc(.5 * var(--navPaddingHeight));
+    height: calc(var(--navHeight) - 3 * var(--navPaddingHeight));
+    width: calc(var(--navHeight) - 3 * var(--navPaddingHeight));
     float: right;
-    margin-top: .5em;
     display: none;
 }
 
@@ -69,6 +69,7 @@ nav > .navRight {
     backdrop-filter: blur(1em) opacity(1);
     transition: backdrop-filter .5s, background-color .5s;
     cursor: pointer;
+    z-index: 99;
 }
 .navBlackout.navFaded {
     background-color: #00000000;
