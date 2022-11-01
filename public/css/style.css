@@ -87,6 +87,8 @@ button {
     font-size: var(--fontSize);
     font-weight: var(--fontWeight);
     cursor: pointer;
+    outline: 0;
+    border: 0;
 }
 button:hover {
     background-color: var(--primaryBackgroundColor);

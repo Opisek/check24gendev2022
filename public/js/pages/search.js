@@ -90,12 +90,19 @@ function readyRange(elements, correction) {
 }
 
 function getOffers() {
+    document.getElementsByClassName("mainFilters")[0].classList.add("hidden");
     let filterParameters = {}
     for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
     socket.emit("requestOffers", filterParameters, results => displayOffers(results));
 }
 
 function displayOffers(offers) {
+    if (offers.length == 0) {
+        document.getElementById("pageField").value = document.getElementById("pageField").value - 1;
+        getOffers();
+        return;
+    }
+    
     const container = document.getElementsByClassName("mainList")[0];
     container.scrollTo(0, 0);
     window.scrollTo(0, 0);
@@ -151,6 +158,8 @@ window.addEventListener("load", () => {
 
     readyRange(priceRange, 1);
     readyRange(startRange, 2);
+
+    document.getElementById("filtersButton").addEventListener("click", () => document.getElementsByClassName("mainFilters")[0].classList.remove("hidden"));
 
     document.getElementById("filterButtonSubmit").addEventListener("click", () => getOffers());
     document.getElementById("pageField").addEventListener("input", () => getOffers());

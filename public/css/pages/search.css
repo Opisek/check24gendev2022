@@ -3,7 +3,7 @@
 main {
     max-height: calc(100vh - var(--navHeight) - var(--footerHeight));
     grid-template-columns: 25em auto;
-    grid-template-rows: 4em auto;
+    grid-template-rows: var(--searchTitleHeight) auto;
     grid-template-areas:
     "filters pagination"
     "filters list";
@@ -36,6 +36,7 @@ main {
 
 .mainFilters {
     grid-area: filters;
+    transition: transform var(--animationSpeedSlow);
 }
 
 /* Filters Sidebar */
@@ -110,6 +111,21 @@ main {
     font-weight: inherit;
     border-radius: var(--boxBorderRadiusSmall);
     padding: var(--boxPaddingTiny);
+}
+#filtersButton {
+    background-color: transparent;
+    outline: 0;
+    border: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    border-radius: var(--boxBorderRadiusSmall);
+    padding: var(--boxPaddingTiny);
+    background-color: var(--accentBackgroundColor);
+    color: var(--accentForegroundColor);
+}
+#filtersButton:hover {
+    background-color: var(--plainBackgroundColor);
+    color: var(--plainForegroundColor);
 }
 .page > .filterButton {
     background-color: var(--accentBackgroundColor);
@@ -356,6 +372,10 @@ div.filterInput {
     font-size: var(--fontSizeSmall);
 }
 
+#filtersButton {
+    display: none;
+}
+
 @media screen and (max-width: 1000px) {
     main {
         max-height: none;
@@ -370,5 +390,17 @@ div.filterInput {
     .mainPagination {
         position: fixed;
         width: 100%;
+    }
+    .mainFilters {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 50;
+    }
+    .mainFilters.hidden {
+        transform: translateX(-100%);
+    }
+    #filtersButton {
+        display: block;
     }
 }
