@@ -1,3 +1,5 @@
+var loaded = false;
+
 function setUrlParameter(paramater, value) {
     let url = new URL(window.location.href);
     url.searchParams.set(paramater, value);
@@ -13,6 +15,8 @@ function changeValue(input, change=0, apply=true) {
     input.value = currentValue;
     changeInputWidth(input);
     if (apply) setUrlParameter(input.name, input.value);
+
+    if (loaded) getOffers();
 }
 
 function changeInputWidth(input) {
@@ -28,7 +32,7 @@ function lowerSliderChange (elements, correction) {
     elements.lowerField.value = elements.lowerSlider.value / correction;
     lowerFieldChange(elements, correction, true);
 }
-function upperFieldChange (elements, correction, sliderChange = false) {
+function upperFieldChange (elements, correction, sliderChange = falsee) {
     changeValue(elements.upperField, 0, false);
     elements.upperSlider.value = elements.upperField.value * correction;
     elements.lowerField.max = elements.upperField.value;
@@ -97,7 +101,7 @@ function getOffers() {
 }
 
 function displayOffers(offers) {
-    if (offers.length == 0) {
+    if (offers.length == 0 && page > 1) {
         document.getElementById("pageField").value = document.getElementById("pageField").value - 1;
         getOffers();
         return;
@@ -146,14 +150,11 @@ window.addEventListener("load", () => {
             input.addEventListener("change", () => changeValue(input));
             for (let button of input.parentElement.getElementsByClassName("filterButton")) button.addEventListener("click", () => changeValue(input, parseInt(button.value)))
         }
-        // todo: add search bar query from and to url
         if (input.name != undefined) {
             const urlValue = url.searchParams.get(input.name);
             if (urlValue != "" && urlValue != undefined) input.value = urlValue;
         }
-        if (input.type != "range") {
-            changeValue(input, 0, false);
-        }
+        if (input.type != "range") changeValue(input, apply=false);
     }
 
     readyRange(priceRange, 1);
@@ -162,10 +163,9 @@ window.addEventListener("load", () => {
     document.getElementById("filtersButtonOpen").addEventListener("click", () => document.getElementsByClassName("mainFilters")[0].classList.remove("hidden"));
     document.getElementById("filtersButtonClose").addEventListener("click", () => document.getElementsByClassName("mainFilters")[0].classList.add("hidden"));
 
-    document.getElementById("filterButtonSubmit").addEventListener("click", () => getOffers());
-    document.getElementById("pageField").addEventListener("input", () => getOffers());
-    document.getElementById("pageButtonDecrement").addEventListener("click", () => getOffers());
-    document.getElementById("pageButtonIncrement").addEventListener("click", () => getOffers());
+    //document.getElementById("filterButtonSubmit").addEventListener("click", () => getOffers());
 
     getOffers();
+
+    loaded = true;
 });
