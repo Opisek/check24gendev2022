@@ -18,14 +18,15 @@ const publicPath = path.join(serverPath + "/public");
 module.exports = class WebServer {
     addEventListener(name, callback) {
         this._events[name].push(callback);
+        this._socketIndex = 0;
     }
     
-    _emit(name, data, callback = null) {
-        for (const listener of this._events[name]) listener(data, callback);
+    _emit(name, data, requestId, callback = null) {
+        for (const listener of this._events[name]) listener(data, requestId, callback);
     }
 
     constructor(port) {
-        this._events = {"offersRequest":[]};
+        this._events = {"getHotelsByFilters":[], "abortRequest":[]};
 
         server.set("views", path.join(publicPath + '/ejs'))
         server.set("/partials", path.join(publicPath + '/partials'))
@@ -57,14 +58,22 @@ module.exports = class WebServer {
         });
 
         socketio(httpServer).on("connection", socket => {
-            console.log("client connected");
+            let currentRequest = null;
+            let requestIndex = 0;
 
             socket.on("authenticate", token => {
                 // not yet supported
             });
 
-            socket.on("requestOffers", async (filters, callback) => {
-                this._emit("offersRequest", filters, callback);
+            socket.on("getHotelsByFilters", async (filters, callback) => {
+                let myRequestIndex = requestIndex++;
+                if (currentRequest) this._emit("abortRequest", `${socket.id}/${currentRequest}`);
+                currentRequest = myRequestIndex;
+                this._emit("getHotelsByFilters", filters, `${socket.id}/${myRequestIndex}`, result => {
+                    if (myRequestIndex != currentRequest) return;
+                    currentRequest = null;
+                    callback(result);
+                });
             });
         });
 

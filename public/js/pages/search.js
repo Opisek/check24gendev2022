@@ -1,3 +1,8 @@
+const pagination = 10;
+const dbPagination = 100;
+
+var requestIndex = 0;
+
 var loaded = false;
 
 function setUrlParameter(paramater, value) {
@@ -99,11 +104,59 @@ function readyRange(elements, correction) {
     elements.lowerField.addEventListener("change", () => lowerFieldChange(elements, correction));
 }
 
+// getting offers from database
+
+var lastFilters = {};
+var cachedRows = {};
+
 function getOffers() {
+    let myRequestIndex = ++requestIndex;
+
+    const container = document.getElementsByClassName("mainList")[0];
+    container.scrollTo(0, 0);
+    window.scrollTo(0, 0);
+    container.innerHTML = "";
+
     document.getElementsByClassName("mainFilters")[0].classList.add("hidden");
-    let filterParameters = {}
+
+    let filterParameters = {};
     for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
-    socket.emit("requestOffers", filterParameters, results => displayOffers(results));
+
+    const page = filterParameters.page;
+
+    let allSame = false;
+    if (Object.keys(lastFilters).length == Object.keys(filterParameters).length) {
+        allSame = true;
+        for (let parameter of Object.keys(filterParameters)) {
+            if (parameter == "page") continue;
+            if (!(parameter in lastFilters) || lastFilters[parameter] != filterParameters[parameter]) {
+                allSame = false;
+                break;
+            }
+        }
+    }
+
+    if (allSame) {
+        if (page in cachedRows) {
+            displayOffers(cachedRows[page]); // will need to await
+            return;
+        }
+    } else {
+        lastFilters = filterParameters;
+        cachedRows = {};
+    }
+
+    socket.emit("getHotelsByFilters", filterParameters, results => {
+        if (requestIndex != myRequestIndex) return;
+        let startingPage = page - (page - 1) % (dbPagination / pagination);
+        console.log(startingPage);
+        for (let i = startingPage; i < startingPage + dbPagination / pagination; ++i) {
+            let newCache = [];
+            for (let j = i; j < i + pagination; ++j) newCache.push(results[j]);
+            cachedRows[i] = newCache;
+        }
+        displayOffers(cachedRows[page]);
+    });
 }
 
 function displayOffers(offers) {
