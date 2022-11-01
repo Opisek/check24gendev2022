@@ -36,6 +36,7 @@ main {
 
 .mainFilters {
     grid-area: filters;
+    overflow-y: auto;
 }
 
 /* Filters Sidebar */
@@ -97,6 +98,18 @@ main {
 }
 .mainFilters > form > div > img:hover {
     transform: rotate(90deg);
+}
+
+#filtersButtonClose {
+    display: none;
+    height: calc(var(--searchTitleHeight) - 2 * var(--boxPadding));
+    position: absolute;
+    top: var(--boxPadding);
+    right: var(--boxPadding);
+}
+#filtersButtonOpen {
+    display: none;
+    height: calc(var(--searchTitleHeight) - 2 * var(--boxPadding));
 }
 
 /* Button */
@@ -308,6 +321,50 @@ div.filterInput {
     pointer-events: none;
 }
 
+/* Selection */
+.filterInputSelectDiv {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start !important;
+    overflow: hidden;
+    transition: height var(--animationSpeed);
+    border-radius: var(--boxBorderRadiusSmall);
+    padding: var(--boxPaddingSmall);
+    gap: var(--flexGap);
+    width: auto !important;
+}
+.filterInputSelectDiv:hover {
+    height: auto !important;
+}
+.mainFilters > form > div:nth-child(odd) > div.filterInputSelectDiv {
+    background-color: var(--secondaryBackgroundColor);
+}
+.mainFilters > form > div:nth-child(even) > div.filterInputSelectDiv {
+    background-color: var(--primaryBackgroundColor);
+}
+.filterInputSelectDiv > label {
+    height: var(--selectOptionHeight) !important;
+    border-radius: var(--boxBorderRadiusSmall);
+    padding: var(--boxPaddingTiny);
+}
+.filterInput[type=radio] {
+    appearance: none;
+    -webkit-appearance: none;
+    position: absolute;
+}
+.mainFilters > form > div:nth-child(odd) > div.filterInputSelectDiv > .filterInput[type=radio]:checked+label {
+    background-color: var(--secondaryLighterBackgroundColor);
+}
+.mainFilters > form > div:nth-child(even) > div.filterInputSelectDiv > .filterInput[type=radio]:checked+label {
+    background-color: var(--primaryLighterBackgroundColor);
+}
+.mainFilters > form > div:nth-child(odd) > div.filterInputSelectDiv > label:hover {
+    background-color: var(--secondaryLighterBackgroundColor);
+}
+.mainFilters > form > div:nth-child(even) > div.filterInputSelectDiv > label:hover {
+    background-color: var(--primaryLighterBackgroundColor);
+}
+
 /* Offers */
 
 .mainList {
@@ -354,18 +411,6 @@ div.filterInput {
     grid-area: data;
     color: var(--plainCommentForegroundColor);
     font-size: var(--fontSizeSmall);
-}
-
-#filtersButtonClose {
-    display: none;
-    height: calc(var(--searchTitleHeight) - 2 * var(--boxPadding));
-    position: absolute;
-    top: var(--boxPadding);
-    right: var(--boxPadding);
-}
-#filtersButtonOpen {
-    display: none;
-    height: calc(var(--searchTitleHeight) - 2 * var(--boxPadding));
 }
 
 @media screen and (max-width: 1000px) {
