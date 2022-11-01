@@ -178,18 +178,9 @@ function displayOffers(offers) {
         offerName.innerHTML = offer.name;
         offerDiv.appendChild(offerName);
         const offerPrice = document.createElement("b");
-        offerPrice.innerHTML = `${offer.price}€`;
+        offerPrice.innerHTML = `from ${offer.price}€`;
         offerDiv.appendChild(offerPrice);
         const offerDetails = document.createElement("div");
-        const offerAdults = document.createElement("span");
-        offerAdults.innerHTML = `${offer.countadults} adult(s)`;
-        offerDetails.appendChild(offerAdults);
-        const offerChildren = document.createElement("span");
-        offerChildren.innerHTML = `${offer.countchildren} child(ren)`;
-        offerDetails.appendChild(offerChildren);
-        const offerStars = document.createElement("span");
-        offerStars.innerHTML = `${offer.stars} star(s)`;
-        offerDetails.appendChild(offerStars);
         offerDiv.appendChild(offerDetails);
         container.appendChild(offerDiv);
     }
