@@ -20,16 +20,6 @@ main {
     grid-area: filters;
 }
 
-@media screen and (max-width: 1000px) {
-    main {
-        max-height: none;
-        grid-template-columns: 1fr;
-        grid-template-rows: 5em auto auto;
-        grid-template-areas: "search" "list" "filters";
-        overflow-y: visible;
-    }
-}
-
 /* Filters Sidebar */
 
 .mainFilters > form {
@@ -337,4 +327,17 @@ div.filterInput {
     grid-area: data;
     color: var(--plainCommentForegroundColor);
     font-size: var(--fontSizeSmall);
+}
+
+@media screen and (max-width: 1000px) {
+    main {
+        max-height: none;
+        grid-template-columns: 1fr;
+        grid-template-rows: 5em auto auto;
+        grid-template-areas: "search" "list" "filters";
+        overflow-y: visible;
+    }
+    .mainList {
+        overflow-y: visible;
+    }
 }
