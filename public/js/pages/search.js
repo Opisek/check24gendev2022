@@ -1,8 +1,6 @@
 const pagination = 10;
 const dbPagination = 100;
 
-var requestIndex = 0;
-
 var loaded = false;
 
 function setUrlParameter(paramater, value) {
@@ -111,8 +109,6 @@ var lastFilters = {};
 var cachedRows = {};
 
 function getOffers() {
-    let myRequestIndex = ++requestIndex;
-
     const container = document.getElementsByClassName("mainList")[0];
     container.scrollTo(0, 0);
     window.scrollTo(0, 0);
@@ -151,7 +147,6 @@ function getOffers() {
     }
 
     socket.emit("getHotelsByFilters", filterParameters, results => {
-        if (requestIndex != myRequestIndex) return;
         let startingPage = page - (page - 1) % (dbPagination / pagination);
         for (let i = 0; i < dbPagination / pagination; ++i) {
             let newCache = [];
