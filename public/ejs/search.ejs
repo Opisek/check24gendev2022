@@ -10,8 +10,8 @@
     <%- include("partials/navbarBody.ejs") %>
     <main>
         <div class="mainPagination colorAccent">
+            <img src="/images/right-arrow.png" alt="Filters" id="filtersButtonOpen">
             <h1>Browse Hotels</h1>
-            <button id="filtersButton">Filter Results</button>
             <div class="page">
                 <span>Page</span>
                 <button class="filterButton" type="button" tabindex="-1" value="-1" id="pageButtonDecrement">-</button>
@@ -20,6 +20,7 @@
             </div>
         </div>
         <div class="mainFilters hidden colorSecondary">
+            <img src="/images/left-arrow.png" alt="Filters" id="filtersButtonClose">
             <h1>Filters</h1>
             <form>
                 <div>

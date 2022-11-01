@@ -159,7 +159,8 @@ window.addEventListener("load", () => {
     readyRange(priceRange, 1);
     readyRange(startRange, 2);
 
-    document.getElementById("filtersButton").addEventListener("click", () => document.getElementsByClassName("mainFilters")[0].classList.remove("hidden"));
+    document.getElementById("filtersButtonOpen").addEventListener("click", () => document.getElementsByClassName("mainFilters")[0].classList.remove("hidden"));
+    document.getElementById("filtersButtonClose").addEventListener("click", () => document.getElementsByClassName("mainFilters")[0].classList.add("hidden"));
 
     document.getElementById("filterButtonSubmit").addEventListener("click", () => getOffers());
     document.getElementById("pageField").addEventListener("input", () => getOffers());

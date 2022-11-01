@@ -36,7 +36,6 @@ main {
 
 .mainFilters {
     grid-area: filters;
-    transition: transform var(--animationSpeedSlow);
 }
 
 /* Filters Sidebar */
@@ -111,21 +110,6 @@ main {
     font-weight: inherit;
     border-radius: var(--boxBorderRadiusSmall);
     padding: var(--boxPaddingTiny);
-}
-#filtersButton {
-    background-color: transparent;
-    outline: 0;
-    border: 0;
-    font-size: inherit;
-    font-weight: inherit;
-    border-radius: var(--boxBorderRadiusSmall);
-    padding: var(--boxPaddingTiny);
-    background-color: var(--accentBackgroundColor);
-    color: var(--accentForegroundColor);
-}
-#filtersButton:hover {
-    background-color: var(--plainBackgroundColor);
-    color: var(--plainForegroundColor);
 }
 .page > .filterButton {
     background-color: var(--accentBackgroundColor);
@@ -372,8 +356,16 @@ div.filterInput {
     font-size: var(--fontSizeSmall);
 }
 
-#filtersButton {
+#filtersButtonClose {
     display: none;
+    height: calc(var(--searchTitleHeight) - 2 * var(--boxPadding));
+    position: absolute;
+    top: var(--boxPadding);
+    right: var(--boxPadding);
+}
+#filtersButtonOpen {
+    display: none;
+    height: calc(var(--searchTitleHeight) - 2 * var(--boxPadding));
 }
 
 @media screen and (max-width: 1000px) {
@@ -396,11 +388,15 @@ div.filterInput {
         width: 100%;
         height: 100%;
         z-index: 50;
+        transition: transform var(--animationSpeedSlow);
     }
     .mainFilters.hidden {
         transform: translateX(-100%);
     }
-    #filtersButton {
+    #filtersButtonOpen {
+        display: block;
+    }
+    #filtersButtonClose {
         display: block;
     }
 }
