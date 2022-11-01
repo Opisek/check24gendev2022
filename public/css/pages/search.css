@@ -25,7 +25,7 @@ main {
 .mainFilters > form {
     display: flex;
     flex-direction: column;
-    gap: var(--flexGap);
+    gap: var(--flexGapLarge);
     width: 100%;
     align-items: center;
 }
