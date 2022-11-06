@@ -58,12 +58,7 @@ module.exports = class Database {
     }
 
     async _hotelsByFilters(filters, requestId, columns, limit=true) {
-        if (!("adults" in filters && !Number.isNaN(Number.parseInt(filters.adults)))) filters.adults = 1;
-        if (!("children" in filters && !Number.isNaN(Number.parseInt(filters.children)))) filters.children = 0;
-        if (!("priceMin" in filters && !Number.isNaN(Number.parseInt(filters.priceMin)))) filters.priceMin = 0;
-        if (!("priceMax" in filters && !Number.isNaN(Number.parseInt(filters.priceMax)))) filters.priceMax = 10000;
-        if (!("starsMin" in filters && !Number.isNaN(Number.parseFloat(filters.starsMin)))) filters.starsMin = 1;
-        if (!("starsMax" in filters && !Number.isNaN(Number.parseFloat(filters.starsMax)))) filters.starsMax = 5;
+        this._parseFilters(filters);
 
         let offset = 1;
         if ("page" in filters && !Number.isNaN(Number.parseInt(filters.page)) && filters.page > 0) offset = filters.page;
@@ -79,22 +74,21 @@ module.exports = class Database {
                 AND countchildren=$2
                 AND price<=$3
                 AND price>=$4
+                AND departuredate>=$5
+                AND returndate<=$6
                 GROUP BY hotelid
             ) AS filtered
             INNER JOIN hotels ON filtered.hotelid=hotels.id
-            WHERE stars>=$5
-            AND stars<=$6
+            WHERE stars>=$7
+            AND stars<=$8
             ${limit ? `LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `,
-        [filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.starsMin, filters.starsMax],
+        [filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate, filters.starsMin, filters.starsMax],
         requestId);
     }
 
     async _offersByHotel(filters, requestId, columns, limit=true) {
-        if (!("adults" in filters && !Number.isNaN(Number.parseInt(filters.adults)))) filters.adults = 1;
-        if (!("children" in filters && !Number.isNaN(Number.parseInt(filters.children)))) filters.children = 0;
-        if (!("priceMin" in filters && !Number.isNaN(Number.parseInt(filters.priceMin)))) filters.priceMin = 0;
-        if (!("priceMax" in filters && !Number.isNaN(Number.parseInt(filters.priceMax)))) filters.priceMax = 10000;
+        this._parseFilters(filters);
 
         let offset = 1;
         if ("page" in filters && !Number.isNaN(Number.parseInt(filters.page)) && filters.page > 0) offset = filters.page;
@@ -109,9 +103,26 @@ module.exports = class Database {
             AND countchildren=$3
             AND price<=$4
             AND price>=$5
+            AND departuredate>=$6
+            AND returndate<=$7
             ${limit ? `LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `,
-        [filters.hotelid, filters.adults, filters.children, filters.priceMax, filters.priceMin],
+        [filters.hotelid, filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate],
         requestId);
+    }
+
+    _parseFilters(filters) {
+        if (!("adults" in filters && !Number.isNaN(Number.parseInt(filters.adults)))) filters.adults = 1;
+        if (!("children" in filters && !Number.isNaN(Number.parseInt(filters.children)))) filters.children = 0;
+        if (!("priceMin" in filters && !Number.isNaN(Number.parseInt(filters.priceMin)))) filters.priceMin = 0;
+        if (!("priceMax" in filters && !Number.isNaN(Number.parseInt(filters.priceMax)))) filters.priceMax = 10000;
+        if (!("starsMin" in filters && !Number.isNaN(Number.parseFloat(filters.starsMin)))) filters.starsMin = 1;
+        if (!("starsMax" in filters && !Number.isNaN(Number.parseFloat(filters.starsMax)))) filters.starsMax = 5;
+        if (!("departureDate" in filters && !Number.isNaN(new Date(filters.departureDate)))) filters.departureDate = new Date().toISOString();
+        if (!("returnDate" in filters && !Number.isNaN(new Date(filters.returnDate)))) {
+            let returnDate = new Date();
+            returnDate.setFullYear(returnDate.getFullYear() + 1);
+            filters.returnDate = returnDate.toISOString();
+        }
     }
 }
