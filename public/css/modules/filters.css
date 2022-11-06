@@ -365,10 +365,12 @@ div.filterInput {
 }
 
 .mainFilters > form > div:nth-child(odd) > div.filterInputDateDiv > #inputCalendar {
-    background-color: var(--primaryBackgroundColor); 
+    background-color: var(--primaryBackgroundColor);
+    /*border: solid var(--borderWidth) var(--secondaryBackgroundColor);*/
 }
 .mainFilters > form > div:nth-child(even) > div.filterInputDateDiv > #inputCalendar {
     background-color: var(--secondaryBackgroundColor); 
+    /*border: solid var(--borderWidth) var(--primaryBackgroundColor);*/
 }
 
 #inputCalendarMonth {
