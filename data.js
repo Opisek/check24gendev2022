@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 
 const postgress = require("pg");
 
@@ -67,17 +68,14 @@ async function main() {
     }
 
     console.log("load hotels");
-    //await sql`COPY hotels FROM '${process.env.DB_CSV}/hotels.csv' DELIMITER ',' CSV HEADER`;
-    await sql.query(`COPY hotels FROM 'D:/Projects/Websites/check24gendev2022/csv/hotels.csv' DELIMITER ',' CSV HEADER`);
-
-    await progressReporting(sql, `COPY offers (hotelid, departuredate, returndate, countadults, countchildren, price, inbounddepartureairport, inboundarrivalairport, inboundairline, inboundarrivaldatetime, outbounddepartureairport, outboundarrivalairport, outboundairline, outboundarrivaldatetime, mealtype, oceanview, roomtype) FROM 'D:/Projects/Websites/check24gendev2022/csv/offers.csv' DELIMITER ',' CSV HEADER`, "copy", "bytes");
-    await progressReporting("CREATE INDEX hotel_index on offers USING btree (hotelid)", "create_index", "blocks");
-    await progressReporting(sql, "CREATE INDEX hotel_search_index on offers USING btree(hotelid, price, countadults, countchildren)", "create_index", "blocks");
+    await sql.query(`COPY hotels FROM '${path.join(process.env.DATA_PATH + "/hotels.csv")}' DELIMITER ',' CSV HEADER`);
 
     console.log("load offers");
-
-
-    // SELECT bytes_processed, bytes_total FROM pg_stat_progress_copy
+    await progressReporting(sql, `COPY offers (hotelid, departuredate, returndate, countadults, countchildren, price, inbounddepartureairport, inboundarrivalairport, inboundairline, inboundarrivaldatetime, outbounddepartureairport, outboundarrivalairport, outboundairline, outboundarrivaldatetime, mealtype, oceanview, roomtype) FROM '${path.join(process.env.DATA_PATH + "/offers.csv")}' DELIMITER ',' CSV HEADER`, "copy", "bytes");
+    console.log("create hotelid index");
+    await progressReporting(sql, "CREATE INDEX hotel_index on offers USING btree (hotelid)", "create_index", "blocks");
+    console.log("create search index");
+    await progressReporting(sql, "CREATE INDEX hotel_search_index on offers USING btree(hotelid, price, countadults, countchildren)", "create_index", "blocks");
 }
 
 async function progressReporting(sql, query, type, columns) {
@@ -87,7 +85,7 @@ async function progressReporting(sql, query, type, columns) {
         let differences = [];
         let lastProgress = 0;
         while (!done) {
-            let progress = await sql.query(`SELECT ${columns}_processed, ${columns}_total} FROM pg_stat_progress_${type}`);
+            let progress = await sql.query(`SELECT ${columns}_processed, ${columns}_total FROM pg_stat_progress_${type}`);
             let currentProgress = progress.rows[0].bytes_processed / progress.rows[0].bytes_total;
             differences.push(currentProgress - lastProgress);
             if (differences.length > 20) differences.shift();
