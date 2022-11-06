@@ -4,21 +4,6 @@ var lastFilters = {};
 var cachedRows = {};
 
 function getOffers() {
-    let allSame = false;
-    if (Object.keys(lastFilters).length == Object.keys(filterParameters).length) {
-        allSame = true;
-        for (let parameter of Object.keys(filterParameters)) {
-            if (parameter == "page") continue;
-            if (!(parameter in lastFilters) || lastFilters[parameter] != filterParameters[parameter]) {
-                allSame = false;
-                break;
-            }
-        }
-    }
-
-    if (pagesLocked && allSame) return;
-    lockPages();
-
     const container = document.getElementsByClassName("mainList")[0];
     container.scrollTo(0, 0);
     window.scrollTo(0, 0);
@@ -32,7 +17,22 @@ function getOffers() {
 
     const page = filterParameters.page;
 
+    let allSame = false;
+    if (Object.keys(lastFilters).length == Object.keys(filterParameters).length) {
+        allSame = true;
+        for (let parameter of Object.keys(filterParameters)) {
+            if (parameter == "page") continue;
+            if (!(parameter in lastFilters) || lastFilters[parameter] != filterParameters[parameter]) {
+                allSame = false;
+                break;
+            }
+        }
+    }
+
+    console.log(pagesLocked);
+
     if (allSame) {
+        if (pagesLocked) return;
         if (page in cachedRows) {
             displayOffers(cachedRows[page]); // will need to await
             return;
@@ -42,6 +42,7 @@ function getOffers() {
         cachedRows = {};
     }
 
+    lockPages();
     if (!allSame) socket.emit("getHotelsByFiltersPages", filterParameters, results => updateLastPage(Math.ceil(Number.parseInt(results[0].count) / pagination)));
     socket.emit("getHotelsByFilters", filterParameters, results => {
         let startingPage = page - (page - 1) % (dbPagination / pagination);
