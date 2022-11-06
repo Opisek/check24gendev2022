@@ -3,6 +3,10 @@ const dbPagination = 100;
 
 var loaded = false;
 
+var pagesLocked = false;
+var previousMinPage;
+var previousMaxPage;
+
 function setUrlParameter(paramater, value) {
     if (paramater == "" || paramater == undefined || paramater == null) return;
     let url = new URL(window.location.href);
@@ -12,6 +16,33 @@ function setUrlParameter(paramater, value) {
 
 function switchPageWithParameters(subpage) {
     window.location = subpage + document.location.search;
+}
+
+function lockPages() {
+    if (pagesLocked) return;
+    pagesLocked = true;
+    let pageField = document.getElementById("pageField");
+    previousMinPage = pageField.min;
+    previousMaxPage = pageField.max;
+    pageField.min = pageField.value;
+    pageField.max = pageField.value;
+}
+
+function unlockPages() {
+    if (!pagesLocked) return;
+    pagesLocked = false;
+    let pageField = document.getElementById("pageField");
+    pageField.min = previousMinPage;
+    pageField.max = previousMaxPage;
+}
+
+function updateLastPage(lastPage) {
+    const pageCountElement = document.getElementById("pageCount");
+    let text = pageCountElement.innerHTML.split(" ");
+    text[text.length-1] = lastPage
+    pageCountElement.innerHTML = text.join(" ");
+    if (pagesLocked) previousMaxPage = lastPage;
+    else document.getElementById("pageField").max = lastPage;
 }
 
 function changeValue(input, change=0, apply=true) {

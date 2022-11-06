@@ -2,8 +2,12 @@
 
 var lastFilters = {};
 var cachedRows = {};
+var loadingOffers = false;
 
 function getOffers() {
+    if (pagesLocked) return;
+    lockPages();
+
     const container = document.getElementsByClassName("mainList")[0];
     container.scrollTo(0, 0);
     window.scrollTo(0, 0);
@@ -39,14 +43,7 @@ function getOffers() {
         cachedRows = {};
     }
 
-    if (!allSame) socket.emit("getHotelsByFiltersPages", filterParameters, results => {
-        let lastPage = Math.ceil(Number.parseInt(results[0].count) / pagination);
-        const pageCountElement = document.getElementById("pageCount");
-        let text = pageCountElement.innerHTML.split(" ");
-        text[text.length-1] = lastPage
-        pageCountElement.innerHTML = text.join(" ");
-        document.getElementById("pageField").max = lastPage;
-    });
+    if (!allSame) socket.emit("getHotelsByFiltersPages", filterParameters, results => updateLastPage(Math.ceil(Number.parseInt(results[0].count) / pagination)));
     socket.emit("getHotelsByFilters", filterParameters, results => {
         let startingPage = page - (page - 1) % (dbPagination / pagination);
         for (let i = 0; i < dbPagination / pagination; ++i) {
@@ -55,7 +52,7 @@ function getOffers() {
             cachedRows[i + startingPage] = newCache;
         }
         displayOffers(cachedRows[page], page);
-    });
+    });   
 }
 
 function displayOffers(offers, page) {
@@ -95,6 +92,8 @@ function displayOffers(offers, page) {
         offerDiv.appendChild(offerButton);
         container.appendChild(offerDiv);
     }
+
+    unlockPages();
 }
 
 function offerClick(id) {
