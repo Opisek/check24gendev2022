@@ -118,8 +118,8 @@ module.exports = class Database {
         if (!("priceMax" in filters && !Number.isNaN(Number.parseInt(filters.priceMax)))) filters.priceMax = 10000;
         if (!("starsMin" in filters && !Number.isNaN(Number.parseFloat(filters.starsMin)))) filters.starsMin = 1;
         if (!("starsMax" in filters && !Number.isNaN(Number.parseFloat(filters.starsMax)))) filters.starsMax = 5;
-        if (!("departureDate" in filters && !Number.isNaN(new Date(filters.departureDate)))) filters.departureDate = new Date().toISOString();
-        if (!("returnDate" in filters && !Number.isNaN(new Date(filters.returnDate)))) {
+        if (!("departureDate" in filters && filters.departureDate != '0' && !Number.isNaN(new Date(filters.departureDate)))) filters.departureDate = new Date().toISOString();
+        if (!("returnDate" in filters && filters.returnDate != '0' && !Number.isNaN(new Date(filters.returnDate)))) {
             let returnDate = new Date();
             returnDate.setFullYear(returnDate.getFullYear() + 1);
             filters.returnDate = returnDate.toISOString();
