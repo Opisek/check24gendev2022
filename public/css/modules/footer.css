@@ -7,6 +7,7 @@ footer {
     height: var(--footerHeight);
     background-color: var(--primaryBackgroundColor);
     color: var(--primaryForegroundColor);
+    text-align: center;
 }
 footer > * {
     font-size: var(--footerFontSize);

@@ -25,6 +25,9 @@ main {
     justify-content: space-between;
     justify-items: center;
 }
+.mainPagination > h1 {
+    text-align: center;
+}
 .page {
     display: flex;
     gap: var(--flexGap);

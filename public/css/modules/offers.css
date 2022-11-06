@@ -29,11 +29,15 @@
 
 .offer {
     display: grid !important;
-    grid-template-rows: 2fr 1fr;
-    grid-template-columns: 2fr 1fr;
+    grid-template-rows: minmax(2fr, auto) 1fr;
+    grid-template-columns: auto 1fr;
     grid-template-areas: "name price" "data button";
     align-items: center;
     text-align: left;
+}
+
+.offer > h2 {
+    max-width: 40vw;
 }
 
 .offer > b {
@@ -60,4 +64,13 @@
 .offer > button:hover {
     background-color: var(--primaryLighterBackgroundColor);
     color: var(--primaryLighterForegroundColor);
+}
+
+@media screen and (max-width: 1000px) {
+    .offer {
+        grid-template-rows: minmax(2fr, auto) 1fr 1fr;
+        grid-template-columns: auto 1fr;
+        grid-template-areas: "name price" "data data" "button button";
+    }
+    
 }
