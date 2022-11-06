@@ -11,31 +11,30 @@ module.exports = class Database {
             port: port,
             user: user,
             password: password,
-            database: database,
-            connect_timeout: 60,
-            max: 1000
+            database: database
         });
         this._requests = {};
     }
 
     async connect() {
-        //await this._sql.connect();
+        await this._sql.connect();
         await this._sql.query(`SET client_encoding='UTF8'`);
     }
 
     async abortRequest(requestId) {
         console.log("aborting request: " + requestId);
         if (!(requestId in this._requests)) return;
+        console.log(this._requests[requestId]);
         //try {await this._requests[requestId].cancel();} catch(e) {} // the library is bugged and crashes the app, turns out making my own solutions may have been worth it after all. maybe i'll revert
         delete this._requests[requestId];
     }
 
-    async _beginRequest(query, paramaters, requestId) {
+    async _beginRequest(query, parameters, requestId) {
         console.log("beginning request: " + requestId);
         const request = this._sql.query(query, parameters);
         this._requests[requestId] = request;
         let result;
-        try {result = await request} catch (e) {result = [];}
+        try {result = (await request).rows} catch (e) {result = [];}
         delete this._requests[requestId];
         return result;
     }
@@ -83,7 +82,6 @@ module.exports = class Database {
     }
 
     async getHotelsByFilters(filters, requestId) {
-        let conditions = [];
         if (!("adults" in filters && !Number.isNaN(Number.parseInt(filters.adults)))) filters.adults = 1;
         if (!("children" in filters && !Number.isNaN(Number.parseInt(filters.children)))) filters.children = 0;
         if (!("priceMin" in filters && !Number.isNaN(Number.parseInt(filters.priceMin)))) filters.priceMin = 0;

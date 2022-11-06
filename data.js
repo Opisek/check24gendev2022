@@ -34,27 +34,28 @@ async function main() {
     const maxAdultsCount = 6;
     const maxChildrenCount = 6;
     await sql.query(`
-CREATE TABLE IF NOT EXISTS offers\
-(\
-id SERIAL,\
-hotelid INT,\
-departuredate TIMESTAMP,\
-returndate TIMESTAMP,\
-countadults SMALLINT,\
-countchildren SMALLINT,\
-price INTEGER,\
-inbounddepartureairport CHAR(3),\
-inboundarrivalairport CHAR(3),\
-inboundairline CHAR(3),\
-inboundarrivaldatetime TIMESTAMP,\
-outbounddepartureairport CHAR(3),\
-outboundarrivalairport CHAR(3),\
-outboundairline CHAR(3),\
-outboundarrivaldatetime TIMESTAMP,\
-mealtype VARCHAR(64),\
-oceanview BOOL,\
-roomtype VARCHAR(64)\
-) PARTITION BY LIST(countadults)`);
+        CREATE TABLE IF NOT EXISTS offers
+        (
+        id SERIAL,
+        hotelid INT,
+        departuredate TIMESTAMP,
+        returndate TIMESTAMP,
+        countadults SMALLINT,
+        countchildren SMALLINT,
+        price INTEGER,
+        inbounddepartureairport CHAR(3),
+        inboundarrivalairport CHAR(3),
+        inboundairline CHAR(3),
+        inboundarrivaldatetime TIMESTAMP,
+        outbounddepartureairport CHAR(3),
+        outboundarrivalairport CHAR(3),
+        outboundairline CHAR(3),
+        outboundarrivaldatetime TIMESTAMP,
+        mealtype VARCHAR(64),
+        oceanview BOOL,
+        roomtype VARCHAR(64)
+        ) PARTITION BY LIST(countadults)
+    `);
 
 // id should technically be PRIMARY KEY but that is not possible due no partitions
 // CONSTRAINT hotelreference FOREIGN KEY(hotelid) REFERENCES hotels(id), // not supported by partitions
@@ -69,10 +70,11 @@ roomtype VARCHAR(64)\
     //await sql`COPY hotels FROM '${process.env.DB_CSV}/hotels.csv' DELIMITER ',' CSV HEADER`;
     await sql.query(`COPY hotels FROM 'D:/Projects/Websites/check24gendev2022/csv/hotels.csv' DELIMITER ',' CSV HEADER`);
 
-    await progressReporting(`COPY offers (hotelid, departuredate, returndate, countadults, countchildren, price, inbounddepartureairport, inboundarrivalairport, inboundairline, inboundarrivaldatetime, outbounddepartureairport, outboundarrivalairport, outboundairline, outboundarrivaldatetime, mealtype, oceanview, roomtype) FROM 'D:/Projects/Websites/check24gendev2022/csv/offers.csv' DELIMITER ',' CSV HEADER`, "copy");
-    await progressReporting("CREATE INDEX price_index on offers(price)", "create_index");
-    await progressReporting("CREATE INDEX outbounddepartureairport_index on offers(outbounddepartureairport)", "create_index");
-    await progressReporting("CREATE INDEX inboundarrivalairport_index on offers(inboundarrivalairport)", "create_index");
+    await progressReporting(sql, `COPY offers (hotelid, departuredate, returndate, countadults, countchildren, price, inbounddepartureairport, inboundarrivalairport, inboundairline, inboundarrivaldatetime, outbounddepartureairport, outboundarrivalairport, outboundairline, outboundarrivaldatetime, mealtype, oceanview, roomtype) FROM 'D:/Projects/Websites/check24gendev2022/csv/offers.csv' DELIMITER ',' CSV HEADER`, "copy", "bytes");
+    //await progressReporting("CREATE INDEX price_index on offers(price)", "create_index");
+    //await progressReporting("CREATE INDEX outbounddepartureairport_index on offers(outbounddepartureairport)", "create_index");
+    //await progressReporting("CREATE INDEX inboundarrivalairport_index on offers(inboundarrivalairport)", "create_index");
+    await progressReporting(sql, "CREATE INDEX hotel_search_index on offers USING btree(hotelid, price, countadults, countchildren)", "create_index", "blocks");
 
     console.log("load offers");
 
@@ -80,15 +82,14 @@ roomtype VARCHAR(64)\
     // SELECT bytes_processed, bytes_total FROM pg_stat_progress_copy
 }
 
-async function progressReporting(query, type) {
+async function progressReporting(sql, query, type, columns) {
     return new Promise(async resolve => {
         let done = false;
         sql.query(query).then(() => done = true);
         let differences = [];
         let lastProgress = 0;
-        console.log("0%");
         while (!done) {
-            let progress = await sql.query(`SELECT bytes_processed, bytes_total FROM pg_stat_progress_${type}`);
+            let progress = await sql.query(`SELECT ${columns}_processed, ${columns}_total} FROM pg_stat_progress_${type}`);
             let currentProgress = progress.rows[0].bytes_processed / progress.rows[0].bytes_total;
             differences.push(currentProgress - lastProgress);
             if (differences.length > 20) differences.shift();
