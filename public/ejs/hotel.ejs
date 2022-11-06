@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="/css/pages/hotels.css">
     <link rel="stylesheet" href="/css/modules/offers.css">
     <link rel="stylesheet" href="/css/modules/filters.css">
+    <link rel="stylesheet" href="/css/modules/pagination.css">
     <link rel="stylesheet" href="/css/colors/default.css">
     <%- include("partials/navbarHead.ejs") %>
     <%- include("partials/footerHead.ejs") %>
@@ -14,12 +15,7 @@
         <div class="mainPagination colorAccent">
             <img src="/images/right-arrow.png" alt="Filters" id="filtersButtonOpen">
             <h1>Browse Offers</h1>
-            <div class="page">
-                <span>Page</span>
-                <button class="filterButton" type="button" tabindex="-1" value="-1" id="pageButtonDecrement">-</button>
-                <input class="filterInput" placeholder="0" value="" type="number" min="1" max="100000" name="page" id="pageField">
-                <button class="filterButton" type="button" tabindex="-1" value="1" id="pageButtonIncrement">+</button>
-            </div>
+            <%- include("partials/paginationBody.ejs") %>
         </div>
         <div class="mainHotel colorAccent">
             <h1 id="hotelName"></h1>

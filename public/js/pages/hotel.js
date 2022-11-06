@@ -12,8 +12,6 @@ function getOffers() {
     loadingDiv.innerHTML = "Loading... Please wait."
     container.appendChild(loadingDiv);
 
-    document.getElementsByClassName("mainFilters")[0].classList.add("hidden");
-
     let filterParameters = { "hotelid": hotelId };
     for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
 
@@ -41,6 +39,8 @@ function getOffers() {
         cachedRows = {};
     }
 
+    lockPages();
+    if (!allSame) socket.emit("getOffersByHotelPages", filterParameters, results => updateLastPage(Math.ceil(Number.parseInt(results[0].count) / pagination)));
     socket.emit("getOffersByHotel", filterParameters, results => {
         let startingPage = page - (page - 1) % (dbPagination / pagination);
         for (let i = 0; i < dbPagination / pagination; ++i) {
@@ -82,9 +82,38 @@ function displayOffers(offers, page) {
         offerPrice.innerHTML = `${offer.price}€`;
         offerDiv.appendChild(offerPrice);
         const offerDetails = document.createElement("div");
+
+        const meal = document.createElement("span");
+        meal.innerHTML = `${offer.mealtype}`;
+        offerDetails.appendChild(meal);
+
+        const room = document.createElement("span");
+        room.innerHTML = `${offer.roomtype}`;
+        offerDetails.appendChild(room);
+
+        if (offer.oceanview) {
+            const ocean = document.createElement("span");
+            ocean.innerHTML = `ocean view`;
+            offerDetails.appendChild(ocean);
+        }
+
+        const departure = document.createElement("span");
+        departure.innerHTML = `${offer.departuredate}`;
+        offerDetails.appendChild(departure);
+        
+        const ret = document.createElement("span");
+        ret.innerHTML = `${offer.returndate}`;
+        offerDetails.appendChild(ret);
+
         offerDiv.appendChild(offerDetails);
+        const offerButton = document.createElement("button");
+        offerButton.innerHTML = "Book";
+        offerButton.addEventListener("click", () => {});
+        offerDiv.appendChild(offerButton);
         container.appendChild(offerDiv);
     }
+
+    unlockPages();
 }
 
 const socket = io();

@@ -17,36 +17,6 @@ main {
     align-items: center;
 }
 
-.mainPagination {
-    grid-area: pagination;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
-    justify-items: center;
-}
-.mainPagination > h1 {
-    text-align: center;
-}
-.page {
-    display: flex;
-    gap: var(--flexGap);
-    align-items: center;
-}
-.page > span {
-    margin-right: var(--flexGapLarge);
-}
-.page > input {
-    /* text-align: right */
-}
-#pageCount {
-    margin-left: 0;
-    font-size: var(--fontSizeSmall);
-    position: relative;
-    height: 100%;
-    top: calc(var(--fontSize) - var(--fontSizeSmall));
-}
-
 .mainFilters {
     grid-area: filters;
     overflow-y: auto;

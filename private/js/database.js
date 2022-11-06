@@ -24,7 +24,7 @@ module.exports = class Database {
     async abortRequest(requestId) {
         console.log("aborting request: " + requestId);
         if (!(requestId in this._requests)) return;
-        //try {await this._requests[requestId].cancel();} catch(e) {} // the library is bugged and crashes the app, turns out making my own solutions may have been worth it after all. maybe i'll revert
+        //try {await this._requests[requestId].cancel();} catch(e) {}
         delete this._requests[requestId];
     }
 
@@ -50,11 +50,11 @@ module.exports = class Database {
     }
 
     async getOffersByHotel(filters, requestId) {
-        return await this._hotelsByFilters(filters, requestId, ["id", "price"]);
+        return await this._offersByHotel(filters, requestId, ["id", "departuredate", "returndate", "countadults", "countchildren", "price", "inbounddepartureairport", "inboundarrivalairport", "inboundairline", "inboundarrivaldatetime", "outbounddepartureairport", "outbounddepartureairport", "outboundarrivalairport", "outboundairline", "outboundarrivaldatetime", "mealtype", "oceanview", "roomtype"]);
     }
 
     async getOffersByHotelPages(filters, requestId) {
-        return await this._hotelsByFilters(filters, requestId, ["COUNT(*)"], false);
+        return await this._offersByHotel(filters, requestId, ["COUNT(*)"], false);
     }
 
     async _hotelsByFilters(filters, requestId, columns, limit=true) {

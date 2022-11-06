@@ -18,23 +18,6 @@ main {
     align-items: center;
 }
 
-.mainPagination {
-    grid-area: pagination;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
-    justify-items: center;
-}
-.page {
-    display: flex;
-    gap: var(--flexGap);
-    align-items: center;
-}
-.page > span {
-    margin-right: var(--flexGapLarge);
-}
-
 .mainFilters {
     grid-area: filters;
     overflow-y: auto;
@@ -58,7 +41,7 @@ main {
         overflow-y: visible;
     }
     .mainList {
-        overflow-y: visible;
+        overflow-y: hidden !important;
     }
     .mainPagination {
         position: fixed;

@@ -3,9 +3,7 @@ const dbPagination = 100;
 
 var loaded = false;
 
-var pagesLocked = false;
-var previousMinPage;
-var previousMaxPage;
+// URL
 
 function setUrlParameter(paramater, value) {
     if (paramater == "" || paramater == undefined || paramater == null) return;
@@ -17,6 +15,12 @@ function setUrlParameter(paramater, value) {
 function switchPageWithParameters(subpage) {
     window.location = subpage + document.location.search;
 }
+
+// Pagination
+
+var pagesLocked = false;
+var previousMinPage;
+var previousMaxPage;
 
 function lockPages() {
     if (pagesLocked) return;
@@ -45,30 +49,37 @@ function updateLastPage(lastPage) {
     else document.getElementById("pageField").max = lastPage;
 }
 
-function changeValue(input, change=0, apply=true) {
-    let currentValue = parseFloat(input.value);
-    if (isNaN(currentValue)) currentValue = 0;
-    currentValue += change;
-    if (currentValue < input.min) currentValue = input.min;
-    else if (currentValue > input.max) currentValue = input.max;
-    input.value = currentValue;
-    changeInputWidth(input);
+// Fields
+
+function changeValue(input, change=0, apply=true, reload=true) {
+    let currentValue;
+    if (input.type != "hidden" && input.type != "text") {
+        currentValue = parseFloat(input.value);
+        if (isNaN(currentValue)) currentValue = 0;
+        currentValue += change;
+        if (currentValue < input.min) currentValue = input.min;
+        else if (currentValue > input.max) currentValue = input.max;
+        input.value = currentValue;
+        changeInputWidth(input);
+    }
 
     if (apply) setUrlParameter(input.name, input.value);
 
-    if (input.name != "page") {
+    if (input.name != "page" && input.type != "hidden") {
         const pageField = document.getElementById("pageField");
         pageField.value = 1;
         changeInputWidth(pageField);
     }
 
-    if (loaded && apply) getOffers();
+    if (loaded && apply && reload) getOffers();
 }
 
 function changeInputWidth(input) {
     if (input.value.length > 5) input.value = input.value.substring(0, 5);
     input.style.width = `${2+.4*input.value.length}em`;
 }
+
+// Sliders
 
 function upperSliderChange (elements, correction) {
     elements.upperField.value = elements.upperSlider.value / correction;
@@ -139,6 +150,117 @@ function readyRange(elements, correction) {
     elements.lowerField.addEventListener("change", () => lowerFieldChange(elements, correction));
 }
 
+// Calendar (i know the code isn't pretty, but i'm really under time pressure here!)
+
+calendarDayElements = [];
+
+var viewMonth;
+var viewYear;
+
+var selectingBegin;
+var beginDate;
+var endDate;
+
+function openCalendar() {
+    const today = new Date();
+    viewMonth = today.getUTCMonth();
+    viewYear = today.getUTCFullYear();
+
+    selectingBegin = true;
+
+    renderCalendar();
+
+    document.getElementById("inputCalendar").classList.add("visible");
+}
+
+function closeCalendar() {
+    document.getElementById("inputCalendar").classList.remove("visible");
+    const beginElement = document.getElementById("filterInputDateBegin");
+    beginElement.value = beginDate.toISOString();
+    changeValue(beginElement, reload=false);
+    const endElement = document.getElementById("filterInputDateEnd");
+    endElement.value = endDate.toISOString();
+    changeValue(endElement, reload=false);
+}
+
+function hoverDay(hoverDay, hoverMonth, hoverYear) {
+    setDay(hoverDay, hoverMonth, hoverYear);
+}
+
+function clickDay(clickDay, clickMonth, clickYear) {
+    setDay(clickDay, clickMonth, clickYear);
+    if (selectingBegin) selectingBegin = false;
+    else closeCalendar();
+}
+
+function setDay(setDay, setMonth, setYear) {
+    if (selectingBegin) beginDate = new Date(setYear, setMonth, setDay);
+    else {
+        let setDate = new Date(setYear, setMonth, setDay);
+        if (setDate < beginDate) setDate = beginDate;
+        endDate = setDate
+    }
+    updateCalendarResult();
+}
+
+function updateCalendarResult() {
+    const calendarResultField = document.getElementById("filterInputDateField");
+    calendarResultField.innerHTML = beginDate.toLocaleDateString() + (selectingBegin ? "" : ` - ${endDate.toLocaleDateString()}`);
+}
+
+function calendarLeft() {
+    --viewMonth;
+    if (viewMonth == -1) {
+        viewMonth = 11
+        --viewYear;
+    }
+    renderCalendar();
+}
+
+function calendarRight() {
+    ++viewMonth;
+    if (viewMonth == 12) {
+        viewMonth = 0
+        ++viewYear;
+    }
+    renderCalendar();
+}
+
+function renderCalendar() {
+    const calendar = document.getElementById("inputCalendar");
+
+    document.getElementById("inputCalendarMonth").innerHTML = `${viewMonth+1} ${viewYear}`;
+
+    for (let dayElement of calendarDayElements) dayElement.remove();
+    calendarDayElements = [];
+
+    const dayCount = new Date(viewYear, viewMonth + 1, 0).getDate();
+    let dayOffset = new Date(viewYear, viewMonth, 1).getDay() - 1;
+
+    if (dayOffset == -1) dayOffset = 6;
+    if (dayOffset != 0) {
+        const offsetElement = document.createElement("span");
+        offsetElement.classList.add("inputCalendarOffest");
+        offsetElement.style = `--offset:${dayOffset+1}`;
+        calendar.appendChild(offsetElement);
+        calendarDayElements.push(offsetElement)
+    }
+
+    for (let i = 1; i <= dayCount; ++i) {
+        const dayElement = document.createElement("span");
+        dayElement.classList.add("inputCalendarDay");
+        dayElement.innerHTML = i;
+        //if ((i + viewOffset - 1) % 7 == 0 || i == 1) day.classList.add("start");
+        //else if ((i + viewOffset) % 7 == 0 || i == viewCount) day.classList.add("end");
+        dayElement.addEventListener("mouseenter", () => hoverDay(i, viewMonth, viewYear));
+        dayElement.addEventListener("click", () => clickDay(i, viewMonth, viewYear));
+        calendar.appendChild(dayElement);
+        calendarDayElements.push(dayElement);
+    }
+}
+
+// Init
+
 window.addEventListener("load", () => {
     const url = new URL(window.location.href);
 
@@ -168,6 +290,17 @@ window.addEventListener("load", () => {
         document.getElementsByClassName("mainFilters")[0].classList.add("hidden");
         getOffers();
     });
+
+    const initBeginDate = document.getElementById("filterInputDateBegin").value;
+    const initEndDate = document.getElementById("filterInputDateEnd").value;
+    if (initBeginDate != 0 && initBeginDate != "" && initBeginDate != undefined && initEndDate != 0 && initEndDate != "" && initEndDate != undefined) {
+        beginDate = new Date(initBeginDate);
+        endDate = new Date(initEndDate);
+        updateCalendarResult();
+    }
+    document.getElementById("filterInputDateField").addEventListener("click", () => openCalendar());
+    document.getElementById("inputCalendarLeft").addEventListener("click", () => calendarLeft());
+    document.getElementById("inputCalendarRight").addEventListener("click", () => calendarRight());
 
     getOffers();
 
