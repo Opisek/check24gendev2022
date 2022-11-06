@@ -324,6 +324,10 @@ div.filterInput {
     background-color: var(--primaryLighterBackgroundColor);
 }
 
+#filterButtonSubmit {
+    display: none;
+}
+
 @media screen and (max-width: 1000px) {
     .mainFilters {
         position: fixed;
@@ -339,6 +343,9 @@ div.filterInput {
         display: block;
     }
     #filtersButtonClose {
+        display: block;
+    }
+    #filterButtonSubmit {
         display: block;
     }
 }

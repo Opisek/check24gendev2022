@@ -133,7 +133,10 @@ window.addEventListener("load", () => {
     document.getElementById("filtersButtonOpen").addEventListener("click", () => document.getElementsByClassName("mainFilters")[0].classList.remove("hidden"));
     document.getElementById("filtersButtonClose").addEventListener("click", () => document.getElementsByClassName("mainFilters")[0].classList.add("hidden"));
 
-    //document.getElementById("filterButtonSubmit").addEventListener("click", () => getOffers());
+    document.getElementById("filterButtonSubmit").addEventListener("click", () => {
+        document.getElementsByClassName("mainFilters")[0].classList.add("hidden");
+        getOffers();
+    });
 
     getOffers();
 

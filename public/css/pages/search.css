@@ -61,7 +61,7 @@ main {
         overflow-y: visible;
     }
     .mainList {
-        overflow-y: visible;
+        overflow-y: hidden !important;
     }
     .mainPagination {
         position: fixed;
