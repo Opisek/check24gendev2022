@@ -5,7 +5,6 @@ var cachedRows = {};
 var loadingOffers = false;
 
 function getOffers() {
-    if (pagesLocked) return;
     lockPages();
 
     const container = document.getElementsByClassName("mainList")[0];
@@ -34,6 +33,7 @@ function getOffers() {
     }
 
     if (allSame) {
+        if (pagesLocked) return;
         if (page in cachedRows) {
             displayOffers(cachedRows[page]); // will need to await
             return;
