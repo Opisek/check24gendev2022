@@ -1,0 +1,50 @@
+/* Offers */
+
+.mainList {
+    grid-area: list;
+    display: flex;
+    flex-direction: column;
+    gap: var(--flexGapLarge);
+    overflow-y: scroll;
+}
+
+.mainList > div {
+    border-radius: var(--boxBorderRadiusSmall);
+    padding: var(--boxPaddingSmall) var(--boxPadding);
+    min-height: var(--offerHeight);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.mainList > div:nth-child(odd) {
+    background-color: var(--plainContrastBackgroundColor);
+    color: var(--plainContrastForegroundColor);
+}
+
+.mainList > div:nth-child(even) {
+    background-color: var(--plainContrastSecondBackgroundColor);
+    color: var(--plainContrastSecondForegroundColor);
+}
+
+.offer {
+    display: grid !important;
+    grid-template-rows: 2fr 1fr;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas: "name price" "data data";
+    align-items: center;
+    text-align: left;
+}
+
+.offer > b {
+    text-align: right;
+}
+
+.offer > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    grid-area: data;
+    color: var(--plainCommentForegroundColor);
+    font-size: var(--fontSizeSmall);
+}

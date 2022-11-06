@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+    <%- include("partials/commonHead.ejs") %>
+    <link rel="stylesheet" href="css/pages/hotels.css">
+    <link rel="stylesheet" href="css/modules/offers.css">
+    <link rel="stylesheet" href="css/modules/filters.css">
+    <link rel="stylesheet" href="css/colors/default.css">
+    <%- include("partials/navbarHead.ejs") %>
+    <%- include("partials/footerHead.ejs") %>
+</head>
+<body>
+    <%- include("partials/navbarBody.ejs") %>
+    <main>
+        <div class="mainPagination colorAccent">
+            <img src="/images/right-arrow.png" alt="Filters" id="filtersButtonOpen">
+            <h1>Browse Hotels</h1>
+            <div class="page">
+                <span>Page</span>
+                <button class="filterButton" type="button" tabindex="-1" value="-1" id="pageButtonDecrement">-</button>
+                <input class="filterInput" placeholder="0" value="" type="number" min="1" max="100000" name="page" id="pageField">
+                <button class="filterButton" type="button" tabindex="-1" value="1" id="pageButtonIncrement">+</button>
+            </div>
+        </div>
+        <div class="mainHotel colorAccent">
+            <%= hotelId %>
+        </div>
+        <%- include("partials/filtersBody.ejs") %>
+        <div class="mainList colorPlain">
+        </div>
+        <script type="text/javascript" src="js/modules/filters.js"></script>
+        <script type="text/javascript" src="js/pages/hotel.js"></script>
+    </main>
+    <%- include("partials/footerBody.ejs") %>
+</body>

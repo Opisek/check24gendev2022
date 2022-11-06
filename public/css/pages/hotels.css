@@ -1,0 +1,65 @@
+/* Layout */
+
+main {
+    max-height: calc(100vh - var(--navHeight) - var(--footerHeight));
+    grid-template-columns: 25em auto;
+    grid-template-rows: var(--searchTitleHeight) var(--searchTitleHeight) auto;
+    grid-template-areas:
+    "filters pagination"
+    "filters hotel"
+    "filters list";
+    position: relative;
+}
+
+.mainSearch {
+    grid-area: search;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.mainPagination {
+    grid-area: pagination;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-items: center;
+}
+.page {
+    display: flex;
+    gap: var(--flexGap);
+    align-items: center;
+}
+.page > span {
+    margin-right: var(--flexGapLarge);
+}
+
+.mainFilters {
+    grid-area: filters;
+    overflow-y: auto;
+}
+
+.mainHotel {
+    grid-area: hotel;
+}
+
+@media screen and (max-width: 1000px) {
+    main {
+        max-height: none;
+        grid-template-columns: 1fr;
+        grid-template-rows: var(--searchTitleHeight) auto auto;
+        grid-template-areas: "pagination" "list" "filters";
+        overflow-y: visible;
+    }
+    .mainList {
+        overflow-y: visible;
+    }
+    .mainPagination {
+        position: fixed;
+        width: 100%;
+    }
+    .mainHotel {
+        position: fixed;
+    }
+}

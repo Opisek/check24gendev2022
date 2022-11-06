@@ -41,7 +41,7 @@ function getOffers() {
         cachedRows = {};
     }
 
-    socket.emit("getHotelsByFilters", filterParameters, results => {
+    socket.emit("getOffersByHotel", filterParameters, results => {
         let startingPage = page - (page - 1) % (dbPagination / pagination);
         for (let i = 0; i < dbPagination / pagination; ++i) {
             let newCache = [];
@@ -88,3 +88,4 @@ function displayOffers(offers, page) {
 }
 
 const socket = io();
+

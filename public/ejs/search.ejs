@@ -2,6 +2,8 @@
 <head>
     <%- include("partials/commonHead.ejs") %>
     <link rel="stylesheet" href="css/pages/search.css">
+    <link rel="stylesheet" href="css/modules/offers.css">
+    <link rel="stylesheet" href="css/modules/filters.css">
     <link rel="stylesheet" href="css/colors/default.css">
     <%- include("partials/navbarHead.ejs") %>
     <%- include("partials/footerHead.ejs") %>
@@ -19,89 +21,10 @@
                 <button class="filterButton" type="button" tabindex="-1" value="1" id="pageButtonIncrement">+</button>
             </div>
         </div>
-        <div class="mainFilters hidden colorSecondary">
-            <img src="/images/left-arrow.png" alt="Filters" id="filtersButtonClose">
-            <h1>Filters</h1>
-            <form>
-                <div>
-                    <label class="filterName">Adults</label>
-                    <div>
-                        <button class="filterButton" type="button" tabindex="-1" value="-1">-</button>
-                        <input class="filterInput" placeholder="0" value="" type="number" min="1" max="10" name="adults">
-                        <button class="filterButton" type="button" tabindex="-1" value="1">+</button>
-                    </div>
-                    <img src="/images/x.png" alt="x">
-                </div>
-                <div>
-                    <label class="filterName">Children</label>
-                    <div>
-                        <button class="filterButton" type="button" tabindex="-1" value="-1">-</button>
-                        <input class="filterInput" placeholder="0" value="" type="number" min="0" max="10" name="children">
-                        <button class="filterButton" type="button" tabindex="-1" value="1">+</button>
-                    </div>
-                    <img src="/images/x.png" alt="x">
-                </div>
-                <div>
-                    <label class="filterName">Price</label>
-                    <div class="filterInputRangeDiv">
-                        <input class="filterInput" id="filterInputPriceLowerField" placeholder="0" value="" type="number" name="priceMin">
-                        <div class="filterInput">
-                            <input class="filterInput filterInputUpperSlider" id="filterInputPriceUpperSlider" placeholder="0" value="" type="range" tabindex="-1">
-                            <input class="filterInput filterInputLowerSlider" id="filterInputPriceLowerSlider" placeholder="0" value="" type="range" tabindex="-1">
-                        </div>
-                        <input class="filterInput" id="filterInputPriceUpperField" placeholder="0" value="" type="number" name="priceMax">
-                    </div>
-                    <img src="/images/x.png" alt="x">
-                </div>
-                <div>
-                    <label class="filterName">Stars</label>
-                    <div class="filterInputRangeDiv">
-                        <input class="filterInput" id="filterInputStarsLowerField" placeholder="0" value="" type="number" name="starsMin">
-                        <div class="filterInput">
-                            <input class="filterInput filterInputUpperSlider" id="filterInputStarsUpperSlider" placeholder="0" value="" type="range" tabindex="-1">
-                            <input class="filterInput filterInputLowerSlider" id="filterInputStarsLowerSlider" placeholder="0" value="" type="range" tabindex="-1">
-                        </div>
-                        <input class="filterInput" id="filterInputStarsUpperField" placeholder="0" value="" type="number" name="starsMax">
-                    </div>
-                    <img src="/images/x.png" alt="x">
-                </div>
-                <div>
-                    <label class="filterName">Departure</label>
-                    <div>
-                        <input class="filterInput" placeholder="0" value="" type="number" min="1" max="10" name="departureDay">
-                        <input class="filterInput" placeholder="0" value="" type="number" min="1" max="10" name="departureMonth">
-                        <input class="filterInput" placeholder="0" value="" type="number" min="1" max="10" name="departureDayYear">
-                    </div>
-                    <img src="/images/x.png" alt="x">
-                </div>
-                <div>
-                    <label class="filterName">Arrival</label>
-                    <div>
-                        <input class="filterInput" placeholder="0" value="" type="number" min="1" max="10" name="arrivalDay">
-                        <input class="filterInput" placeholder="0" value="" type="number" min="1" max="10" name="arrivalMonth">
-                        <input class="filterInput" placeholder="0" value="" type="number" min="1" max="10" name="arrivalDayYear">
-                    </div>
-                    <img src="/images/x.png" alt="x">
-                </div>
-                <!--<div>
-                    <label class="filterName">Sort</label>
-                    <div class="filterInputSelectDiv">
-                        <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortPriceAsc" id="sortPriceAsc">
-                        <label for="sortPriceAsc">Price (Asc)</label>
-                        <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortPriceDesc" id="sortPriceDesc">
-                        <label for="sortPriceDesc">Price (Desc)</label>
-                        <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortAlphAsc" id="sortAlphAsc">
-                        <label for="sortAlphAsc">Alphabetical (Asc)</label>
-                        <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortAlphDesc" id="sortAlphDesc">
-                        <label for="sortAlphDesc">Alphabetical (Desc)</label>
-                    </div>
-                    <img src="/images/x.png" alt="x">
-                </div>-->
-                <!--button class="filterButton filterSubmit" type="button" id="filterButtonSubmit">Show Results</button>-->
-            </form>
-        </div>
+        <%- include("partials/filtersBody.ejs") %>
         <div class="mainList colorPlain">
         </div>
+        <script type="text/javascript" src="js/modules/filters.js"></script>
         <script type="text/javascript" src="js/pages/search.js"></script>
     </main>
     <%- include("partials/footerBody.ejs") %>

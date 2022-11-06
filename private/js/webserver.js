@@ -30,7 +30,7 @@ module.exports = class WebServer {
 
         server.set("views", path.join(publicPath + '/ejs'))
         server.set("/partials", path.join(publicPath + '/partials'))
-        server.use("/", express.static(path.join(publicPath)));
+        server.use(express.static(path.join(publicPath)));
 
         server.set("trust proxy", "loopback, linklocal, uniquelocal");
 
@@ -46,7 +46,14 @@ module.exports = class WebServer {
         server.get("/search/", function(req, res) {
             //if (authenticate(req, res)) return;
 
-            res.render("search", {host: `${req.protocol}://${req.hostname}` });
+            res.render("search", { host: `${req.protocol}://${req.hostname}` });
+            res.end();
+        });
+
+        server.get("/hotel/:hotelId", function(req, res) {
+            //if (authenticate(req, res)) return;
+
+            res.render("hotel", { host: `${req.protocol}://${req.hostname}`, hotelId: req.params.tagId });
             res.end();
         });
 
