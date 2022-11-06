@@ -27,3 +27,23 @@
     height: 100%;
     top: calc(var(--fontSize) - var(--fontSizeSmall));
 }
+
+@media screen and (max-width: 1000px) {
+    .mainPagination {
+        position: fixed;
+        width: 100%;
+        display: grid;
+        align-items: center;
+        justify-content: space-between;
+        grid-template-columns: 1fr auto 1fr !important;
+    }
+    .mainPagination > img {
+        justify-self: left;
+    }
+    .mainPagination > h1 {
+        margin: var(--boxPaddingSmall) var(--flexGapLarge);
+    }
+    .mainPagination > div {
+        justify-self: right;
+    }
+}
