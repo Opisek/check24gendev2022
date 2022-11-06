@@ -42,14 +42,19 @@ main {
 
 .mainHotel {
     grid-area: hotel;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
+    justify-items: center;
 }
 
 @media screen and (max-width: 1000px) {
     main {
         max-height: none;
         grid-template-columns: 1fr;
-        grid-template-rows: var(--searchTitleHeight) auto auto;
-        grid-template-areas: "pagination" "list" "filters";
+        grid-template-rows: var(--searchTitleHeight) var(--searchTitleHeight) auto auto;
+        grid-template-areas: "pagination" "hotel" "list" "filters";
         overflow-y: visible;
     }
     .mainList {
@@ -58,8 +63,21 @@ main {
     .mainPagination {
         position: fixed;
         width: 100%;
+        display: grid;
+        align-items: center;
+        justify-content: space-between;
+        grid-template-columns: 1fr auto 1fr;
+    }
+    .mainPagination > img {
+        justify-self: left;
+    }
+    .mainPagination > h1 {
+        margin: var(--boxPaddingSmall) var(--flexGapLarge);
+    }
+    .mainPagination > div {
+        justify-self: right;
     }
     .mainHotel {
-        position: fixed;
+
     }
 }

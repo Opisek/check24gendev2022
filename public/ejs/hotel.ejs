@@ -13,7 +13,7 @@
     <main>
         <div class="mainPagination colorAccent">
             <img src="/images/right-arrow.png" alt="Filters" id="filtersButtonOpen">
-            <h1>Browse Hotels</h1>
+            <h1>Browse Offers</h1>
             <div class="page">
                 <span>Page</span>
                 <button class="filterButton" type="button" tabindex="-1" value="-1" id="pageButtonDecrement">-</button>
@@ -22,13 +22,13 @@
             </div>
         </div>
         <div class="mainHotel colorAccent">
-            <%= hotelId %>
+            <h1 id="hotelName"></h1>
         </div>
         <%- include("partials/filtersBody.ejs") %>
-        <div class="mainList colorPlain">
-        </div>
-        <script type="text/javascript" src="/js/modules/filters.js"></script>
-        <script type="text/javascript" src="/js/pages/hotel.js"></script>
+        <div class="mainList colorPlain"></div>
     </main>
+    <script type="text/javascript">const hotelId = "<%= hotelId %>";</script>
+    <script type="text/javascript" src="/js/modules/filters.js"></script>
+    <script type="text/javascript" src="/js/pages/hotel.js"></script>
     <%- include("partials/footerBody.ejs") %>
 </body>

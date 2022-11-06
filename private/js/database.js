@@ -95,23 +95,49 @@ module.exports = class Database {
         offset -= offset % dbPagination;
 
         return await this._beginRequest(`
-        SELECT hotelid, price, name
-        FROM (
-            SELECT hotelid, MIN(price) as price
-            FROM offers
-            WHERE countadults=$1
-            AND countchildren=$2
-            AND price<=$3
-            AND price>=$4
-            GROUP BY hotelid
-        ) AS filtered
-        INNER JOIN hotels ON filtered.hotelid=hotels.id
-        WHERE stars>=$5
-        AND stars<=$6
-        LIMIT $7
-        OFFSET $8
+            SELECT hotelid, price, name
+            FROM (
+                SELECT hotelid, MIN(price) as price
+                FROM offers
+                WHERE countadults=$1
+                AND countchildren=$2
+                AND price<=$3
+                AND price>=$4
+                GROUP BY hotelid
+            ) AS filtered
+            INNER JOIN hotels ON filtered.hotelid=hotels.id
+            WHERE stars>=$5
+            AND stars<=$6
+            LIMIT $7
+            OFFSET $8
         `,
         [filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.starsMin, filters.starsMax, dbPagination, offset],
+        requestId);
+    }
+
+    async getOffersByHotel(filters, requestId) {
+        if (!("adults" in filters && !Number.isNaN(Number.parseInt(filters.adults)))) filters.adults = 1;
+        if (!("children" in filters && !Number.isNaN(Number.parseInt(filters.children)))) filters.children = 0;
+        if (!("priceMin" in filters && !Number.isNaN(Number.parseInt(filters.priceMin)))) filters.priceMin = 0;
+        if (!("priceMax" in filters && !Number.isNaN(Number.parseInt(filters.priceMax)))) filters.priceMax = 10000;
+
+        let offset = 1;
+        if ("page" in filters && !Number.isNaN(Number.parseInt(filters.page)) && filters.page > 0) offset = filters.page;
+        offset = (offset - 1) * pagination;
+        offset -= offset % dbPagination;
+
+        return await this._beginRequest(`
+            SELECT hotelid, price
+            FROM offers
+            WHERE hotelid=$1
+            AND countadults=$2
+            AND countchildren=$3
+            AND price<=$4
+            AND price>=$5
+            LIMIT $6
+            OFFSET $7
+        `,
+        [filters.hotelid, filters.adults, filters.children, filters.priceMax, filters.priceMin, dbPagination, offset],
         requestId);
     }
 }

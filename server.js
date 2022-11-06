@@ -6,9 +6,8 @@ const database = new (require("./private/js/database"))(process.env.DB_HOST, pro
     await database.connect();
     console.log("database connected!");
 
-    webServer.addEventListener("getHotelsByFilters", async (filters, requestId, callback) => {
-        callback(await database.getHotelsByFilters(filters, requestId));
-    });
+    webServer.addEventListener("getHotelsByFilters", async (filters, requestId, callback) => callback(await database.getHotelsByFilters(filters, requestId)));
+    webServer.addEventListener("getOffersByHotel", async (filters, requestId, callback) => callback(await database.getOffersByHotel(filters, requestId)));
     
     webServer.addEventListener("abortRequest", requestId => database.abortRequest(requestId));
 })();

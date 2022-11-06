@@ -19,14 +19,33 @@ module.exports = class WebServer {
     addEventListener(name, callback) {
         this._events[name].push(callback);
         this._socketIndex = 0;
+
+        this._currentRequest = null;
+        this._currentRequestIndex = 0;
     }
     
     _emit(name, data, requestId, callback = null) {
         for (const listener of this._events[name]) listener(data, requestId, callback);
     }
 
+    async _newRequest(socket, event, filters, callback) {
+        let requestIndex = this._currentRequestIndex++;
+        let lastCurrentRequest = this._currentRequest;
+        this._currentRequest = requestIndex;
+        setTimeout(async () => {
+            if (requestIndex != this._currentRequest) return;
+            if (lastCurrentRequest) await this._emit("abortRequest", `${socket.id}/${lastCurrentRequest}`);
+            if (requestIndex != this._currentRequest) return;
+            this._emit(event, filters, `${socket.id}/${requestIndex}`, result => {
+                if (requestIndex != this._currentRequest) return;
+                this._currentRequest = null;
+                callback(result);
+            });
+        }, 100);
+    }
+
     constructor(port) {
-        this._events = {"getHotelsByFilters":[], "abortRequest":[]};
+        this._events = {"getHotelsByFilters":[], "getOffersByHotel":[], "abortRequest":[]};
 
         server.set("views", path.join(publicPath + '/ejs'))
         server.set("/partials", path.join(publicPath + '/partials'))
@@ -53,7 +72,7 @@ module.exports = class WebServer {
         server.get("/hotel/:hotelId", function(req, res) {
             //if (authenticate(req, res)) return;
 
-            res.render("hotel", { host: `${req.protocol}://${req.hostname}`, hotelId: req.params.tagId });
+            res.render("hotel", { host: `${req.protocol}://${req.hostname}`, hotelId: req.params.hotelId });
             res.end();
         });
 
@@ -65,28 +84,12 @@ module.exports = class WebServer {
         });
 
         socketio(httpServer).on("connection", socket => {
-            let currentRequest = null;
-            let requestIndex = 0;
-
             socket.on("authenticate", token => {
                 // not yet supported
             });
 
-            socket.on("getHotelsByFilters", (filters, callback) => {
-                let myRequestIndex = requestIndex++;
-                let lastCurrentRequest = currentRequest;
-                currentRequest = myRequestIndex;
-                setTimeout(async () => {
-                    if (myRequestIndex != currentRequest) return;
-                    if (lastCurrentRequest) await this._emit("abortRequest", `${socket.id}/${lastCurrentRequest}`);
-                    if (myRequestIndex != currentRequest) return;
-                    this._emit("getHotelsByFilters", filters, `${socket.id}/${myRequestIndex}`, result => {
-                        if (myRequestIndex != currentRequest) return;
-                        currentRequest = null;
-                        callback(result);
-                    });
-                }, 100);
-            });
+            socket.on("getHotelsByFilters", (filters, callback) => this._newRequest(socket, "getHotelsByFilters", filters, callback));
+            socket.on("getOffersByHotel", (filters, callback) => this._newRequest(socket, "getOffersByHotel", filters, callback));
         });
 
 

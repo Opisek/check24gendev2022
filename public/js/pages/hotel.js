@@ -14,7 +14,7 @@ function getOffers() {
 
     document.getElementsByClassName("mainFilters")[0].classList.add("hidden");
 
-    let filterParameters = {};
+    let filterParameters = { "hotelid": hotelId };
     for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
 
     const page = filterParameters.page;
@@ -79,7 +79,7 @@ function displayOffers(offers, page) {
         offerName.innerHTML = offer.name;
         offerDiv.appendChild(offerName);
         const offerPrice = document.createElement("b");
-        offerPrice.innerHTML = `from ${offer.price}€`;
+        offerPrice.innerHTML = `${offer.price}€`;
         offerDiv.appendChild(offerPrice);
         const offerDetails = document.createElement("div");
         offerDiv.appendChild(offerDetails);
@@ -89,3 +89,7 @@ function displayOffers(offers, page) {
 
 const socket = io();
 
+window.addEventListener("load", () => {
+    document.getElementById("filterRowStars").remove();
+    document.getElementById("hotelName").innerHTML = "Test Hotel";
+});
