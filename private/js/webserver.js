@@ -17,35 +17,42 @@ const publicPath = path.join(serverPath + "/public");
 
 module.exports = class WebServer {
     addEventListener(name, callback) {
+        if (!(name in this._events)) this._events[name] = [];
         this._events[name].push(callback);
         this._socketIndex = 0;
 
-        this._currentRequest = null;
-        this._currentRequestIndex = 0;
+        this._currentRequest = {};
+        this._currentRequestIndex = {};
     }
     
     _emit(name, data, requestId, callback = null) {
+        if (!(name in this._events)) this._events = [];
         for (const listener of this._events[name]) listener(data, requestId, callback);
     }
 
     async _newRequest(socket, event, filters, callback) {
-        let requestIndex = this._currentRequestIndex++;
-        let lastCurrentRequest = this._currentRequest;
-        this._currentRequest = requestIndex;
+        if (!(event in this._currentRequest)) {
+            this._currentRequest[event] = null;
+            this._currentRequestIndex[event] = 0;
+        }
+
+        let requestIndex = this._currentRequestIndex[event]++;
+        let lastCurrentRequest = this._currentRequest[event];
+        this._currentRequest[event] = requestIndex;
         setTimeout(async () => {
-            if (requestIndex != this._currentRequest) return;
+            if (requestIndex != this._currentRequest[event]) return;
             if (lastCurrentRequest) await this._emit("abortRequest", `${socket.id}/${lastCurrentRequest}`);
-            if (requestIndex != this._currentRequest) return;
+            if (requestIndex != this._currentRequest[event]) return;
             this._emit(event, filters, `${socket.id}/${requestIndex}`, result => {
-                if (requestIndex != this._currentRequest) return;
-                this._currentRequest = null;
+                if (requestIndex != this._currentRequest[event]) return;
+                this._currentRequest[event] = null;
                 callback(result);
             });
         }, 100);
     }
 
     constructor(port) {
-        this._events = {"getHotelsByFilters":[], "getOffersByHotel":[], "abortRequest":[]};
+        this._events = {};
 
         server.set("views", path.join(publicPath + '/ejs'))
         server.set("/partials", path.join(publicPath + '/partials'))
@@ -89,7 +96,9 @@ module.exports = class WebServer {
             });
 
             socket.on("getHotelsByFilters", (filters, callback) => this._newRequest(socket, "getHotelsByFilters", filters, callback));
+            socket.on("getHotelsByFiltersPages", (filters, callback) => this._newRequest(socket, "getHotelsByFiltersPages", filters, callback));
             socket.on("getOffersByHotel", (filters, callback) => this._newRequest(socket, "getOffersByHotel", filters, callback));
+            socket.on("getOffersByHotelPages", (filters, callback) => this._newRequest(socket, "getOffersByHotelPages", filters, callback));
         });
 
 

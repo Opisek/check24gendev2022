@@ -41,11 +41,19 @@ function getOffers() {
         cachedRows = {};
     }
 
+    if (!allSame) socket.emit("getHotelsByFiltersPages", filterParameters, results => {
+        let lastPage = Math.ceil(Number.parseInt(results[0].count) / pagination);
+        const pageCountElement = document.getElementById("pageCount");
+        let text = pageCountElement.innerHTML.split(" ");
+        text[text.length-1] = lastPage
+        pageCountElement.innerHTML = text.join(" ");
+        document.getElementById("pageField").max = lastPage;
+    });
     socket.emit("getHotelsByFilters", filterParameters, results => {
         let startingPage = page - (page - 1) % (dbPagination / pagination);
         for (let i = 0; i < dbPagination / pagination; ++i) {
             let newCache = [];
-            for (let j = i; j < i + pagination && j < results.length; ++j) newCache.push(results[j]);
+            for (let j = i * pagination; j < (i + 1) * pagination && j < results.length; ++j) newCache.push(results[j]);
             cachedRows[i + startingPage] = newCache;
         }
         displayOffers(cachedRows[page], page);

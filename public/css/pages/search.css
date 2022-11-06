@@ -33,6 +33,16 @@ main {
 .page > span {
     margin-right: var(--flexGapLarge);
 }
+.page > input {
+    /* text-align: right */
+}
+#pageCount {
+    margin-left: 0;
+    font-size: var(--fontSizeSmall);
+    position: relative;
+    height: 100%;
+    top: calc(var(--fontSize) - var(--fontSizeSmall));
+}
 
 .mainFilters {
     grid-area: filters;

@@ -2,7 +2,7 @@ const postgres = require("pg");
 const moment = require("moment-timezone");
 
 const pagination = 10;
-const dbPagination = 10;
+const dbPagination = 100;
 
 module.exports = class Database {
     constructor(host, port, user, password, database) {
@@ -33,55 +33,31 @@ module.exports = class Database {
         const request = this._sql.query(query, parameters);
         this._requests[requestId] = request;
         let result;
-        try {result = (await request).rows} catch (e) {result = [];}
+        try {result = (await request).rows} catch (e) {
+            result = [];
+            console.error(e);
+        }
         delete this._requests[requestId];
-        console.log("done");
-        return result;
-    }
-
-    async offersRequest(filters) {
-        let query = `SELECT * FROM offers INNER JOIN hotels ON offers.hotelid=hotels.id`;
-
-        let conditions = [];
-        let paramaters = [];
-        if ("adults" in filters && !Number.isNaN(Number.parseInt(filters.adults))) {
-            conditions.push(`countadults=$${conditions.length+1}`);
-            paramaters.push(filters.adults);
-        }
-        if ("children" in filters && !Number.isNaN(Number.parseInt(filters.children))) {
-            conditions.push(`countchildren=$${conditions.length+1}`);
-            paramaters.push(filters.children);
-        }
-        if ("priceMin" in filters && !Number.isNaN(Number.parseInt(filters.priceMin))) {
-            conditions.push(`price>=$${conditions.length+1}`);
-            paramaters.push(filters.priceMin);
-        }
-        if ("priceMax" in filters && !Number.isNaN(Number.parseInt(filters.priceMax))) {
-            conditions.push(`price<=$${conditions.length+1}`);
-            paramaters.push(filters.priceMax);
-        }
-        if ("starsMin" in filters && !Number.isNaN(Number.parseFloat(filters.starsMin))) {
-            conditions.push(`stars>=$${conditions.length+1}`);
-            paramaters.push(filters.starsMin);
-        }
-        if ("starsMax" in filters && !Number.isNaN(Number.parseFloat(filters.starsMax))) {
-            conditions.push(`stars<=$${conditions.length+1}`);
-            paramaters.push(filters.starsMax);
-        }
-
-        let page = 1;
-        if ("page" in filters && !Number.isNaN(Number.parseInt(filters.page)) && filters.page > 0) page = filters.page;
-
-        if (conditions.length != 0) query += ` WHERE ${conditions.join(" AND ")}`;
-
-        query += ` LIMIT ${pagination} OFFSET ${(page - 1) * pagination}`; // in real life one should consider cursor instead limit and offset
-
-        let result = await this._sql.query(query, paramaters);
-
         return result;
     }
 
     async getHotelsByFilters(filters, requestId) {
+        return await this._hotelsByFilters(filters, requestId, ["hotelid", "price", "name"]);
+    }
+
+    async getHotelsByFiltersPages(filters, requestId) {
+        return await this._hotelsByFilters(filters, requestId, ["COUNT(*)"], false);
+    }
+
+    async getOffersByHotel(filters, requestId) {
+        return await this._hotelsByFilters(filters, requestId, ["id", "price"]);
+    }
+
+    async getOffersByHotelPages(filters, requestId) {
+        return await this._hotelsByFilters(filters, requestId, ["COUNT(*)"], false);
+    }
+
+    async _hotelsByFilters(filters, requestId, columns, limit=true) {
         if (!("adults" in filters && !Number.isNaN(Number.parseInt(filters.adults)))) filters.adults = 1;
         if (!("children" in filters && !Number.isNaN(Number.parseInt(filters.children)))) filters.children = 0;
         if (!("priceMin" in filters && !Number.isNaN(Number.parseInt(filters.priceMin)))) filters.priceMin = 0;
@@ -95,7 +71,7 @@ module.exports = class Database {
         offset -= offset % dbPagination;
 
         return await this._beginRequest(`
-            SELECT hotelid, price, name
+            SELECT ${columns.join(", ")}
             FROM (
                 SELECT hotelid, MIN(price) as price
                 FROM offers
@@ -108,14 +84,13 @@ module.exports = class Database {
             INNER JOIN hotels ON filtered.hotelid=hotels.id
             WHERE stars>=$5
             AND stars<=$6
-            LIMIT $7
-            OFFSET $8
+            ${limit ? `LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `,
-        [filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.starsMin, filters.starsMax, dbPagination, offset],
+        [filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.starsMin, filters.starsMax],
         requestId);
     }
 
-    async getOffersByHotel(filters, requestId) {
+    async _offersByHotel(filters, requestId, columns, limit=true) {
         if (!("adults" in filters && !Number.isNaN(Number.parseInt(filters.adults)))) filters.adults = 1;
         if (!("children" in filters && !Number.isNaN(Number.parseInt(filters.children)))) filters.children = 0;
         if (!("priceMin" in filters && !Number.isNaN(Number.parseInt(filters.priceMin)))) filters.priceMin = 0;
@@ -127,17 +102,16 @@ module.exports = class Database {
         offset -= offset % dbPagination;
 
         return await this._beginRequest(`
-            SELECT hotelid, price
+            SELECT ${columns.join(", ")}
             FROM offers
             WHERE hotelid=$1
             AND countadults=$2
             AND countchildren=$3
             AND price<=$4
             AND price>=$5
-            LIMIT $6
-            OFFSET $7
+            ${limit ? `LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `,
-        [filters.hotelid, filters.adults, filters.children, filters.priceMax, filters.priceMin, dbPagination, offset],
+        [filters.hotelid, filters.adults, filters.children, filters.priceMax, filters.priceMin],
         requestId);
     }
 }

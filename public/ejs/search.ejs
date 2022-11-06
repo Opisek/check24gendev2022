@@ -14,12 +14,7 @@
         <div class="mainPagination colorAccent">
             <img src="/images/right-arrow.png" alt="Filters" id="filtersButtonOpen">
             <h1>Browse Hotels</h1>
-            <div class="page">
-                <span>Page</span>
-                <button class="filterButton" type="button" tabindex="-1" value="-1" id="pageButtonDecrement">-</button>
-                <input class="filterInput" placeholder="0" value="" type="number" min="1" max="100000" name="page" id="pageField">
-                <button class="filterButton" type="button" tabindex="-1" value="1" id="pageButtonIncrement">+</button>
-            </div>
+            <%- include("partials/paginationBody.ejs") %>
         </div>
         <%- include("partials/filtersBody.ejs") %>
         <div class="mainList colorPlain">

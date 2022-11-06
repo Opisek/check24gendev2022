@@ -1,5 +1,5 @@
 const pagination = 10;
-const dbPagination = 10;
+const dbPagination = 100;
 
 var loaded = false;
 
