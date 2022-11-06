@@ -91,8 +91,16 @@ function displayOffers(offers, page) {
         offerDiv.appendChild(offerPrice);
         const offerDetails = document.createElement("div");
         offerDiv.appendChild(offerDetails);
+        const offerButton = document.createElement("button");
+        offerButton.innerHTML = "See offers";
+        offerButton.addEventListener("click", () => offerClick(offer.hotelid));
+        offerDiv.appendChild(offerButton);
         container.appendChild(offerDiv);
     }
+}
+
+function offerClick(id) {
+    switchPageWithParameters(`/hotel/${id}`);
 }
 
 const socket = io();

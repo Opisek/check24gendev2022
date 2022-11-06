@@ -31,7 +31,7 @@
     display: grid !important;
     grid-template-rows: 2fr 1fr;
     grid-template-columns: 2fr 1fr;
-    grid-template-areas: "name price" "data data";
+    grid-template-areas: "name price" "data button";
     align-items: center;
     text-align: left;
 }
@@ -47,4 +47,17 @@
     grid-area: data;
     color: var(--plainCommentForegroundColor);
     font-size: var(--fontSizeSmall);
+}
+
+.offer > button {
+    grid-area: button;
+    justify-self: right;
+    padding: var(--boxPaddingSmall);
+    border-radius: var(--boxBorderRadiusSmall);
+    background-color: var(--secondaryBackgroundColor);
+    color: var(--secondaryForegroundColor);
+}
+.offer > button:hover {
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
 }

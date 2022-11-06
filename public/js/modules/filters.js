@@ -4,9 +4,14 @@ const dbPagination = 100;
 var loaded = false;
 
 function setUrlParameter(paramater, value) {
+    if (paramater == "" || paramater == undefined || paramater == null) return;
     let url = new URL(window.location.href);
     url.searchParams.set(paramater, value);
     history.replaceState({}, "Title", url.toString());
+}
+
+function switchPageWithParameters(subpage) {
+    window.location = subpage + document.location.search;
 }
 
 function changeValue(input, change=0, apply=true) {
