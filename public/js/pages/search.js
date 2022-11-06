@@ -29,8 +29,6 @@ function getOffers() {
         }
     }
 
-    console.log(pagesLocked);
-
     if (allSame) {
         if (pagesLocked) return;
         if (page in cachedRows) {
@@ -85,6 +83,9 @@ function displayOffers(offers, page) {
         offerPrice.innerHTML = `from ${offer.price}€`;
         offerDiv.appendChild(offerPrice);
         const offerDetails = document.createElement("div");
+        const stars = document.createElement("span");
+        stars.innerHTML = `${offer.stars} ★`;
+        offerDetails.appendChild(stars);
         offerDiv.appendChild(offerDetails);
         const offerButton = document.createElement("button");
         offerButton.innerHTML = "See offers";

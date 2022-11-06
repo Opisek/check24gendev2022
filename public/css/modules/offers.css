@@ -47,7 +47,7 @@
 .offer > div {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    gap: var(--flexGapLarge);
     grid-area: data;
     color: var(--plainCommentForegroundColor);
     font-size: var(--fontSizeSmall);

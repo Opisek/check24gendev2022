@@ -42,7 +42,7 @@ module.exports = class Database {
     }
 
     async getHotelsByFilters(filters, requestId) {
-        return await this._hotelsByFilters(filters, requestId, ["hotelid", "price", "name"]);
+        return await this._hotelsByFilters(filters, requestId, ["hotelid", "price", "name", "stars"]);
     }
 
     async getHotelsByFiltersPages(filters, requestId) {
