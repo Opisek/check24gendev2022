@@ -1,4 +1,4 @@
-const postgres = require("postgres");
+const postgres = require("pg");
 const moment = require("moment-timezone");
 
 const pagination = 10;
@@ -6,10 +6,10 @@ const dbPagination = 100;
 
 module.exports = class Database {
     constructor(host, port, user, password, database) {
-        this._sql = new postgres({
+        this._sql = new postgres.Client({
             host: host,
             port: port,
-            username: user,
+            user: user,
             password: password,
             database: database,
             connect_timeout: 60,
@@ -20,21 +20,22 @@ module.exports = class Database {
 
     async connect() {
         //await this._sql.connect();
-        await this._sql`SET client_encoding='UTF8'`;
+        await this._sql.query(`SET client_encoding='UTF8'`);
     }
 
     async abortRequest(requestId) {
         console.log("aborting request: " + requestId);
         if (!(requestId in this._requests)) return;
-        //await this._requests[requestId].cancel(); // the library is bugged and crashes the app, turns out making my own solutions may have been worth it after all. maybe i'll revert
+        //try {await this._requests[requestId].cancel();} catch(e) {} // the library is bugged and crashes the app, turns out making my own solutions may have been worth it after all. maybe i'll revert
         delete this._requests[requestId];
     }
 
-    async _beginRequest(query, requestId) {
+    async _beginRequest(query, paramaters, requestId) {
         console.log("beginning request: " + requestId);
-        this._requests[requestId] = query;
+        const request = this._sql.query(query, parameters);
+        this._requests[requestId] = request;
         let result;
-        try {result = await query;} catch (e) {result = [];}
+        try {result = await request} catch (e) {result = [];}
         delete this._requests[requestId];
         return result;
     }
@@ -95,22 +96,24 @@ module.exports = class Database {
         offset = (offset - 1) * pagination;
         offset -= offset % dbPagination;
 
-        return await this._beginRequest(this._sql`
+        return await this._beginRequest(`
         SELECT hotelid, price, name
         FROM (
             SELECT hotelid, MIN(price) as price
             FROM offers
-            WHERE countadults=${filters.adults}
-            AND countchildren=${filters.children}
-            AND price<=${filters.priceMax}
-            AND price>=${filters.priceMin}
+            WHERE countadults=$1
+            AND countchildren=$2
+            AND price<=$3
+            AND price>=$4
             GROUP BY hotelid
         ) AS filtered
         LEFT JOIN hotels ON filtered.hotelid=hotels.id
-        WHERE stars>=${filters.starsMin}
-        AND stars<=${filters.starsMax}
-        LIMIT ${dbPagination}
-        OFFSET ${offset}
-        `, requestId);
+        WHERE stars>=$5
+        AND stars<=$6
+        LIMIT $7
+        OFFSET $8
+        `,
+        [filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.starsMin, filters.starsMax, dbPagination, offset],
+        requestId);
     }
 }
