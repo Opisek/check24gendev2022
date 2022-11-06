@@ -94,25 +94,23 @@ module.exports = class Database {
         if ("page" in filters && !Number.isNaN(Number.parseInt(filters.page)) && filters.page > 0) offset = filters.page;
         offset = (offset - 1) * pagination;
         offset -= offset % dbPagination;
-        
+
         return await this._beginRequest(this._sql`
         SELECT hotelid, price, name
         FROM (
             SELECT hotelid, MIN(price) as price
             FROM offers
-            INNER JOIN hotels ON offers.hotelid=hotels.id
             WHERE countadults=${filters.adults}
             AND countchildren=${filters.children}
-            AND price>=${filters.priceMin}
             AND price<=${filters.priceMax}
-            AND stars>=${filters.starsMin}
-            AND stars<=${filters.starsMax}
+            AND price>=${filters.priceMin}
             GROUP BY hotelid
-            LIMIT ${dbPagination}
-            OFFSET ${offset}
         ) AS filtered
-        LEFT JOIN hotels ON filtered.hotelid=hotels.id`, requestId);
-        
-        // SELECT hotelid, price, name FROM (SELECT hotelid, MIN(price) as price FROM offers WHERE countadults=2 AND countchildren=0 AND price < 1000 GROUP BY hotelid LIMIT 100) AS filtered LEFT JOIN hotels ON filtered.hotelid=hotels.id;
+        LEFT JOIN hotels ON filtered.hotelid=hotels.id
+        WHERE stars>=${filters.starsMin}
+        AND stars<=${filters.starsMax}
+        LIMIT ${dbPagination}
+        OFFSET ${offset}
+        `, requestId);
     }
 }
