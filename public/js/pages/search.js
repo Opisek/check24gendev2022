@@ -2,9 +2,21 @@
 
 var lastFilters = {};
 var cachedRows = {};
-var loadingOffers = false;
 
 function getOffers() {
+    let allSame = false;
+    if (Object.keys(lastFilters).length == Object.keys(filterParameters).length) {
+        allSame = true;
+        for (let parameter of Object.keys(filterParameters)) {
+            if (parameter == "page") continue;
+            if (!(parameter in lastFilters) || lastFilters[parameter] != filterParameters[parameter]) {
+                allSame = false;
+                break;
+            }
+        }
+    }
+
+    if (pagesLocked && allSame) return;
     lockPages();
 
     const container = document.getElementsByClassName("mainList")[0];
@@ -20,20 +32,7 @@ function getOffers() {
 
     const page = filterParameters.page;
 
-    let allSame = false;
-    if (Object.keys(lastFilters).length == Object.keys(filterParameters).length) {
-        allSame = true;
-        for (let parameter of Object.keys(filterParameters)) {
-            if (parameter == "page") continue;
-            if (!(parameter in lastFilters) || lastFilters[parameter] != filterParameters[parameter]) {
-                allSame = false;
-                break;
-            }
-        }
-    }
-
     if (allSame) {
-        if (pagesLocked) return;
         if (page in cachedRows) {
             displayOffers(cachedRows[page]); // will need to await
             return;
