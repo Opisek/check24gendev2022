@@ -71,9 +71,7 @@ async function main() {
     await sql.query(`COPY hotels FROM 'D:/Projects/Websites/check24gendev2022/csv/hotels.csv' DELIMITER ',' CSV HEADER`);
 
     await progressReporting(sql, `COPY offers (hotelid, departuredate, returndate, countadults, countchildren, price, inbounddepartureairport, inboundarrivalairport, inboundairline, inboundarrivaldatetime, outbounddepartureairport, outboundarrivalairport, outboundairline, outboundarrivaldatetime, mealtype, oceanview, roomtype) FROM 'D:/Projects/Websites/check24gendev2022/csv/offers.csv' DELIMITER ',' CSV HEADER`, "copy", "bytes");
-    //await progressReporting("CREATE INDEX price_index on offers(price)", "create_index");
-    //await progressReporting("CREATE INDEX outbounddepartureairport_index on offers(outbounddepartureairport)", "create_index");
-    //await progressReporting("CREATE INDEX inboundarrivalairport_index on offers(inboundarrivalairport)", "create_index");
+    await progressReporting("CREATE INDEX hotel_index on offers USING btree (hotelid)", "create_index", "blocks");
     await progressReporting(sql, "CREATE INDEX hotel_search_index on offers USING btree(hotelid, price, countadults, countchildren)", "create_index", "blocks");
 
     console.log("load offers");

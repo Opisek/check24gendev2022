@@ -2,7 +2,7 @@ const postgres = require("pg");
 const moment = require("moment-timezone");
 
 const pagination = 10;
-const dbPagination = 100;
+const dbPagination = 10;
 
 module.exports = class Database {
     constructor(host, port, user, password, database) {
@@ -24,7 +24,6 @@ module.exports = class Database {
     async abortRequest(requestId) {
         console.log("aborting request: " + requestId);
         if (!(requestId in this._requests)) return;
-        console.log(this._requests[requestId]);
         //try {await this._requests[requestId].cancel();} catch(e) {} // the library is bugged and crashes the app, turns out making my own solutions may have been worth it after all. maybe i'll revert
         delete this._requests[requestId];
     }
@@ -36,6 +35,7 @@ module.exports = class Database {
         let result;
         try {result = (await request).rows} catch (e) {result = [];}
         delete this._requests[requestId];
+        console.log("done");
         return result;
     }
 
@@ -105,7 +105,7 @@ module.exports = class Database {
             AND price>=$4
             GROUP BY hotelid
         ) AS filtered
-        LEFT JOIN hotels ON filtered.hotelid=hotels.id
+        INNER JOIN hotels ON filtered.hotelid=hotels.id
         WHERE stars>=$5
         AND stars<=$6
         LIMIT $7
