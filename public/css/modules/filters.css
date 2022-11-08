@@ -347,8 +347,10 @@ div.filterInput {
     gap: var(--flexGap);
 }
 .filterInputSelectDiv > div > option {
+    position: relative;
     cursor: pointer;
     border-radius: var(--boxBorderRadiusSmall);
+    min-height: var(--selectOptionHeight) !important;
 }
 .mainFilters > form > div:nth-child(odd) .filterInputSelectDiv > div {
     background-color: var(--primaryBackgroundColor);
@@ -370,6 +372,8 @@ div.filterInput {
 
 .popup {
     z-index: 20;
+    max-height: 50vh;
+    overflow-y: auto;
 }
 .popupDown {
     bottom: calc(var(--interactiveHeightInside) + 2 * var(--borderWidth));

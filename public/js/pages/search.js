@@ -100,5 +100,3 @@ function displayOffers(offers, page) {
 function offerClick(id) {
     switchPageWithParameters(`/hotel/${id}`);
 }
-
-const socket = io();

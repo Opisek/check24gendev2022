@@ -1,3 +1,5 @@
+const socket = io();
+
 let navMobile = true;
 let navExpanded = false;
 let domNavRight;

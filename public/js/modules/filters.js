@@ -299,6 +299,8 @@ function initSelects(container) {
 
 // Init
 
+let airports;
+
 window.addEventListener("load", () => {
     const url = new URL(window.location.href);
 
@@ -342,7 +344,19 @@ window.addEventListener("load", () => {
     document.getElementById("inputCalendarLeft").addEventListener("click", () => calendarLeft());
     document.getElementById("inputCalendarRight").addEventListener("click", () => calendarRight());
 
-    for (let select of document.getElementsByClassName("filterInputSelectDiv")) initSelects(select);
+    socket.emit("getAirports", {}, results => {
+        airports = results;
+        let airportList = document.getElementById("airportList");
+        for (let airport of airports) {
+            if (airport.home) {
+                const airportOption = document.createElement("option");
+                airportOption.value = airport.code;
+                airportOption.innerHTML = airport.name;
+                airportList.appendChild(airportOption);
+            }
+        }
+        for (let select of document.getElementsByClassName("filterInputSelectDiv")) initSelects(select);
+    })
 
     getOffers();
 

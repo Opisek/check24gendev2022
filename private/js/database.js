@@ -56,6 +56,16 @@ module.exports = class Database {
     async getOffersByHotelPages(filters, requestId) {
         return await this._offersByHotel(filters, requestId, ["COUNT(*)"], false);
     }
+    
+    async getAirports(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT *
+            FROM airports
+            ORDER BY name
+        `,
+        [],
+        requestId);
+    }
 
     async _hotelsByFilters(filters, requestId, columns, limit=true) {
         this._parseFilters(filters);
