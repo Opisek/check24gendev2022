@@ -81,7 +81,7 @@ module.exports = class Database {
             INNER JOIN hotels ON filtered.hotelid=hotels.id
             WHERE stars>=$7
             AND stars<=$8
-            ${limit ? `LIMIT ${dbPagination} OFFSET ${offset}` : ""}
+            ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `,
         [filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate, filters.starsMin, filters.starsMax],
         requestId);
@@ -105,7 +105,7 @@ module.exports = class Database {
             AND price>=$5
             AND departuredate>=$6
             AND returndate<=$7
-            ${limit ? `LIMIT ${dbPagination} OFFSET ${offset}` : ""}
+            ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `,
         [filters.hotelid, filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate],
         requestId);
@@ -123,6 +123,27 @@ module.exports = class Database {
             let returnDate = new Date();
             returnDate.setFullYear(returnDate.getFullYear() + 1);
             filters.returnDate = returnDate.toISOString();
+        }
+        switch (filters.sort) {
+            default:
+            case "priceAsc":
+                filters.sort = "price ASC";
+                break;
+            case "priceDesc":
+                filters.sort = "price DESC";
+                break;
+            case "alphAsc":
+                filters.sort = "name ASC";
+                break;
+            case "alphDesc":
+                filters.sort = "name DESC";
+                break;
+            case "starsAsc":
+                filters.sort = "stars ASC";
+                break;
+            case "starsDesc":
+                filters.sort = "stars DESC";
+                break;
         }
     }
 }

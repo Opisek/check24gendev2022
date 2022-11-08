@@ -161,7 +161,7 @@ var selectingBegin;
 var beginDate;
 var endDate;
 
-function openCalendar() {
+function openCalendar(field) {
     const today = new Date();
     viewMonth = today.getUTCMonth();
     viewYear = today.getUTCFullYear();
@@ -170,7 +170,19 @@ function openCalendar() {
 
     renderCalendar();
 
-    document.getElementById("inputCalendar").classList.add("visible");
+    const calendar = document.getElementById("inputCalendar");
+    field.addEventListener("click", () => {
+        if (field.getBoundingClientRect().top < window.innerHeight / 2) {
+            calendar.classList.add("popupUp");
+            calendar.classList.remove("popupDown");
+        } else {
+            licalendarst.classList.remove("popupUp");
+            calendar.classList.add("popupDown");
+        }
+        calendar.classList.add("visible");
+    });
+
+    calendar.classList.add("visible");
 }
 
 function closeCalendar() {
@@ -259,6 +271,32 @@ function renderCalendar() {
     }
 }
 
+// Selects
+
+function selectValue(container, option) {
+    container.children[0].innerHTML = option.innerHTML;
+    container.children[1].value = option.value;
+    container.children[2].classList.remove("visible");
+    changeValue(container.children[1]);
+}
+
+function initSelects(container) {
+    const field = container.children[0];
+    const list = container.children[2];
+    field.addEventListener("click", () => {
+        if (field.getBoundingClientRect().top < window.innerHeight / 2) {
+            list.classList.add("popupUp");
+            list.classList.remove("popupDown");
+        } else {
+            list.classList.remove("popupUp");
+            list.classList.add("popupDown");
+        }
+        list.classList.add("visible");
+    });
+    for (let option of list.children) option.addEventListener("click", () => selectValue(container, option));
+    selectValue(container, list.children[0]);
+}
+
 // Init
 
 window.addEventListener("load", () => {
@@ -298,9 +336,13 @@ window.addEventListener("load", () => {
         endDate = new Date(initEndDate);
         updateCalendarResult();
     }
-    document.getElementById("filterInputDateField").addEventListener("click", () => openCalendar());
+
+    const dateField = document.getElementById("filterInputDateField");
+    dateField.addEventListener("click", () => openCalendar(dateField));
     document.getElementById("inputCalendarLeft").addEventListener("click", () => calendarLeft());
     document.getElementById("inputCalendarRight").addEventListener("click", () => calendarRight());
+
+    for (let select of document.getElementsByClassName("filterInputSelectDiv")) initSelects(select);
 
     getOffers();
 

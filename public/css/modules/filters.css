@@ -131,13 +131,14 @@
     background-color: transparent;
     font-size: inherit;
     font-weight: inherit;
+    border: 0;
+    outline: 0;
 }
 
 /* Number Input */
 
 .filterInput[type=number] {
     appearance: textfield;
-    transition: width var(--animationSpeed), box-shadow var(--animationSpeed);
 }
 
 .filterInput::-webkit-outer-spin-button,
@@ -145,22 +146,6 @@
     appearance: none;
     -webkit-appearance: none;
     margin: 0;
-}
-
-.mainFilters > form > div:nth-child(odd) > div > .filterInput[type=number]:hover {
-    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
-}
-
-.mainFilters > form > div:nth-child(odd) > div > .filterInput[type=number]:focus {
-    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
-}
-
-.mainFilters > form > div:nth-child(even) > div > .filterInput[type=number]:hover {
-    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
-}
-
-.mainFilters > form > div:nth-child(even) > div > .filterInput[type=number]:focus {
-    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
 }
 
 /* Range Input */
@@ -280,7 +265,8 @@ div.filterInput {
 }
 
 /* Selection */
-.filterInputSelectDiv {
+
+/*.filterInputSelectDiv {
     display: flex !important;
     flex-direction: column;
     align-items: flex-start !important;
@@ -325,9 +311,10 @@ div.filterInput {
 
 #filterButtonSubmit {
     display: none;
-}
+}*/
 
 /* Date */
+
 .filterInputDateDiv {
     position: relative;
     display: block !important;
@@ -339,17 +326,9 @@ div.filterInput {
     cursor: pointer;
 }
 
-.mainFilters > form > div:nth-child(odd) > div.filterInputDateDiv > span:hover {
-    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
-}
-.mainFilters > form > div:nth-child(even) > div.filterInputDateDiv > span:hover {
-    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
-}
-
 #inputCalendar {
     position: absolute;
     left: 0;
-    top: calc(var(--interactiveHeightInside) + 2 * var(--borderWidth));
     width: 100%;
     height: var(--calendarHeight);
     border-radius: var(--boxBorderRadiusSmall);
@@ -401,6 +380,101 @@ div.filterInput {
 
 .inputCalendarDay {
     cursor: pointer;
+}
+
+/* Select */
+
+/*select.filterInput {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    background-color: inherit;
+    color: inherit;
+}
+select.filterInput:hover {
+
+}
+select.filterInput:focus {
+
+}
+
+.filterInputSelectDiv {
+    display: block !important;
+    width: 100%;
+    padding: 0 !important;
+    background-color: inherit;
+    color: inherit;
+}*/
+
+/* Select */
+
+.filterInputSelectDiv {
+    grid-template-columns: 1fr !important;
+    position: relative;
+}
+.filterInputSelectDiv > span {
+    cursor: pointer;
+}
+.filterInputSelectDiv > div {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: auto;
+    border-radius: var(--boxBorderRadiusSmall);
+    padding: var(--boxPaddingSmall);
+    display: none;
+    text-align: center;
+    background-color: inherit;
+    flex-direction: column;
+    gap: var(--flexGap);
+}
+.filterInputSelectDiv > div > option {
+    cursor: pointer;
+    border-radius: var(--boxBorderRadiusSmall);
+}
+.mainFilters > form > div:nth-child(odd) .filterInputSelectDiv > div {
+    background-color: var(--primaryBackgroundColor);
+}
+.mainFilters > form > div:nth-child(even) .filterInputSelectDiv > div {
+    background-color: var(--secondaryBackgroundColor); 
+}
+.mainFilters > form > div:nth-child(odd) .filterInputSelectDiv > div > option:hover {
+    background-color: var(--primaryLighterBackgroundColor);
+}
+.mainFilters > form > div:nth-child(even) .filterInputSelectDiv > div > option:hover {
+    background-color: var(--secondaryLighterBackgroundColor); 
+}
+.filterInputSelectDiv > div.visible {
+    display: flex;
+}
+
+/* General Popups */
+
+.popup {
+    z-index: 20;
+}
+.popupDown {
+    bottom: calc(var(--interactiveHeightInside) + 2 * var(--borderWidth));
+}
+.popupUp {
+    top: calc(var(--interactiveHeightInside) + 2 * var(--borderWidth));
+}
+
+/* Hover Shadow */
+.underline {
+    transition: width var(--animationSpeed), box-shadow var(--animationSpeed);
+}
+.mainFilters > form > div:nth-child(odd) .underline:hover {
+    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
+}
+.mainFilters > form > div:nth-child(odd) .underline:focus {
+    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryDarkerBackgroundColor); 
+}
+.mainFilters > form > div:nth-child(even) .underline:hover {
+    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
+}
+.mainFilters > form > div:nth-child(even) .underline:focus {
+    box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
 }
 
 @media screen and (max-width: 1000px) {

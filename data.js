@@ -25,7 +25,7 @@ async function main() {
     let query = `SELECT MIN(c.amount), AVG(c.amount), MAX(c.amount) FROM (SELECT COUNT(*) as amount from (select case ${cases}else 'other' end as range, countadults, countchildren from offers) t group by t.range, countadults, countchildren) c;`;
     console.log(query);*/
     
-    console.log("resetting");
+    /*console.log("resetting");
     await sql.query("DROP TABLE IF EXISTS offers, hotels");
 
     console.log("create hotels");
@@ -71,22 +71,22 @@ async function main() {
     await sql.query(`COPY hotels FROM '${path.join(process.env.DATA_PATH + "/hotels.csv")}' DELIMITER ',' CSV HEADER`);
 
     console.log("load offers");
-    await progressReporting(sql, `COPY offers (hotelid, departuredate, returndate, countadults, countchildren, price, inbounddepartureairport, inboundarrivalairport, inboundairline, inboundarrivaldatetime, outbounddepartureairport, outboundarrivalairport, outboundairline, outboundarrivaldatetime, mealtype, oceanview, roomtype) FROM '${path.join(process.env.DATA_PATH + "/offers.csv")}' DELIMITER ',' CSV HEADER`, "copy", "bytes");
+    await progressReporting(sql, `COPY offers (hotelid, departuredate, returndate, countadults, countchildren, price, inbounddepartureairport, inboundarrivalairport, inboundairline, inboundarrivaldatetime, outbounddepartureairport, outboundarrivalairport, outboundairline, outboundarrivaldatetime, mealtype, oceanview, roomtype) FROM '${path.join(process.env.DATA_PATH + "/offers.csv")}' DELIMITER ',' CSV HEADER`, "copy", "bytes_total", "bytes_processed");
     console.log("create hotelid index");
-    await progressReporting(sql, "CREATE INDEX hotel_index on offers USING btree (hotelid)", "create_index", "blocks");
-    console.log("create search index");
-    await progressReporting(sql, "CREATE INDEX hotel_search_index on offers USING btree(hotelid, price, countadults, countchildren)", "create_index", "blocks");
+    await progressReporting(sql, "CREATE INDEX hotel_index on offers USING btree (hotelid)", "create_index", "tuples_total", "tuples_done");
+    */console.log("create search index");
+    await progressReporting(sql, "CREATE INDEX hotel_search_index on offers USING btree(hotelid, price, countadults, countchildren)", "create_index", "tuples_total", "tuples_done");
 }
 
-async function progressReporting(sql, query, type, columns) {
+async function progressReporting(sql, query, type, totalColumn, doneColumn) {
     return new Promise(async resolve => {
         let done = false;
         sql.query(query).then(() => done = true);
         let differences = [];
         let lastProgress = 0;
         while (!done) {
-            let progress = await sql.query(`SELECT ${columns}_processed, ${columns}_total FROM pg_stat_progress_${type}`);
-            let currentProgress = progress.rows[0].bytes_processed / progress.rows[0].bytes_total;
+            let progress = await sql.query(`SELECT ${doneColumn}, ${totalColumn} FROM pg_stat_progress_${type}`);
+            let currentProgress = progress.rows[0][doneColumn] / progress.rows[0][totalColumn];
             differences.push(currentProgress - lastProgress);
             if (differences.length > 20) differences.shift();
             lastProgress = currentProgress;
