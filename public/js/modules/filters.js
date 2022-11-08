@@ -65,7 +65,7 @@ function changeValue(input, change=0, apply=true, reload=true) {
 
     if (apply) setUrlParameter(input.name, input.value);
 
-    if (input.name != "page" && input.type != "hidden") {
+    if (input.name != "page") {
         const pageField = document.getElementById("pageField");
         pageField.value = 1;
         changeInputWidth(pageField);

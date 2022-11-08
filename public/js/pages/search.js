@@ -56,7 +56,7 @@ function getOffers() {
 function displayOffers(offers, page) {
     if (offers.length == 0) {
         if (page > 1) {
-            document.getElementById("pageField").value = page - 1;
+            document.getElementById("pageField").value = page - 1; // deprecated because of min max, should've remove or use binary search
             getOffers();
         } else {
             const container = document.getElementsByClassName("mainList")[0];
