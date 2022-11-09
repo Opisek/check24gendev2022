@@ -180,9 +180,9 @@ async function main() {
     console.log("set utf8");
     await sql.query("SET client_encoding='UTF8'");
 
-    //amait offers(sql);
-    //await hotels(sql);
-    //await airports(sql);
+    await offers(sql);
+    await hotels(sql);
+    await airports(sql);
     await roomtypes(sql);
     await mealtypes(sql);
 

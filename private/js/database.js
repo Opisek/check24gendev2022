@@ -95,27 +95,25 @@ module.exports = class Database {
         offset = (offset - 1) * pagination;
         offset -= offset % dbPagination;
 
-        let parameters = [filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate, filters.starsMin, filters.starsMax];
+        let parameters = [filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate, filters.starsMin, filters.starsMax];
         let paramCount = parameters.length;
         let query = `
             SELECT ${columns.join(", ")}
             FROM (
-                SELECT hotelid, MIN(price) as price, COUNT(*) as amount
-                FROM offers
-                WHERE countadults=$1
-                AND countchildren=$2
-                AND price<=$3
-                AND price>=$4
-                AND departuredate>=$5
-                AND returndate<=$6
+                SELECT hotelid, MIN(price) AS price, COUNT(*) AS amount
+                FROM offers_${filters.adults}_${filters.children}
+                WHERE price<=$1
+                AND price>=$2
+                AND departuredate>=$3
+                AND returndate<=$4
                 ${filters.airport == "Any" ? '' : `AND outbounddepartureairport=$${++paramCount}`}
                 ${filters.room == "Any" ? '' : `AND roomtype=$${++paramCount}`}
                 ${filters.meal == "Any" ? '' : `AND mealtype=$${++paramCount}`}
                 GROUP BY hotelid
             ) AS filtered
             INNER JOIN hotels ON filtered.hotelid=hotels.id
-            WHERE stars>=$7
-            AND stars<=$8
+            WHERE stars>=$5
+            AND stars<=$6
             ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `;
 
