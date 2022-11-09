@@ -86,6 +86,9 @@ function displayOffers(offers, page) {
         const stars = document.createElement("span");
         stars.innerHTML = `${offer.stars} ★`;
         offerDetails.appendChild(stars);
+        const amount = document.createElement("span");
+        amount.innerHTML = `${offer.amount} offer(s)`;
+        offerDetails.appendChild(amount);
         offerDiv.appendChild(offerDetails);
         const offerButton = document.createElement("button");
         offerButton.innerHTML = "See offers";

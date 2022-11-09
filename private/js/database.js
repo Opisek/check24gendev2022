@@ -42,7 +42,7 @@ module.exports = class Database {
     }
 
     async getHotelsByFilters(filters, requestId) {
-        return await this._hotelsByFilters(filters, requestId, ["hotelid", "price", "name", "stars"]);
+        return await this._hotelsByFilters(filters, requestId, ["hotelid", "price", "amount", "name", "stars"]);
     }
 
     async getHotelsByFiltersPages(filters, requestId) {
@@ -100,7 +100,7 @@ module.exports = class Database {
         let query = `
             SELECT ${columns.join(", ")}
             FROM (
-                SELECT hotelid, MIN(price) as price
+                SELECT hotelid, MIN(price) as price, COUNT(*) as amount
                 FROM offers
                 WHERE countadults=$1
                 AND countchildren=$2
