@@ -67,6 +67,26 @@ module.exports = class Database {
         requestId);
     }
 
+    async getRooms(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT *
+            FROM rooms
+            ORDER BY id
+        `,
+        [],
+        requestId);
+    }
+
+    async getMeals(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT *
+            FROM meals
+            ORDER BY id
+        `,
+        [],
+        requestId);
+    }
+
     async _hotelsByFilters(filters, requestId, columns, limit=true) {
         this._parseFilters(filters);
 
@@ -75,7 +95,9 @@ module.exports = class Database {
         offset = (offset - 1) * pagination;
         offset -= offset % dbPagination;
 
-        return await this._beginRequest(`
+        let parameters = [filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate, filters.starsMin, filters.starsMax];
+        let paramCount = parameters.length;
+        let query = `
             SELECT ${columns.join(", ")}
             FROM (
                 SELECT hotelid, MIN(price) as price
@@ -86,15 +108,22 @@ module.exports = class Database {
                 AND price>=$4
                 AND departuredate>=$5
                 AND returndate<=$6
+                ${filters.airport == "Any" ? '' : `AND outbounddepartureairport=$${++paramCount}`}
+                ${filters.room == "Any" ? '' : `AND roomtype=$${++paramCount}`}
+                ${filters.meal == "Any" ? '' : `AND mealtype=$${++paramCount}`}
                 GROUP BY hotelid
             ) AS filtered
             INNER JOIN hotels ON filtered.hotelid=hotels.id
             WHERE stars>=$7
             AND stars<=$8
             ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
-        `,
-        [filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate, filters.starsMin, filters.starsMax],
-        requestId);
+        `;
+
+        console.log(query);
+
+        for (let key of ["airport", "room", "meal"]) if (filters[key] != "Any") parameters.push(filters[key]);
+
+        return await this._beginRequest(query, parameters, requestId);
     }
 
     async _offersByHotel(filters, requestId, columns, limit=true) {
@@ -105,7 +134,9 @@ module.exports = class Database {
         offset = (offset - 1) * pagination;
         offset -= offset % dbPagination;
 
-        return await this._beginRequest(`
+        let parameters = [filters.hotelid, filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate];
+        let paramCount = parameters.length;
+        let query = `
             SELECT ${columns.join(", ")}
             FROM offers
             WHERE hotelid=$1
@@ -115,10 +146,15 @@ module.exports = class Database {
             AND price>=$5
             AND departuredate>=$6
             AND returndate<=$7
+            ${filters.airport == "Any" ? '' : `AND outbounddepartureairport=$${++paramCount}`}
+            ${filters.room == "Any" ? '' : `AND roomtype=$${++paramCount}`}
+            ${filters.meal == "Any" ? '' : `AND mealtype=$${++paramCount}`}
             ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
-        `,
-        [filters.hotelid, filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate],
-        requestId);
+        `;
+
+        for (let key of ["airport", "room", "meal"]) if (filters[key] != "Any") parameters.push(filters[key]);
+
+        return await this._beginRequest(query, parameters, requestId);
     }
 
     _parseFilters(filters) {
@@ -155,5 +191,8 @@ module.exports = class Database {
                 filters.sort = "stars DESC";
                 break;
         }
+        if (!("airport" in filters)) filters.airport = "Any";
+        if (!("room" in filters)) filters.room = "Any";
+        if (!("meal" in filters)) filters.meal = "Any";
     }
 }

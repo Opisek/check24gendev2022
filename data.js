@@ -127,6 +127,46 @@ async function airports(sql) {
     await sql.query("DROP TABLE temp");
 }
 
+async function roomtypes(sql) {
+    console.log("reset roomtypes");
+    await sql.query("DROP TABLE IF EXISTS rooms");
+
+    console.log("create roomtypes");
+    await sql.query(`
+        CREATE TABLE rooms
+        (
+            id VARCHAR(16) PRIMARY KEY
+        )
+    `);
+
+    console.log("load roomtypes");
+    await sql.query(`
+        INSERT INTO rooms
+        SELECT DISTINCT roomtype
+        FROM offers
+    `);
+}
+
+async function mealtypes(sql) {
+    console.log("reset mealtypes");
+    await sql.query("DROP TABLE IF EXISTS meals");
+
+    console.log("create mealtypes");
+    await sql.query(`
+        CREATE TABLE meals
+        (
+            id VARCHAR(16) PRIMARY KEY
+        )
+    `);
+
+    console.log("load mealtypes");
+    await sql.query(`
+        INSERT INTO meals
+        SELECT DISTINCT mealtype
+        FROM offers
+    `);
+}
+
 async function main() {
     const sql = new postgress.Pool({
         host: process.env.DB_HOST,
@@ -140,9 +180,11 @@ async function main() {
     console.log("set utf8");
     await sql.query("SET client_encoding='UTF8'");
 
-    // offers(sql);
-    // hotels(sql);
-    await airports(sql);
+    //amait offers(sql);
+    //await hotels(sql);
+    //await airports(sql);
+    await roomtypes(sql);
+    await mealtypes(sql);
 
     console.log("all done");
 }

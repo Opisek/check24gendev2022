@@ -97,9 +97,13 @@ module.exports = class WebServer {
 
             socket.on("getHotelsByFilters", (filters, callback) => this._newRequest(socket, "getHotelsByFilters", filters, callback));
             socket.on("getHotelsByFiltersPages", (filters, callback) => this._newRequest(socket, "getHotelsByFiltersPages", filters, callback));
+            
             socket.on("getOffersByHotel", (filters, callback) => this._newRequest(socket, "getOffersByHotel", filters, callback));
             socket.on("getOffersByHotelPages", (filters, callback) => this._newRequest(socket, "getOffersByHotelPages", filters, callback));
+            
             socket.on("getAirports", (filters, callback) => this._newRequest(socket, "getAirports", filters, callback));
+            socket.on("getRooms", (filters, callback) => this._newRequest(socket, "getRooms", filters, callback));
+            socket.on("getMeals", (filters, callback) => this._newRequest(socket, "getMeals", filters, callback));
         });
 
 

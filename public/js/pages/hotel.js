@@ -116,8 +116,6 @@ function displayOffers(offers, page) {
     unlockPages();
 }
 
-const socket = io();
-
 window.addEventListener("load", () => {
     document.getElementById("filterRowStars").remove();
     document.getElementById("hotelName").innerHTML = "Test Hotel";

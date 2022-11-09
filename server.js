@@ -13,6 +13,8 @@ const database = new (require("./private/js/database"))(process.env.DB_HOST, pro
     webServer.addEventListener("getOffersByHotelPages", async (filters, requestId, callback) => callback(await database.getOffersByHotelPages(filters, requestId)));
     
     webServer.addEventListener("getAirports", async (filters, requestId, callback) => callback(await database.getAirports(filters, requestId)));
+    webServer.addEventListener("getRooms", async (filters, requestId, callback) => callback(await database.getRooms(filters, requestId)));
+    webServer.addEventListener("getMeals", async (filters, requestId, callback) => callback(await database.getMeals(filters, requestId)));
 
     webServer.addEventListener("abortRequest", requestId => database.abortRequest(requestId));
 })();

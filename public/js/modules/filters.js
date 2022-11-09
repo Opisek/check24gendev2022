@@ -282,26 +282,45 @@ function selectValue(container, option) {
 
 function initSelects(container) {
     const field = container.children[0];
+    const input = container.children[1];
     const list = container.children[2];
     field.addEventListener("click", () => {
-        if (field.getBoundingClientRect().top < window.innerHeight / 2) {
-            list.classList.add("popupUp");
-            list.classList.remove("popupDown");
-        } else {
-            list.classList.remove("popupUp");
-            list.classList.add("popupDown");
+        if (list.classList.contains("visible")) list.classList.remove("visible");
+        else {
+            if (field.getBoundingClientRect().top < window.innerHeight / 2) {
+                list.classList.add("popupUp");
+                list.classList.remove("popupDown");
+            } else {
+                list.classList.remove("popupUp");
+                list.classList.add("popupDown");
+            }
+            list.classList.add("visible");
         }
-        list.classList.add("visible");
     });
     for (let option of list.children) option.addEventListener("click", () => selectValue(container, option));
-    selectValue(container, list.children[0]);
+    let startSelection = list.children[0];
+    if (input.value != undefined && input.value != "") {
+        console.log(input.value);
+        for (let option of list.children) {
+            if (option.value == input.value) {
+                startSelection = option;
+                break;
+            }
+        }
+    }
+    selectValue(container, startSelection);
 }
 
 // Init
 
-let airports;
+var airports;
+var airportsMap;
+var rooms;
+var roomsMap;
+var meals;
+var mealsMap;
 
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
     const url = new URL(window.location.href);
 
     const priceRange = initRange("Price", 0, 10000, 100, 1);
@@ -344,19 +363,42 @@ window.addEventListener("load", () => {
     document.getElementById("inputCalendarLeft").addEventListener("click", () => calendarLeft());
     document.getElementById("inputCalendarRight").addEventListener("click", () => calendarRight());
 
-    socket.emit("getAirports", {}, results => {
-        airports = results;
-        let airportList = document.getElementById("airportList");
-        for (let airport of airports) {
-            if (airport.home) {
-                const airportOption = document.createElement("option");
-                airportOption.value = airport.code;
-                airportOption.innerHTML = airport.name;
-                airportList.appendChild(airportOption);
-            }
+    airports = await new Promise(resolve => socket.emit("getAirports", {}, result => resolve(result)));
+    airportsMap = {};
+    for (let airport of airports) airports[airport.id] = airport.name;
+    const airportList = document.getElementById("airportList");
+    for (let airport of airports) {
+        if (airport.home) {
+            const option = document.createElement("option");
+            option.value = airport.id;
+            option.innerHTML = airport.name;
+            airportList.appendChild(option);
         }
-        for (let select of document.getElementsByClassName("filterInputSelectDiv")) initSelects(select);
-    })
+    }
+
+    rooms = await new Promise(resolve => socket.emit("getRooms", {}, result => resolve(result)));
+    roomsMap = {};
+    for (let room of rooms) rooms[room.id] = room.id;
+    const roomList = document.getElementById("roomList");
+    for (let room of rooms) {
+        const option = document.createElement("option");
+        option.value = room.id;
+        option.innerHTML = room.id; // lang needed
+        roomList.appendChild(option);
+    }
+
+    meals = await new Promise(resolve => socket.emit("getMeals", {}, result => resolve(result)));
+    mealsMap = {};
+    for (let meal of meals) meals[meal.id] = meal.id;
+    const mealList = document.getElementById("mealList");
+    for (let meal of meals) {
+        const option = document.createElement("option");
+        option.value = meal.id;
+        option.innerHTML = meal.id; // lang needed
+        mealList.appendChild(option);
+    }
+    
+    for (let select of document.getElementsByClassName("filterInputSelectDiv")) initSelects(select);
 
     getOffers();
 
