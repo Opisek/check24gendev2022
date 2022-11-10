@@ -331,6 +331,9 @@ window.addEventListener("load", async () => {
             input.addEventListener("change", () => changeValue(input));
             for (let button of input.parentElement.getElementsByClassName("filterButton")) button.addEventListener("click", () => changeValue(input, parseInt(button.value)))
         }
+        if (input.type == "text") {
+            input.addEventListener("change", () => changeValue(input));
+        }
         if (input.name != undefined) {
             const urlValue = url.searchParams.get(input.name);
             if (urlValue != "" && urlValue != undefined) input.value = urlValue;

@@ -2,6 +2,11 @@
     <img src="/images/left-arrow.png" alt="Filters" id="filtersButtonClose">
     <h1>Filters</h1>
     <form>
+        <div class="hotelFilter">
+            <label class="filterName">Search</label>
+            <input class="filterInput textInput" id="filterInputQuery" placeholder="Mallorca" value="" type="text" min="1" max="10" name="query">
+            <img src="/images/x.png" alt="x">
+        </div>
         <div>
             <label class="filterName">Adults</label>
             <div>
@@ -111,31 +116,6 @@
             </div>
             <img src="/images/x.png" alt="x">
         </div>
-        <!--<div>
-            <label class="filterName">Sort</label>
-            <div class="filterInputSelectDiv">
-                <select class="filterInput" id="filterInputSelectField" name="sort">
-                    <option value="priceAsc">Price 🠕</option>
-                    <option value="priceDesc">Price 🠗</option>
-                    <option value="alphAsc">Alphabetical 🠕</option>
-                    <option value="alphDesc">Alphabetical 🠗</option>
-                </select>
-            </div>
-        </div>-->
-        <!--<div>
-            <label class="filterName">Sort</label>
-            <div class="filterInputSelectDiv">
-                <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortPriceAsc" id="sortPriceAsc">
-                <label for="sortPriceAsc">Price (Asc)</label>
-                <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortPriceDesc" id="sortPriceDesc">
-                <label for="sortPriceDesc">Price (Desc)</label>
-                <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortAlphAsc" id="sortAlphAsc">
-                <label for="sortAlphAsc">Alphabetical (Asc)</label>
-                <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortAlphDesc" id="sortAlphDesc">
-                <label for="sortAlphDesc">Alphabetical (Desc)</label>
-            </div>
-            <img src="/images/x.png" alt="x">
-        </div>-->
         <button class="filterButton filterSubmit" type="button" id="filterButtonSubmit">Show Results</button>
     </form>
 </div>
