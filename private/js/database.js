@@ -117,8 +117,6 @@ module.exports = class Database {
             ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `;
 
-        console.log(query);
-
         for (let key of ["airport", "room", "meal"]) if (filters[key] != "Any") parameters.push(filters[key]);
 
         return await this._beginRequest(query, parameters, requestId);
