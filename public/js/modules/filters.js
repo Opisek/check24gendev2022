@@ -300,7 +300,6 @@ function initSelects(container) {
     for (let option of list.children) option.addEventListener("click", () => selectValue(container, option));
     let startSelection = list.children[0];
     if (input.value != undefined && input.value != "") {
-        console.log(input.value);
         for (let option of list.children) {
             if (option.value == input.value) {
                 startSelection = option;

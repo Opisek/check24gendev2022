@@ -186,6 +186,18 @@ module.exports = class Database {
             case "starsDesc":
                 filters.sort = "stars DESC";
                 break;
+            case "depAsc":
+                filters.sort = "departureDate ASC";
+                break;
+            case "depDesc":
+                filters.sort = "departureDate DESC";
+                break;
+            case "retAsc":
+                filters.sort = "returnDate ASC";
+                break;
+            case "retDesc":
+                filters.sort = "returnDate DESC";
+                break;
         }
         if (!("airport" in filters)) filters.airport = "Any";
         if (!("room" in filters)) filters.room = "Any";

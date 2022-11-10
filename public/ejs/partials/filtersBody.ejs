@@ -32,7 +32,7 @@
             </div>
             <img src="/images/x.png" alt="x">
         </div>
-        <div id="filterRowStars">
+        <div id="filterRowStars" class="hotelFilter">
             <label class="filterName">Stars</label>
             <div class="filterInputRangeDiv">
                 <input class="filterInput underline" id="filterInputStarsLowerField" placeholder="0" value="" type="number" name="starsMin">
@@ -66,10 +66,14 @@
                 <div class="popup shadow">
                     <option value="priceAsc">Price 🠕</option>
                     <option value="priceDesc">Price 🠗</option>
-                    <option value="starsAsc">Stars 🠕</option>
-                    <option value="starsDesc">Stars 🠗</option>
-                    <option value="alphAsc">Alphabetical 🠕</option>
-                    <option value="alphDesc">Alphabetical 🠗</option>
+                    <option value="starsAsc" class="hotelFilter">Stars 🠕</option>
+                    <option value="starsDesc" class="hotelFilter">Stars 🠗</option>
+                    <option value="alphAsc" class="hotelFilter">Alphabetical 🠕</option>
+                    <option value="alphDesc" class="hotelFilter">Alphabetical 🠗</option>
+                    <option value="depAsc">Departure Date 🠕</option>
+                    <option value="depDesc">Departure Date 🠗</option>
+                    <option value="retAsc">Return Date 🠕</option>
+                    <option value="retDesc">Return Date 🠗</option>
                 </div>
             </div>
             <img src="/images/x.png" alt="x">
