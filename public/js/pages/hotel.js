@@ -74,46 +74,75 @@ function displayOffers(offers, page) {
 
     for (let offer of offers) {
         const offerDiv = document.createElement("div");
-        offerDiv.className = "offer";
+        offerDiv.className = "offer tripOffer";
         const offerName = document.createElement("h2");
-        offerName.innerHTML = offer.name;
+        const nights = Math.ceil(((new Date(offer.returndate)).valueOf() - (new Date(offer.outboundarrivaldatetime)).valueOf())/1000/60/60/24);
+        offerName.innerHTML = `${nights} night${nights == 1 ? '' : 's'}`;
         offerDiv.appendChild(offerName);
         const offerPrice = document.createElement("b");
         offerPrice.innerHTML = `${offer.price}€`;
         offerDiv.appendChild(offerPrice);
-        const offerDetails = document.createElement("div");
-
-        const meal = document.createElement("span");
-        meal.innerHTML = `${offer.mealtype}`;
-        offerDetails.appendChild(meal);
-
-        const room = document.createElement("span");
-        room.innerHTML = `${offer.roomtype}`;
-        offerDetails.appendChild(room);
-
-        if (offer.oceanview) {
-            const ocean = document.createElement("span");
-            ocean.innerHTML = `ocean view`;
-            offerDetails.appendChild(ocean);
-        }
-
-        const departure = document.createElement("span");
-        departure.innerHTML = `${offer.departuredate}`;
-        offerDetails.appendChild(departure);
         
-        const ret = document.createElement("span");
-        ret.innerHTML = `${offer.returndate}`;
-        offerDetails.appendChild(ret);
+        const flight = document.createElement("div");
+        flight.className = "flightData";
+        
+        const outgoingFlight = document.createElement("div");
+        addFlightData(outgoingFlight, [
+            offer.outboundairline,
+            (new Date(offer.departuredate)).toLocaleDateString(),
+            (new Date(offer.departuredate)).toLocaleTimeString(),
+            offer.outbounddepartureairport,
+            (new Date(offer.outboundarrivaldatetime)).toLocaleDateString(),
+            (new Date(offer.outboundarrivaldatetime)).toLocaleTimeString(),
+            offer.outboundarrivalairport
+        ]);
+        flight.appendChild(outgoingFlight);
+
+        const incomingFlight = document.createElement("div");
+        addFlightData(incomingFlight, [
+            offer.inboundairline,
+            (new Date(offer.returndate)).toLocaleDateString(),
+            (new Date(offer.returndate)).toLocaleTimeString(),
+            offer.inbounddepartureairport,
+            (new Date(offer.inboundarrivaldatetime)).toLocaleDateString(),
+            (new Date(offer.inboundarrivaldatetime)).toLocaleTimeString(),
+            offer.inboundarrivalairport
+        ]);
+        flight.appendChild(incomingFlight);
+
+        offerDiv.appendChild(flight);
+
+        const offerDetails = document.createElement("div");
+        offerDetails.className = "offerDetails";
+        offerDetails.appendChild(createSpan(offer.mealtype));
+        offerDetails.appendChild(createSpan(offer.roomtype));
 
         offerDiv.appendChild(offerDetails);
         const offerButton = document.createElement("button");
-        offerButton.innerHTML = "Book";
+        offerButton.innerHTML = "Book"; 
         offerButton.addEventListener("click", () => {});
         offerDiv.appendChild(offerButton);
         container.appendChild(offerDiv);
     }
 
     unlockPages();
+}
+
+function addFlightData(parent, data) {
+    parent.appendChild(createSpan(data[0], "airline"));
+    parent.appendChild(createSpan(data[1], "depdate"));
+    parent.appendChild(createSpan(data[2], "deptime"));
+    parent.appendChild(createSpan(data[3], "depairport"));
+    parent.appendChild(createSpan(data[4], "arrdate"));
+    parent.appendChild(createSpan(data[5], "arrtime"));
+    parent.appendChild(createSpan(data[6], "arrairport"));
+    parent.appendChild(createSpan('⟶', "arrow"));
+};
+function createSpan(content, className="") {
+    const element = document.createElement("span");
+    element.innerHTML = content;
+    element.className = className;
+    return element
 }
 
 window.addEventListener("load", () => {

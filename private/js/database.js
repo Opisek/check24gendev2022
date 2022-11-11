@@ -50,7 +50,25 @@ module.exports = class Database {
     }
 
     async getOffersByHotel(filters, requestId) {
-        return await this._offersByHotel(filters, requestId, ["id", "departuredate", "returndate", "countadults", "countchildren", "price", "inbounddepartureairport", "inboundarrivalairport", "inboundairline", "inboundarrivaldatetime", "outbounddepartureairport", "outbounddepartureairport", "outboundarrivalairport", "outboundairline", "outboundarrivaldatetime", "mealtype", "oceanview", "roomtype"]);
+        return await this._offersByHotel(filters, requestId, [
+            "filtered.id",
+            "departuredate",
+            "returndate",
+            "countadults",
+            "countchildren",
+            "price",
+            "indepairport.name AS inbounddepartureairport",
+            "inarrairport.name AS inboundarrivalairport",
+            "inboundairline",
+            "inboundarrivaldatetime",
+            "outdepairport.name AS outbounddepartureairport",
+            "outarrairport.name AS outboundarrivalairport",
+            "outboundairline",
+            "outboundarrivaldatetime",
+            "mealtype",
+            "oceanview",
+            "roomtype"
+        ]);
     }
 
     async getOffersByHotelPages(filters, requestId) {
@@ -136,19 +154,27 @@ module.exports = class Database {
         let paramCount = parameters.length;
         let query = `
             SELECT ${columns.join(", ")}
-            FROM offers
-            WHERE hotelid=$1
-            AND countadults=$2
-            AND countchildren=$3
-            AND price<=$4
-            AND price>=$5
-            AND departuredate>=$6
-            AND returndate<=$7
-            ${filters.airport == "Any" ? '' : `AND outbounddepartureairport=$${++paramCount}`}
-            ${filters.room == "Any" ? '' : `AND roomtype=$${++paramCount}`}
-            ${filters.meal == "Any" ? '' : `AND mealtype=$${++paramCount}`}
-            ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
+            FROM (
+                SELECT *
+                FROM offers_${filters.adults}_${filters.children}
+                WHERE hotelid=$1
+                AND countadults=$2
+                AND countchildren=$3
+                AND price<=$4
+                AND price>=$5
+                AND departuredate>=$6
+                AND returndate<=$7
+                ${filters.airport == "Any" ? '' : `AND outbounddepartureairport=$${++paramCount}`}
+                ${filters.room == "Any" ? '' : `AND roomtype=$${++paramCount}`}
+                ${filters.meal == "Any" ? '' : `AND mealtype=$${++paramCount}`}
+                ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
+            ) AS filtered
+            INNER JOIN airports AS outdepairport ON filtered.outbounddepartureairport=outdepairport.id
+            INNER JOIN airports AS outarrairport ON filtered.outboundarrivalairport=outarrairport.id
+            INNER JOIN airports AS indepairport ON filtered.inbounddepartureairport=indepairport.id
+            INNER JOIN airports AS inarrairport ON filtered.inboundarrivalairport=inarrairport.id
         `;
+        console.log(query);
 
         for (let key of ["airport", "room", "meal"]) if (filters[key] != "Any") parameters.push(filters[key]);
 

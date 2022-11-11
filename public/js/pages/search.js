@@ -83,6 +83,7 @@ function displayOffers(offers, page) {
         offerPrice.innerHTML = `from ${offer.price}€`;
         offerDiv.appendChild(offerPrice);
         const offerDetails = document.createElement("div");
+        offerDetails.className = "offerDetails";
         const stars = document.createElement("span");
         stars.innerHTML = `${offer.stars} ★`;
         offerDetails.appendChild(stars);

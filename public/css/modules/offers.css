@@ -11,7 +11,7 @@
 .mainList > div {
     border-radius: var(--boxBorderRadiusSmall);
     padding: var(--boxPaddingSmall) var(--boxPadding);
-    min-height: var(--offerHeight);
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -34,6 +34,7 @@
     grid-template-areas: "name price" "data button";
     align-items: center;
     text-align: left;
+    gap: var(--flexGap);
 }
 
 .offer > h2 {
@@ -44,13 +45,14 @@
     text-align: right;
 }
 
-.offer > div {
+.offer > .offerDetails {
     display: flex;
     flex-direction: row;
     gap: var(--flexGapLarge);
     grid-area: data;
     color: var(--plainCommentForegroundColor);
     font-size: var(--fontSizeSmall);
+    line-height: 100%;
 }
 
 .offer > button {
@@ -73,4 +75,58 @@
         grid-template-areas: "name price" "data data" "button button";
     }
     
+}
+
+/* Trip Offer Specific */
+
+.tripOffer {
+    grid-template-rows: auto auto auto !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-areas: "name price" "flight flight" "data button";
+}
+
+.tripOffer > .flightData {
+    display: flex;
+    gap: var(--flexGapLarger);
+    grid-area: flight;
+    padding-bottom: var(--boxPadding);
+}
+
+.flightData > div {
+    display: grid;
+    gap: var(--flexGap);
+    grid-template-columns: 2fr 1fr 2fr;
+    grid-template-rows: repeat(4, auto);
+    grid-template-areas: "airline airline airline" "depairport arrow arrairport" "depdate empty arrdate" "deptime empty arrtime";
+    width: 50%;
+}
+.flightData > div > * {
+    align-self: center;
+    text-align: center;
+}
+.flightData > div > .airline {
+    grid-area: airline;
+    text-align: center;
+}
+.flightData > div > .depairport {
+    grid-area: depairport;
+}
+.flightData > div > .arrairport {
+    grid-area: arrairport;
+}
+.flightData > div > .deptime {
+    grid-area: deptime;
+}
+.flightData > div > .arrtime {
+    grid-area: arrtime;
+}
+.flightData > div > .depdate {
+    grid-area: depdate;
+}
+.flightData > div > .arrdate {
+    grid-area: arrdate;
+}
+.flightData > div > .arrow {
+    grid-area: arrow;
+    text-align: center;
 }
