@@ -26,7 +26,7 @@
     justify-items: center;
     gap: var(--flexGap);
     padding: var(--boxPadding);
-    border-radius: var(--boxBorderRadiusSmall);
+    border-radius: var(--boxBorderRadius);
 }
 
 .mainFilters > form > div > div {
@@ -83,7 +83,7 @@
     border: 0;
     font-size: inherit;
     font-weight: inherit;
-    border-radius: var(--boxBorderRadiusSmall);
+    border-radius: var(--boxBorderRadius);
     padding: var(--boxPaddingTiny);
 }
 .page > .filterButton {
@@ -398,6 +398,45 @@ div.filterInput {
 .mainFilters > form > div:nth-child(even) .underline:focus {
     box-shadow: 0 var(--borderWidth) 0 0 var(--secondaryBackgroundColor); 
 }
+
+/* Search Field */
+
+.textInput {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    display: block;
+    position: relative;
+    border-radius: var(--boxBorderRadius);
+    margin: var(--flexGapLarge) 0 !important;
+}
+
+.mainFilters > form > div:nth-child(even) .textInput {
+    background-color: var(--secondaryBackgroundColor);
+    color: var(--secondaryForegroundColor);
+}
+.mainFilters > form > div:nth-child(even) .textInput:hover {
+    background-color: var(--secondaryLighterBackgroundColor);
+    color: var(--secondaryLighterForegroundColor);
+}
+.mainFilters > form > div:nth-child(even) .textInput:focus {
+    background-color: var(--secondaryLighterBackgroundColor);
+    color: var(--secondaryLighterForegroundColor);
+}
+.mainFilters > form > div:nth-child(odd) .textInput {
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryForegroundColor);
+}
+.mainFilters > form > div:nth-child(odd) .textInput:hover {
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
+}
+.mainFilters > form > div:nth-child(odd) .textInput:focus {
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
+}
+
+/* Responsiveness */
 
 @media screen and (max-width: 1000px) {
     .mainFilters {

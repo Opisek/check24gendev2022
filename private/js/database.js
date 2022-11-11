@@ -113,7 +113,7 @@ module.exports = class Database {
         offset = (offset - 1) * pagination;
         offset -= offset % dbPagination;
 
-        let parameters = [filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate, filters.starsMin, filters.starsMax];
+        let parameters = [filters.priceMax, filters.priceMin, filters.starsMin, filters.starsMax];
         let paramCount = parameters.length;
         let query = `
             SELECT ${columns.join(", ")}
@@ -122,22 +122,21 @@ module.exports = class Database {
                 FROM offers_${filters.adults}_${filters.children}
                 WHERE price<=$1
                 AND price>=$2
-                AND departuredate>=$3
-                AND returndate<=$4
-                ${filters.airport == "Any" ? '' : `AND outbounddepartureairport=$${++paramCount}`}
-                ${filters.room == "Any" ? '' : `AND roomtype=$${++paramCount}`}
-                ${filters.meal == "Any" ? '' : `AND mealtype=$${++paramCount}`}
+                ${filters.departureDate ? `AND departuredate>=$${++paramCount}` : ''}
+                ${filters.departureDate ? `AND returnDate<=$${++paramCount}` : ''}
+                ${filters.airport ? `AND outbounddepartureairport=$${++paramCount}` : ''}
+                ${filters.room ? `AND roomtype=$${++paramCount}` : ''}
+                ${filters.meal ? `AND mealtype=$${++paramCount}` : ''}
                 GROUP BY hotelid
             ) AS filtered
             INNER JOIN hotels ON filtered.hotelid=hotels.id
-            WHERE stars>=$5
-            AND stars<=$6
+            WHERE stars>=$3
+            AND stars<=$4
+            ${filters.query ? `AND POSITION($${++paramCount} IN name)>0` : ''}
             ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `;
 
-        console.log(query);
-
-        for (let key of ["airport", "room", "meal"]) if (filters[key] != "Any") parameters.push(filters[key]);
+        for (let key of ["departureDate", "returnDate", "airport", "room", "meal", "query"]) if (filters[key]) parameters.push(filters[key]);
 
         return await this._beginRequest(query, parameters, requestId);
     }
@@ -150,7 +149,7 @@ module.exports = class Database {
         offset = (offset - 1) * pagination;
         offset -= offset % dbPagination;
 
-        let parameters = [filters.hotelid, filters.adults, filters.children, filters.priceMax, filters.priceMin, filters.departureDate, filters.returnDate];
+        let parameters = [filters.hotelid, filters.priceMax, filters.priceMin];
         let paramCount = parameters.length;
         let query = `
             SELECT ${columns.join(", ")}
@@ -158,12 +157,10 @@ module.exports = class Database {
                 SELECT *
                 FROM offers_${filters.adults}_${filters.children}
                 WHERE hotelid=$1
-                AND countadults=$2
-                AND countchildren=$3
-                AND price<=$4
-                AND price>=$5
-                AND departuredate>=$6
-                AND returndate<=$7
+                AND price<=$2
+                AND price>=$3
+                ${filters.departureDate ? `AND departuredate>=$${++paramCount}` : ''}
+                ${filters.departureDate ? `AND returnDate<=$${++paramCount}` : ''}
                 ${filters.airport == "Any" ? '' : `AND outbounddepartureairport=$${++paramCount}`}
                 ${filters.room == "Any" ? '' : `AND roomtype=$${++paramCount}`}
                 ${filters.meal == "Any" ? '' : `AND mealtype=$${++paramCount}`}
@@ -176,24 +173,21 @@ module.exports = class Database {
         `;
         console.log(query);
 
-        for (let key of ["airport", "room", "meal"]) if (filters[key] != "Any") parameters.push(filters[key]);
+        for (let key of ["departureDate", "returnDate", "airport", "room", "meal"]) if (filters[key]) parameters.push(filters[key]);
 
         return await this._beginRequest(query, parameters, requestId);
     }
 
     _parseFilters(filters) {
-        if (!("adults" in filters && !Number.isNaN(Number.parseInt(filters.adults)))) filters.adults = 1;
-        if (!("children" in filters && !Number.isNaN(Number.parseInt(filters.children)))) filters.children = 0;
-        if (!("priceMin" in filters && !Number.isNaN(Number.parseInt(filters.priceMin)))) filters.priceMin = 0;
-        if (!("priceMax" in filters && !Number.isNaN(Number.parseInt(filters.priceMax)))) filters.priceMax = 10000;
-        if (!("starsMin" in filters && !Number.isNaN(Number.parseFloat(filters.starsMin)))) filters.starsMin = 1;
-        if (!("starsMax" in filters && !Number.isNaN(Number.parseFloat(filters.starsMax)))) filters.starsMax = 5;
-        if (!("departureDate" in filters && filters.departureDate != '0' && !Number.isNaN(new Date(filters.departureDate)))) filters.departureDate = new Date().toISOString();
-        if (!("returnDate" in filters && filters.returnDate != '0' && !Number.isNaN(new Date(filters.returnDate)))) {
-            let returnDate = new Date();
-            returnDate.setFullYear(returnDate.getFullYear() + 1);
-            filters.returnDate = returnDate.toISOString();
-        }
+        if (!("query" in filters) || filters.query == '' || "Mallorca".includes(filters.query)) filters.query = null;
+        if (!("adults" in filters) || Number.isNaN(Number.parseInt(filters.adults))) filters.adults = 1;
+        if (!("children" in filters) || Number.isNaN(Number.parseInt(filters.children))) filters.children = 0;
+        if (!("priceMin" in filters) || Number.isNaN(Number.parseInt(filters.priceMin))) filters.priceMin = 0;
+        if (!("priceMax" in filters) || Number.isNaN(Number.parseInt(filters.priceMax))) filters.priceMax = 10000;
+        if (!("starsMin" in filters) || Number.isNaN(Number.parseFloat(filters.starsMin))) filters.starsMin = 1;
+        if (!("starsMax" in filters) || Number.isNaN(Number.parseFloat(filters.starsMax))) filters.starsMax = 5;
+        if (!("departureDate" in filters) || filters.departureDate == '' || Number.isNaN(new Date(filters.departureDate))) filters.departureDate = null;
+        if (!("returnDate" in filters) || filters.returnDate == '' || Number.isNaN(new Date(filters.returnDate))) filters.returnDate = null;
         switch (filters.sort) {
             default:
             case "priceAsc":
@@ -214,9 +208,21 @@ module.exports = class Database {
             case "starsDesc":
                 filters.sort = "stars DESC";
                 break;
+            case "depAsc":
+                filters.sort = "departureDate ASC";
+                break;
+            case "depDesc":
+                filters.sort = "departureDate DESC";
+                break;
+            case "retAsc":
+                filters.sort = "returnDate ASC";
+                break;
+            case "retDesc":
+                filters.sort = "returnDate DESC";
+                break;
         }
-        if (!("airport" in filters)) filters.airport = "Any";
-        if (!("room" in filters)) filters.room = "Any";
-        if (!("meal" in filters)) filters.meal = "Any";
+        if (!("airport" in filters) || filters.airport == "Any") filters.airport = null;
+        if (!("room" in filters) || filters.room == "Any") filters.room = null;
+        if (!("meal" in filters) || filters.meal == "Any") filters.meal = null;
     }
 }

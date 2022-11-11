@@ -2,6 +2,31 @@
     <img src="/images/left-arrow.png" alt="Filters" id="filtersButtonClose">
     <h1>Filters</h1>
     <form>
+        <div class="hotelFilter">
+            <label class="filterName">Search</label>
+            <input class="filterInput textInput" id="filterInputQuery" placeholder="Mallorca" value="" type="text" min="1" max="10" name="query">
+            <img src="/images/x.png" alt="x">
+        </div>
+        <div>
+            <label class="filterName">Sort</label>
+            <div class="filterInputSelectDiv">
+                <span class="underline">Any</span>
+                <input class="filterInput" type="hidden" name="sort">
+                <div class="popup shadow">
+                    <option value="priceAsc">Price 🠕</option>
+                    <option value="priceDesc">Price 🠗</option>
+                    <option value="starsAsc" class="hotelFilter">Stars 🠕</option>
+                    <option value="starsDesc" class="hotelFilter">Stars 🠗</option>
+                    <option value="alphAsc" class="hotelFilter">Alphabetical 🠕</option>
+                    <option value="alphDesc" class="hotelFilter">Alphabetical 🠗</option>
+                    <option value="depAsc">Departure Date 🠕</option>
+                    <option value="depDesc">Departure Date 🠗</option>
+                    <option value="retAsc">Return Date 🠕</option>
+                    <option value="retDesc">Return Date 🠗</option>
+                </div>
+            </div>
+            <img src="/images/x.png" alt="x">
+        </div>
         <div>
             <label class="filterName">Adults</label>
             <div>
@@ -32,7 +57,7 @@
             </div>
             <img src="/images/x.png" alt="x">
         </div>
-        <div id="filterRowStars">
+        <div id="filterRowStars" class="hotelFilter">
             <label class="filterName">Stars</label>
             <div class="filterInputRangeDiv">
                 <input class="filterInput underline" id="filterInputStarsLowerField" placeholder="0" value="" type="number" name="starsMin">
@@ -48,28 +73,12 @@
             <label class="filterName">Date</label>
             <div class="filterInputDateDiv">
                 <span id="filterInputDateField" class="underline">Any</span>
-                <input class="filterInput" id="filterInputDateBegin" type="hidden" name="departureDate" value="0">
-                <input class="filterInput" id="filterInputDateEnd" type="hidden" name="returnDate" value="0">
+                <input class="filterInput" id="filterInputDateBegin" type="hidden" name="departureDate" value="">
+                <input class="filterInput" id="filterInputDateEnd" type="hidden" name="returnDate" value="">
                 <div id="inputCalendar" class="popup shadow">
                     <span id="inputCalendarLeft">◀</span>
                     <span id="inputCalendarMonth">June 2020</span>
                     <span id="inputCalendarRight">▶</span>
-                </div>
-            </div>
-            <img src="/images/x.png" alt="x">
-        </div>
-        <div>
-            <label class="filterName">Sort</label>
-            <div class="filterInputSelectDiv">
-                <span class="underline">Any</span>
-                <input class="filterInput" type="hidden" name="sort">
-                <div class="popup shadow">
-                    <option value="priceAsc">Price 🠕</option>
-                    <option value="priceDesc">Price 🠗</option>
-                    <option value="starsAsc">Stars 🠕</option>
-                    <option value="starsDesc">Stars 🠗</option>
-                    <option value="alphAsc">Alphabetical 🠕</option>
-                    <option value="alphDesc">Alphabetical 🠗</option>
                 </div>
             </div>
             <img src="/images/x.png" alt="x">
@@ -107,31 +116,6 @@
             </div>
             <img src="/images/x.png" alt="x">
         </div>
-        <!--<div>
-            <label class="filterName">Sort</label>
-            <div class="filterInputSelectDiv">
-                <select class="filterInput" id="filterInputSelectField" name="sort">
-                    <option value="priceAsc">Price 🠕</option>
-                    <option value="priceDesc">Price 🠗</option>
-                    <option value="alphAsc">Alphabetical 🠕</option>
-                    <option value="alphDesc">Alphabetical 🠗</option>
-                </select>
-            </div>
-        </div>-->
-        <!--<div>
-            <label class="filterName">Sort</label>
-            <div class="filterInputSelectDiv">
-                <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortPriceAsc" id="sortPriceAsc">
-                <label for="sortPriceAsc">Price (Asc)</label>
-                <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortPriceDesc" id="sortPriceDesc">
-                <label for="sortPriceDesc">Price (Desc)</label>
-                <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortAlphAsc" id="sortAlphAsc">
-                <label for="sortAlphAsc">Alphabetical (Asc)</label>
-                <input class="filterInput" placeholder="0" value="" type="radio" name="sort" value="sortAlphDesc" id="sortAlphDesc">
-                <label for="sortAlphDesc">Alphabetical (Desc)</label>
-            </div>
-            <img src="/images/x.png" alt="x">
-        </div>-->
         <button class="filterButton filterSubmit" type="button" id="filterButtonSubmit">Show Results</button>
     </form>
 </div>

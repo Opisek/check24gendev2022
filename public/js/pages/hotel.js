@@ -146,6 +146,7 @@ function createSpan(content, className="") {
 }
 
 window.addEventListener("load", () => {
-    document.getElementById("filterRowStars").remove();
+    const elements = document.getElementsByClassName("hotelFilter");
+    for (let i = elements.length-1; i >= 0; --i) elements[i].remove();
     document.getElementById("hotelName").innerHTML = "Test Hotel";
 });

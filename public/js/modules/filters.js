@@ -300,7 +300,6 @@ function initSelects(container) {
     for (let option of list.children) option.addEventListener("click", () => selectValue(container, option));
     let startSelection = list.children[0];
     if (input.value != undefined && input.value != "") {
-        console.log(input.value);
         for (let option of list.children) {
             if (option.value == input.value) {
                 startSelection = option;
@@ -331,6 +330,9 @@ window.addEventListener("load", async () => {
             input.addEventListener("input", () => changeInputWidth(input));
             input.addEventListener("change", () => changeValue(input));
             for (let button of input.parentElement.getElementsByClassName("filterButton")) button.addEventListener("click", () => changeValue(input, parseInt(button.value)))
+        }
+        if (input.type == "text") {
+            input.addEventListener("change", () => changeValue(input));
         }
         if (input.name != undefined) {
             const urlValue = url.searchParams.get(input.name);
