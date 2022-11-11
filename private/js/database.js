@@ -123,7 +123,7 @@ module.exports = class Database {
                 WHERE price<=$1
                 AND price>=$2
                 ${filters.departureDate ? `AND departuredate>=$${++paramCount}` : ''}
-                ${filters.departureDate ? `AND returnDate<=$${++paramCount}` : ''}
+                ${filters.returnDate ? `AND returnDate<=$${++paramCount}` : ''}
                 ${filters.airport ? `AND outbounddepartureairport=$${++paramCount}` : ''}
                 ${filters.room ? `AND roomtype=$${++paramCount}` : ''}
                 ${filters.meal ? `AND mealtype=$${++paramCount}` : ''}
@@ -160,10 +160,10 @@ module.exports = class Database {
                 AND price<=$2
                 AND price>=$3
                 ${filters.departureDate ? `AND departuredate>=$${++paramCount}` : ''}
-                ${filters.departureDate ? `AND returnDate<=$${++paramCount}` : ''}
-                ${filters.airport == "Any" ? '' : `AND outbounddepartureairport=$${++paramCount}`}
-                ${filters.room == "Any" ? '' : `AND roomtype=$${++paramCount}`}
-                ${filters.meal == "Any" ? '' : `AND mealtype=$${++paramCount}`}
+                ${filters.returnDate ? `AND returnDate<=$${++paramCount}` : ''}
+                ${filters.airport ? `AND outbounddepartureairport=$${++paramCount}` : ''}
+                ${filters.room ? `AND roomtype=$${++paramCount}` : ''}
+                ${filters.meal ? `AND mealtype=$${++paramCount}` : ''}
                 ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
             ) AS filtered
             INNER JOIN airports AS outdepairport ON filtered.outbounddepartureairport=outdepairport.id
@@ -171,7 +171,6 @@ module.exports = class Database {
             INNER JOIN airports AS indepairport ON filtered.inbounddepartureairport=indepairport.id
             INNER JOIN airports AS inarrairport ON filtered.inboundarrivalairport=inarrairport.id
         `;
-        console.log(query);
 
         for (let key of ["departureDate", "returnDate", "airport", "room", "meal"]) if (filters[key]) parameters.push(filters[key]);
 
