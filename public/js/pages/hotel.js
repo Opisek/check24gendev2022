@@ -120,8 +120,8 @@ function displayOffers(offers, page) {
 
         const offerDetails = document.createElement("div");
         offerDetails.className = "offerDetails";
-        offerDetails.appendChild(createSpan(offer.mealtype));
         offerDetails.appendChild(createSpan(offer.roomtype));
+        if (offer.mealtype != "none") offerDetails.appendChild(createSpan(offer.mealtype));
         if (offer.oceanview) offerDetails.appendChild(createSpan("oceanview"));
 
         offerDiv.appendChild(offerDetails);
