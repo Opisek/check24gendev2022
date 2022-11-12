@@ -10,9 +10,6 @@ const path = require("path");
 const http = require("http");
 const socketio = require("socket.io");
 
-//const urlParser = require("parseurl");
-//const cookieParser = require("cookie-parser");
-
 const serverPath = path.resolve(__dirname, "../../");
 const publicPath = path.join(serverPath + "/public");
 
@@ -48,6 +45,10 @@ module.exports = class WebServer {
         }, 100);
     }
 
+    async _isLoggedIn(cookies) {
+        return await new Promise(res => this._emit("verifyToken", { token: cookies.token }, null, id => res(id)));
+    }
+
     constructor(port) {
         this._events = {};
         this._currentRequest = {};
@@ -61,44 +62,52 @@ module.exports = class WebServer {
 
         const httpServer = http.createServer(server);
 
-        server.get("/", function(req, res) {
+        server.get("/", (req, res) => {
             //if (authenticate(req, res)) return;
 
             res.render("index", { host: `${req.protocol}://${req.hostname}` });
             res.end();
         });
 
-        server.get("/search/", function(req, res) {
+        server.get("/search/", (req, res) => {
             //if (authenticate(req, res)) return;
 
             res.render("search", { host: `${req.protocol}://${req.hostname}` });
             res.end();
         });
 
-        server.get("/hotel/:hotelId", function(req, res) {
+        server.get("/hotel/:hotelId", (req, res) => {
             //if (authenticate(req, res)) return;
 
             res.render("hotel", { host: `${req.protocol}://${req.hostname}`, hotelId: req.params.hotelId });
             res.end();
         });
 
-        server.get("/contact/", function(req, res) {
+        server.get("/contact/", (req, res) => {
             //if (authenticate(req, res)) return;
 
             res.render("contact", { host: `${req.protocol}://${req.hostname}` });
             res.end();
         });
 
-        server.get("/account/", function(req, res) {
-            //if (authenticate(req, res)) return;
-
-            res.render("contact", { host: `${req.protocol}://${req.hostname}` });
+        server.get("/account/", async (req, res) => {
+            console.log(req.cookies);
+            if ((await this._isLoggedIn(req.cookies)) == null) {
+                res.redirect("/auth/");
+                res.end();
+                return;
+            }
+            res.render("account", { host: `${req.protocol}://${req.hostname}` });
             res.end();
         });
 
-        server.get("/auth/", function(req, res) {
-            //if (authenticate(req, res)) return;
-
+        server.get("/auth/", async (req, res) => {
+            console.log(req.cookies);
+            if (await this._isLoggedIn(req.cookies) != null) {
+                res.redirect("/account/");
+                res.end();
+                return;
+            }
             res.render("auth", { host: `${req.protocol}://${req.hostname}` });
             res.end();
         });

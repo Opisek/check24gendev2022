@@ -33,7 +33,7 @@ function submit(request, i) {
             errorField.classList.remove("hidden");
             authError[i] = true;
         } else if (result.status == "success") {
-            document.cookie = `token=${result.data}`;
+            setCookie("token", result.data);
             const url = new URL(window.location.href);
             const redirect = url.searchParams.get("redirect");
             url.searchParams.delete("redirect");

@@ -59,9 +59,6 @@ main {
     color: var(--primaryCommentForegroundColor);
 }
 .mainForms > form > button {
-    height: var(--interactiveHeight);
-    padding: var(--boxPadding);
-    border-radius: var(--boxBorderRadius);
     background-color: var(--primaryLighterBackgroundColor);
     color: var(--primaryLighterForegroundColor);
 }
