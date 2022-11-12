@@ -53,7 +53,7 @@ module.exports = class Database {
 
     async _hotelsByFilters(filters, requestId, columns, limit=true) {
         this._parseFilters(filters);
-
+        
         let offset = 1;
         if ("page" in filters && !Number.isNaN(Number.parseInt(filters.page)) && filters.page > 0) offset = filters.page;
         offset = (offset - 1) * pagination;
@@ -77,10 +77,10 @@ module.exports = class Database {
                 GROUP BY hotelid
             ) AS filtered
             INNER JOIN hotels ON filtered.hotelid=hotels.id
-            ${limit && filters.userId ? `LEFT OUTER JOIN (SELECT hotelId, true AS saved FROM hotelSaves WHERE userId=${filters.userId}) AS saves ON saves.hotelId=filtered.hotelid` : ''}
+            ${filters.userId ? `LEFT OUTER JOIN (SELECT hotelId, true AS saved FROM hotelSaves WHERE userId=${filters.userId}) AS saves ON saves.hotelId=filtered.hotelid` : ''}
             WHERE stars>=$3
             AND stars<=$4
-            ${limit && filters.saved && filters.userId ? `AND saved=true` : ''}
+            ${filters.saved && filters.userId ? `AND saved=true` : ''}
             ${filters.query ? `AND POSITION($${++paramCount} IN name)>0` : ''}
             ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `;
@@ -133,7 +133,7 @@ module.exports = class Database {
             FROM (
                 SELECT *
                 FROM offers_${filters.adults}_${filters.children}
-                ${limit && filters.userId ? `LEFT OUTER JOIN (SELECT offerId, true AS saved FROM offerSaves WHERE userId=${filters.userId}) AS saves ON saves.offerId=offers_${filters.adults}_${filters.children}.id` : ''}
+                ${filters.userId ? `LEFT OUTER JOIN (SELECT offerId, true AS saved FROM offerSaves WHERE userId=${filters.userId}) AS saves ON saves.offerId=offers_${filters.adults}_${filters.children}.id` : ''}
                 WHERE hotelid=$1
                 AND price<=$2
                 AND price>=$3
@@ -143,7 +143,7 @@ module.exports = class Database {
                 ${filters.room ? `AND roomtype=$${++paramCount}` : ''}
                 ${filters.meal ? `AND mealtype=$${++paramCount}` : ''}
                 ${filters.oceanview ? `AND oceanview=true` : ''}
-                ${limit && filters.saved && filters.userId ? `AND saved=true` : ''}
+                ${filters.saved && filters.userId ? `AND saved=true` : ''}
                 ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
             ) AS filtered
             INNER JOIN airports AS outdepairport ON filtered.outbounddepartureairport=outdepairport.id

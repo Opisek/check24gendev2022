@@ -13,14 +13,20 @@ const auth = new (require("./private/js/auth"))(process.env.JWT_SECRET);
         data.userId = await auth.verifyToken(data, requestId);
         callback(await database.getHotelsByFilters(data, requestId))
     });
-    webServer.addEventListener("getHotelsByFiltersPages", async (data, requestId, callback) => callback(await database.getHotelsByFiltersPages(data, requestId)));
+    webServer.addEventListener("getHotelsByFiltersPages", async (data, requestId, callback) => {
+        data.userId = await auth.verifyToken(data, requestId);
+        callback(await database.getHotelsByFiltersPages(data, requestId))
+    });
     
     // Offer Search
     webServer.addEventListener("getOffersByHotel", async (data, requestId, callback) => {
         data.userId = await auth.verifyToken(data, requestId);
         callback(await database.getOffersByHotel(data, requestId))
     });
-    webServer.addEventListener("getOffersByHotelPages", async (data, requestId, callback) => callback(await database.getOffersByHotelPages(data, requestId)));
+    webServer.addEventListener("getOffersByHotelPages", async (data, requestId, callback) => {
+        data.userId = await auth.verifyToken(data, requestId);
+        callback(await database.getOffersByHotelPages(data, requestId))
+    });
     
     // Filter Search
     webServer.addEventListener("getAirports", async (data, requestId, callback) => callback(await database.getAirports(data, requestId, callback)));
