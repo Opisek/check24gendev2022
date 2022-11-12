@@ -436,6 +436,70 @@ div.filterInput {
     color: var(--primaryLighterForegroundColor);
 }
 
+/* Checkbox */
+
+.checkboxContainer {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    width: var(--interactiveHeightInside) !important;
+    padding: 0 !important;
+}
+.checkboxContainer > .filterInput[type=checkbox] {
+    width: var(--interactiveHeightInside);
+    height: var(--interactiveHeightInside);
+    opacity: 0;
+    cursor: pointer;
+    z-index: 5;
+}
+.checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--interactiveHeightInside);
+    height: var(--interactiveHeightInside);
+    border-radius: var(--interactiveHeightInside);
+}
+.mainFilters > form > div:nth-child(even) .checkbox {
+    background-color: var(--secondaryBackgroundColor);
+    color: var(--secondaryForegroundColor);
+}
+.mainFilters > form > div:nth-child(odd) .checkbox {
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryForegroundColor);
+}
+.mainFilters > form > div:nth-child(even) .checkboxContainer:hover input ~ .checkbox {
+    background-color: var(--secondaryLighterBackgroundColor);
+    color: var(--secondaryLighterForegroundColor);
+}
+.mainFilters > form > div:nth-child(odd) .checkboxContainer:hover input ~ .checkbox {
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
+}
+.checkboxContainer input:checked ~ .checkbox {
+    background-color: #2196F3;
+}
+.checkbox:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+.checkboxContainer input:checked ~ .checkbox:after {
+    display: block;
+}
+.checkboxContainer .checkbox:after {
+    left: calc(var(--interactiveHeightInside) / 3.5);
+    top: calc(var(--interactiveHeightInside) / 8);
+    width: calc(var(--interactiveHeightInside) / 4);
+    height: calc(var(--interactiveHeightInside) / 2);
+    border: solid currentColor;
+    border-width: 0 calc(var(--interactiveHeightInside) / 6) calc(var(--interactiveHeightInside) / 6) 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+  
+
 /* Responsiveness */
 
 @media screen and (max-width: 1000px) {

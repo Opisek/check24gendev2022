@@ -13,7 +13,14 @@ function getOffers() {
     container.appendChild(loadingDiv);
 
     let filterParameters = {};
-    for (let input of document.getElementsByClassName("filterInput")) if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
+    for (let input of document.getElementsByClassName("filterInput")) {
+        if (input.type == "checkbox") {
+            console.log(input.checked);
+            filterParameters[input.name] = input.checked;
+        } else if (input.name != undefined && input.name != "" && input.value != "") {
+            filterParameters[input.name] = input.value;
+        }
+    }
 
     const page = filterParameters.page;
 

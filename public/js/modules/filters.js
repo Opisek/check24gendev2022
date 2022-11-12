@@ -53,7 +53,7 @@ function updateLastPage(lastPage) {
 
 function changeValue(input, change=0, apply=true, reload=true) {
     let currentValue;
-    if (input.type != "hidden" && input.type != "text") {
+    if (input.type != "hidden" && input.type != "text" && input.type != "checkbox") {
         currentValue = parseFloat(input.value);
         if (isNaN(currentValue)) currentValue = 0;
         currentValue += change;
@@ -63,7 +63,10 @@ function changeValue(input, change=0, apply=true, reload=true) {
         changeInputWidth(input);
     }
 
-    if (apply) setUrlParameter(input.name, input.value);
+    if (apply) {
+        if (input.type == "checkbox") setUrlParameter(input.name, input.checked);
+        else setUrlParameter(input.name, input.value);
+    }
 
     if (input.name != "page") {
         const pageField = document.getElementById("pageField");
@@ -331,7 +334,7 @@ window.addEventListener("load", async () => {
             input.addEventListener("change", () => changeValue(input));
             for (let button of input.parentElement.getElementsByClassName("filterButton")) button.addEventListener("click", () => changeValue(input, parseInt(button.value)))
         }
-        if (input.type == "text") {
+        if (input.type == "text" || input.type == "checkbox") {
             input.addEventListener("change", () => changeValue(input));
         }
         if (input.name != undefined) {
