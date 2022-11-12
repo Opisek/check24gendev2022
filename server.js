@@ -53,6 +53,7 @@ const auth = new (require("./private/js/auth"))(process.env.JWT_SECRET);
         else {
             data.userId = id;
             await database.unsaveHotel(data, requestId)
+            await database.unsaveOffersByHotel(data, requestId)
             callback(true);
         }
     });
@@ -62,6 +63,7 @@ const auth = new (require("./private/js/auth"))(process.env.JWT_SECRET);
         else {
             data.userId = id;
             await database.saveOffer(data, requestId)
+            await database.saveHotelByOffer(data, requestId)
             callback(true);
         }
     });

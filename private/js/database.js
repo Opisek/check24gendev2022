@@ -264,7 +264,6 @@ module.exports = class Database {
     }
 
     async saveHotel(data, requestId) {
-        console.log(data);
         return await this._beginRequest(`
             INSERT INTO hotelSaves(userId, hotelId)
             VALUES ($1, $2)
@@ -281,10 +280,42 @@ module.exports = class Database {
         [Number.parseInt(data.userId), Number.parseInt(data.hotelId)],
         requestId);
     }
+    async unsaveOffersByHotel(data, requestId) {
+        return await this._beginRequest(`
+            DELETE FROM offerSaves
+            WHERE offerSaves.offerId
+            IN (
+                SELECT filtered.offerId
+                FROM (
+                    SELECT offerId
+                    FROM offerSaves
+                    WHERE userId=$1
+                ) AS filtered
+                INNER JOIN offers ON filtered.offerId=offers.id
+                WHERE offers.hotelid=$2
+            )
+        `,
+        [Number.parseInt(data.userId), Number.parseInt(data.hotelId)],
+        requestId);
+    }
     async saveOffer(data, requestId) {
         return await this._beginRequest(`
             INSERT INTO offerSaves(userId, offerId)
             VALUES ($1, $2)
+        `,
+        [Number.parseInt(data.userId), Number.parseInt(data.offerId)],
+        requestId);
+    }
+    async saveHotelByOffer(data, requestId) {
+        return await this._beginRequest(`
+            INSERT INTO hotelSaves(userId, hotelId)
+            SELECT $1 as userId, hotels.id as hotelId
+            FROM hotels
+            INNER JOIN (
+                SELECT hotelid
+                FROM offers
+                WHERE offers.id=$2
+            ) AS filtered ON hotels.id=filtered.hotelid
         `,
         [Number.parseInt(data.userId), Number.parseInt(data.offerId)],
         requestId);

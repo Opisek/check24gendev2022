@@ -47,11 +47,14 @@ async function offers(sql) {
     console.log("load offers");
     await progressReporting(sql, `COPY offers (hotelid, departuredate, returndate, countadults, countchildren, price, inbounddepartureairport, inboundarrivalairport, inboundairline, inboundarrivaldatetime, outbounddepartureairport, outboundarrivalairport, outboundairline, outboundarrivaldatetime, mealtype, oceanview, roomtype) FROM '${path.join(process.env.DATA_PATH + "/offers.csv")}' DELIMITER ',' CSV HEADER`, "copy", "bytes_total", "bytes_processed");
 
+    console.log("create offerid index");
+    await progressReporting(sql, "CREATE INDEX offer_index ON offers USING btree (id)", "create_index", "tuples_total", "tuples_done");
+
     console.log("create hotelid index");
-    await progressReporting(sql, "CREATE INDEX hotel_index on offers USING btree (hotelid)", "create_index", "tuples_total", "tuples_done");
+    await progressReporting(sql, "CREATE INDEX hotel_index ON offers USING btree (hotelid)", "create_index", "tuples_total", "tuples_done");
     
     console.log("create search index");
-    await progressReporting(sql, "CREATE INDEX hotel_search_index on offers USING btree(hotelid, price, countadults, countchildren)", "create_index", "tuples_total", "tuples_done");
+    await progressReporting(sql, "CREATE INDEX hotel_search_index ON offers USING btree(hotelid, price, countadults, countchildren)", "create_index", "tuples_total", "tuples_done");
 }
 async function hotels(sql) {
     console.log("reset hotels");
@@ -192,7 +195,7 @@ async function saves(sql) {
         (
             userId INT,
             hotelId INT,
-            CONSTRAINT viewerReference FOREIGN KEY(userId) REFERENCES users(id),
+            CONSTRAINT userReference FOREIGN KEY(userId) REFERENCES users(id),
             CONSTRAINT hotelReference FOREIGN KEY(hotelId) REFERENCES hotels(id)
         )
     `);
