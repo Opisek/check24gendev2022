@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<head>
+    <%- include("partials/commonHead.ejs") %>
+    <%- include("partials/navbarHead.ejs") %>
+    <%- include("partials/footerHead.ejs") %>
+    <link rel="stylesheet" href="/css/pages/auth.css">
+    <link rel="stylesheet" href="/css/colors/default.css">
+</head>
+<body>
+    <%- include("partials/navbarBody.ejs") %>
+    <main>
+        <div class="mainForms">
+            <form id="loginContainer">
+                <div class="formErrorContainer">
+                    <span class="formError hidden"></span>
+                </div>
+                <h1>Login</h1>
+                <label for="email">E-Mail Address</label>
+                <input name="email" type="email">
+                <label for="password">Password</label>
+                <input name="password" type="password">
+                <button type="button" value="login">Submit</button>
+            </form>
+            <form id="registerContainer" class="hidden">
+                <div class="formErrorContainer">
+                    <span class="formError hidden"></span>
+                </div>
+                <h1>Register</h1>
+                <label for="email">E-Mail Address</label>
+                <input name="email" type="email">
+                <label for="repeatEmail">Repeat E-Mail Address</label>
+                <input name="repeatEmail" type="email">
+                <label for="password">Password</label>
+                <input name="password" type="password">
+                <label for="repeatPassword">Repeat Password</label>
+                <input name="repeatPassword" type="password">
+                <button type="button" value="register">Submit</button>
+            </form>
+            <form id="recoveryContainer" class="hidden">
+                <div class="formErrorContainer">
+                    <span class="formError hidden"></span>
+                </div>
+                <h1>Forgot Password</h1>
+                <label for="email">E-Mail Address</label>
+                <input name="email" type="email">
+                <button type="button" value="recover">Submit</button>
+            </form>
+        </div>
+        <div class="mainButtons adjacentRow">
+            <button id="loginButton" class="active">Login</button>
+            <button id="registerButton">Register</button>
+            <button id="recoveryButton">Forgot Password</button>
+        </div>
+    </main>
+    <script type="text/javascript" src="/js/pages/auth.js"></script>
+    <%- include("partials/footerBody.ejs") %>
+</body>

@@ -105,6 +105,36 @@ module.exports = class Database {
         requestId);
     }
 
+    async existsUserByEmail(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT COUNT(*)
+            FROM users
+            WHERE email=$1
+        `,
+        [filters.email],
+        requestId);
+    }
+
+    async getUserByEmail(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT *
+            FROM users
+            WHERE email=$1
+        `,
+        [filters.email],
+        requestId);
+    }
+
+    async registerUser(filters, requestId) {
+        return await this._beginRequest(`
+            INSERT INTO users(email, password)
+            VALUES ($1, $2)
+            RETURNING id
+        `,
+        [filters.email, filters.password],
+        requestId);
+    }
+
     async _hotelsByFilters(filters, requestId, columns, limit=true) {
         this._parseFilters(filters);
 

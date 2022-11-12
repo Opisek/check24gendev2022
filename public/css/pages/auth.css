@@ -1,0 +1,122 @@
+/* Layout */
+
+main {
+    background-color: var(--secondaryBackgroundColor);
+    color: var(--secondaryForegroundColor);
+    max-height: calc(100vh - var(--navHeight) - var(--footerHeight));
+    padding: var(--boxPaddingLarge) var(--centerBoxMargin);
+    gap: var(--flexGap);
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr var(--interactiveHeight);
+    grid-template-areas: "forms" "buttons";
+    position: relative;
+}
+
+.mainForms {
+    grid-area: forms;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.mainForms > form {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    display: flex;
+    transition: transform var(--animationSpeedSlow) ease-in-out;
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryForegroundColor);
+    padding: var(--boxPaddingSmall) var(--boxPadding) var(--boxPadding) var(--boxPadding);
+    border-radius: var(--boxBorderRadius);
+    display: flex;
+    flex-direction: column;
+    gap: var(--flexGap);
+    align-items: center;
+    z-index: 10;
+}
+.mainForms > form.hiding {
+    transform: translateX(-110%);
+    z-index: 9;
+}
+.mainForms > form.hidden {
+    transform: translateX(110%);
+    transition: none;
+}
+.mainForms > form > input {
+    height: var(--interactiveHeight);
+    width: 100%;
+    padding: var(--boxPaddingSmall);
+    border-radius: var(--boxBorderRadius);
+    margin-bottom: var(--flexGapLarge);
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor); 
+}
+.mainForms > form > label {
+    width: 100%;
+    color: var(--primaryCommentForegroundColor);
+}
+.mainForms > form > button {
+    height: var(--interactiveHeight);
+    padding: var(--boxPadding);
+    border-radius: var(--boxBorderRadius);
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
+}
+.mainForms > form > button:hover {
+    background-color: var(--accentBackgroundColor);
+    color: var(--accentForegroundColor);
+}
+.formErrorContainer {
+    width: 100%;
+    position: absolute;
+    top: calc(0px - var(--boxPadding) - 2 * var(--boxPaddingSmall) - var(--boxPaddingSmall));
+    overflow: hidden;
+    padding-bottom: var(--boxPaddingSmall);
+}
+.formError {
+    width: 100% !important;
+    display: block;
+    text-align: center;
+    background-color: var(--errorBackgroundColor);
+    color: var(--errorForegroundColor);
+    padding: var(--boxPaddingSmall);
+    border-radius: var(--boxBorderRadius);
+    transition: transform var(--animationSpeed) ease-in-out;
+}
+.formError.hidden {
+    transform: translateY(calc(100% + var(--boxPaddingSmall)));
+}
+
+.mainButtons {
+    grid-area: buttons;
+    overflow-y: auto;
+}
+
+.mainButtons > button {
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryForegroundColor);
+}
+.mainButtons > button:hover {
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
+}
+.mainButtons > button.active {
+    background-color: var(--primaryLighterBackgroundColor) !important;
+    color: var(--primaryLighterForegroundColor) !important;
+}
+
+@media screen and (max-width: 1000px) {
+    main {
+        max-height: none;
+        overflow-y: visible;
+        grid-template-rows: var(--interactiveHeight) calc(100vh - var(--navHeight) - var(--footerHeight));
+        grid-template-areas: "buttons" "forms";
+        padding: var(--boxPadding);
+    }
+    .mainForms {
+        align-items: flex-start;
+    }
+}

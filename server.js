@@ -2,32 +2,39 @@ require("dotenv").config();
 
 const webServer = new (require("./private/js/webserver"))(process.env.WEB_PORT);
 const database = new (require("./private/js/database"))(process.env.DB_HOST, process.env.DB_PORT, process.env.DB_USER, process.env.DB_PASSWORD, process.env.DB_DATABASE);
+const auth = new (require("./private/js/auth"))(process.env.JWT_SECRET);
+
 (async () => {
     await database.connect();
     console.log("database connected!");
 
-    webServer.addEventListener("getHotelsByFilters", async (filters, requestId, callback) => callback(await database.getHotelsByFilters(filters, requestId)));
-    webServer.addEventListener("getHotelsByFiltersPages", async (filters, requestId, callback) => callback(await database.getHotelsByFiltersPages(filters, requestId)));
+    // Hotel Search
+    webServer.addEventListener("getHotelsByFilters", async (data, requestId, callback) => callback(await database.getHotelsByFilters(data, requestId)));
+    webServer.addEventListener("getHotelsByFiltersPages", async (data, requestId, callback) => callback(await database.getHotelsByFiltersPages(data, requestId)));
     
-    webServer.addEventListener("getOffersByHotel", async (filters, requestId, callback) => callback(await database.getOffersByHotel(filters, requestId)));
-    webServer.addEventListener("getOffersByHotelPages", async (filters, requestId, callback) => callback(await database.getOffersByHotelPages(filters, requestId)));
+    // Offer Search
+    webServer.addEventListener("getOffersByHotel", async (data, requestId, callback) => callback(await database.getOffersByHotel(data, requestId)));
+    webServer.addEventListener("getOffersByHotelPages", async (data, requestId, callback) => callback(await database.getOffersByHotelPages(data, requestId)));
     
-    webServer.addEventListener("getAirports", async (filters, requestId, callback) => callback(await database.getAirports(filters, requestId)));
-    webServer.addEventListener("getRooms", async (filters, requestId, callback) => callback(await database.getRooms(filters, requestId)));
-    webServer.addEventListener("getMeals", async (filters, requestId, callback) => callback(await database.getMeals(filters, requestId)));
+    // Filter Search
+    webServer.addEventListener("getAirports", async (data, requestId, callback) => callback(await database.getAirports(data, requestId, callback)));
+    webServer.addEventListener("getRooms", async (data, requestId, callback) => callback(await database.getRooms(data, requestId, callback)));
+    webServer.addEventListener("getMeals", async (data, requestId, callback) => callback(await database.getMeals(data, requestId, callback)));
 
-    webServer.addEventListener("login", async (filters, requestId, callback) => {
-        console.log("login");
-        callback("test");
-    });
-    webServer.addEventListener("register", async (filters, requestId, callback) => {
-        console.log("register");
-        callback("test");
-    });
-    webServer.addEventListener("recover", async (filters, requestId, callback) => {
-        console.log("recover");
-        callback("test");
-    });
+    // Authentication
+    webServer.addEventListener("login", async (data, requestId, callback) => callback(await auth.login(data, requestId)));
+    webServer.addEventListener("register", async (data, requestId, callback) => callback(await auth.register(data, requestId)));
+    webServer.addEventListener("recover", async (data, requestId, callback) => callback(await auth.recover(data, requestId)));
+    webServer.addEventListener("verifyToken", async (data, requestId, callback) => callback(await auth.verifyToken(data, requestId)));
 
+    auth.addEventListener("existsUserByEmail", async (data, requestId, callback) => callback(await database.existsUserByEmail(data, requestId)));
+    auth.addEventListener("getUserByEmail", async (data, requestId, callback) => callback(await database.getUserByEmail(data, requestId)));
+    auth.addEventListener("registerUser", async (data, requestId, callback) => callback(await database.registerUser(data, requestId)));
+
+    // Request Abortion
     webServer.addEventListener("abortRequest", requestId => database.abortRequest(requestId));
 })();
+
+/*function handleEvent(emitter, event, handler) {
+    emitter.addEventListener(event, async (data, requestId, callback) => callback(await handler(data, requestId)));
+}*/

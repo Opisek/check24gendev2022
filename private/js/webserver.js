@@ -1,9 +1,10 @@
 // Web Server
 const express = require("express");
-const bodyParser = require('body-parser')
+const cookieParser = require("cookie-parser");
 const server = express();
 server.use(express.json());
 server.use(express.urlencoded({extended:false}));
+server.use(cookieParser());
 server.set("view engine", "ejs");
 const path = require("path");
 const http = require("http");
@@ -19,10 +20,6 @@ module.exports = class WebServer {
     addEventListener(name, callback) {
         if (!(name in this._events)) this._events[name] = [];
         this._events[name].push(callback);
-        this._socketIndex = 0;
-
-        this._currentRequest = {};
-        this._currentRequestIndex = {};
     }
     
     _emit(name, data, requestId, callback = null) {
@@ -53,6 +50,8 @@ module.exports = class WebServer {
 
     constructor(port) {
         this._events = {};
+        this._currentRequest = {};
+        this._currentRequestIndex = {};
 
         server.set("views", path.join(publicPath + '/ejs'))
         server.set("/partials", path.join(publicPath + '/partials'))
@@ -129,7 +128,6 @@ module.exports = class WebServer {
                 "recover"
             ]) socket.on(event, (data, callback) => this._newRequest(socket, event, data, callback));
         });
-
 
         httpServer.listen(port);
         console.log("listening on " + port);

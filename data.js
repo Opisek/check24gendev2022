@@ -167,6 +167,21 @@ async function mealtypes(sql) {
     `);
 }
 
+async function users(sql) {
+    console.log("reset users");
+    await sql.query("DROP TABLE IF EXISTS users");
+
+    console.log("create users");
+    await sql.query(`
+        CREATE TABLE users
+        (
+            id SERIAL PRIMARY KEY,
+            email VARCHAR(128),
+            password CHAR(60)
+        )
+    `);
+}
+
 async function main() {
     const sql = new postgress.Pool({
         host: process.env.DB_HOST,
@@ -180,11 +195,12 @@ async function main() {
     console.log("set utf8");
     await sql.query("SET client_encoding='UTF8'");
 
-    await offers(sql);
-    await hotels(sql);
-    await airports(sql);
-    await roomtypes(sql);
-    await mealtypes(sql);
+    //await offers(sql);
+    //await hotels(sql);
+    //await airports(sql);
+    //await roomtypes(sql);
+    //await mealtypes(sql);
+    await users(sql);
 
     console.log("all done");
 }
