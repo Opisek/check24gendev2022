@@ -73,6 +73,7 @@ module.exports = class Database {
                 ${filters.airport ? `AND outbounddepartureairport=$${++paramCount}` : ''}
                 ${filters.room ? `AND roomtype=$${++paramCount}` : ''}
                 ${filters.meal ? `AND mealtype=$${++paramCount}` : ''}
+                ${filters.oceanview ? `AND oceanview=true` : ''}
                 GROUP BY hotelid
             ) AS filtered
             INNER JOIN hotels ON filtered.hotelid=hotels.id
@@ -141,6 +142,7 @@ module.exports = class Database {
                 ${filters.airport ? `AND outbounddepartureairport=$${++paramCount}` : ''}
                 ${filters.room ? `AND roomtype=$${++paramCount}` : ''}
                 ${filters.meal ? `AND mealtype=$${++paramCount}` : ''}
+                ${filters.oceanview ? `AND oceanview=true` : ''}
                 ${limit && filters.saved && filters.userId ? `AND saved=true` : ''}
                 ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
             ) AS filtered

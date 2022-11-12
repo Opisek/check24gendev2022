@@ -19,7 +19,7 @@
     line-height: calc(var(--interactiveHeightLarge) - 2 * var(--boxPadding));
     display: grid;
     /*grid-template-columns: 8fr 24fr 1fr;*/
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 20% 80%;
     width: 100%;
     text-align: center;
     align-items: center;
@@ -45,6 +45,7 @@
 .filterName {
     text-align: left;
     width: inherit;
+    max-width: 100%;
 }
 
 .mainFilters > form > div > img {

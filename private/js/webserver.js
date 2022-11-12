@@ -37,7 +37,7 @@ module.exports = class WebServer {
         let lastCurrentRequest = this._currentRequest[socket.id][event];
         this._currentRequest[socket.id][event] = requestIndex;
         setTimeout(async () => {
-            if (requestIndex != this._currentRequest[socket.id][event]) return;
+            if (!(socket.id in this._currentRequest) || !(event in this._currentRequest[socket.id]) || requestIndex != this._currentRequest[socket.id][event]) return;
             if (lastCurrentRequest) await this._emit("abortRequest", `${socket.id}/${event}/${lastCurrentRequest}`);
             if (requestIndex != this._currentRequest[socket.id][event]) return;
             this._emit(event, filters, `${socket.id}/${event}/${requestIndex}`, result => {

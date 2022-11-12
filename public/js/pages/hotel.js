@@ -122,6 +122,7 @@ function displayOffers(offers, page) {
         offerDetails.className = "offerDetails";
         offerDetails.appendChild(createSpan(offer.mealtype));
         offerDetails.appendChild(createSpan(offer.roomtype));
+        if (offer.oceanview) offerDetails.appendChild(createSpan("oceanview"));
 
         offerDiv.appendChild(offerDetails);
         const offerButton = document.createElement("button");

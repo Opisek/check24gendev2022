@@ -339,7 +339,10 @@ window.addEventListener("load", async () => {
         }
         if (input.name != undefined) {
             const urlValue = url.searchParams.get(input.name);
-            if (urlValue != "" && urlValue != undefined) input.value = urlValue;
+            if (urlValue != "" && urlValue != undefined) {                            
+                if (input.type == "checkbox") input.checked = urlValue == "true";
+                else input.value = urlValue;
+            }
         }
         if (input.type != "range") changeValue(input, apply=false);
     }
