@@ -100,27 +100,27 @@
     color: var(--secondaryForegroundColor);
 }
 .mainFilters > form > div:nth-child(even) > div > .filterButton:hover {
-    background-color: var(--primaryLighterBackgroundColor);
-    color: var(--primaryLighterForegroundColor);
+    background-color: var(--primaryLighterBackgroundColorCopy);
+    color: var(--primaryLighterForegroundColorCopy);
 }
 .mainFilters > form > div:nth-child(odd) > div > .filterButton {
-    background-color: var(--primaryBackgroundColor);
-    color: var(--primaryForegroundColor);
+    background-color: var(--primaryBackgroundColorCopy);
+    color: var(--primaryForegroundColorCopy);
 }
 .mainFilters > form > div:nth-child(odd) > div > .filterButton:hover {
-    background-color: var(--primaryLighterBackgroundColor);
-    color: var(--primaryLighterForegroundColor);
+    background-color: var(--primaryLighterBackgroundColorCopy);
+    color: var(--primaryLighterForegroundColorCopy);
 }
 .filterSubmit {
-    background-color: var(--primaryBackgroundColor);
-    color: var(--primaryForegroundColor);
+    background-color: var(--primaryBackgroundColorCopy);
+    color: var(--primaryForegroundColorCopy);
     width: 50%;
     padding: var(--boxPaddingSmall);
     border-radius: var(--boxBorderRadius);
 }
 .filterSubmit:hover {
-    background-color: var(--primaryLighterBackgroundColor);
-    color: var(--primaryLighterForegroundColor);
+    background-color: var(--primaryLighterBackgroundColorCopy);
+    color: var(--primaryLighterForegroundColorCopy);
 }
 
 /* General Input */
@@ -192,7 +192,7 @@ div.filterInput {
     background-color: var(--secondaryLighterBackgroundColor);
 }
 .mainFilters > form > div:nth-child(even) > div > div.filterInput {
-    background-color: var(--primaryLighterBackgroundColor);
+    background-color: var(--primaryLighterBackgroundColorCopy);
 }
 
 .filterInput[type=range]::-webkit-slider-thumb {
@@ -287,7 +287,7 @@ div.filterInput {
 }
 
 .mainFilters > form > div:nth-child(odd) > div.filterInputDateDiv > #inputCalendar {
-    background-color: var(--primaryBackgroundColor);
+    background-color: var(--primaryBackgroundColorCopy);
     /*border: solid var(--borderWidth) var(--secondaryBackgroundColor);*/
 }
 .mainFilters > form > div:nth-child(even) > div.filterInputDateDiv > #inputCalendar {
@@ -354,13 +354,13 @@ div.filterInput {
     min-height: var(--selectOptionHeight) !important;
 }
 .mainFilters > form > div:nth-child(odd) .filterInputSelectDiv > div {
-    background-color: var(--primaryBackgroundColor);
+    background-color: var(--primaryBackgroundColorCopy);
 }
 .mainFilters > form > div:nth-child(even) .filterInputSelectDiv > div {
     background-color: var(--secondaryBackgroundColor); 
 }
 .mainFilters > form > div:nth-child(odd) .filterInputSelectDiv > div > option:hover {
-    background-color: var(--primaryLighterBackgroundColor);
+    background-color: var(--primaryLighterBackgroundColorCopy);
 }
 .mainFilters > form > div:nth-child(even) .filterInputSelectDiv > div > option:hover {
     background-color: var(--secondaryLighterBackgroundColor); 
@@ -425,16 +425,16 @@ div.filterInput {
     color: var(--secondaryLighterForegroundColor);
 }
 .mainFilters > form > div:nth-child(odd) .textInput {
-    background-color: var(--primaryBackgroundColor);
-    color: var(--primaryForegroundColor);
+    background-color: var(--primaryBackgroundColorCopy);
+    color: var(--primaryForegroundColorCopy);
 }
 .mainFilters > form > div:nth-child(odd) .textInput:hover {
-    background-color: var(--primaryLighterBackgroundColor);
-    color: var(--primaryLighterForegroundColor);
+    background-color: var(--primaryLighterBackgroundColorCopy);
+    color: var(--primaryLighterForegroundColorCopy);
 }
 .mainFilters > form > div:nth-child(odd) .textInput:focus {
-    background-color: var(--primaryLighterBackgroundColor);
-    color: var(--primaryLighterForegroundColor);
+    background-color: var(--primaryLighterBackgroundColorCopy);
+    color: var(--primaryLighterForegroundColorCopy);
 }
 
 /* Checkbox */
@@ -466,16 +466,16 @@ div.filterInput {
     color: var(--secondaryForegroundColor);
 }
 .mainFilters > form > div:nth-child(odd) .checkbox {
-    background-color: var(--primaryBackgroundColor);
-    color: var(--primaryForegroundColor);
+    background-color: var(--primaryBackgroundColorCopy);
+    color: var(--primaryForegroundColorCopy);
 }
 .mainFilters > form > div:nth-child(even) .checkboxContainer:hover input ~ .checkbox {
-    background-color: var(--primaryLighterBackgroundColor);
+    background-color: var(--primaryLighterBackgroundColorCopy);
     color: var(--primaryLighterForegroundColor);
 }
 .mainFilters > form > div:nth-child(odd) .checkboxContainer:hover input ~ .checkbox {
-    background-color: var(--primaryLighterBackgroundColor);
-    color: var(--primaryLighterForegroundColor);
+    background-color: var(--primaryLighterBackgroundColorCopy);
+    color: var(--primaryLighterForegroundColorCopy);
 }
 .checkboxContainer input:checked ~ .checkbox {
     background-color: #2196F3;

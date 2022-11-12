@@ -11,13 +11,27 @@
     --primaryDarkerBackgroundColor: #392780;
     --primaryDarkerForegroundColor: #f0f8ff;
 
-    --secondaryBackgroundColor: #392780;
+    --primaryBackgroundColorCopy:#202020;
+    --primaryForegroundColorCopy: #f0f8ff;
+
+    --primaryCommentBackgroundColorCopy:#202020;
+    --primaryCommentForegroundColorCopy: #cfc8ed;
+
+    --primaryLighterBackgroundColorCopy: #303030;
+    --primaryLighterForegroundColorCopy: #f0f8ff;
+
+    --primaryDarkerBackgroundColorCopy: #141414;
+    --primaryDarkerForegroundColorCopy: #f0f8ff;
+
+    --primaryShadowColor: rgba(9, 9, 9, 0.886);
+
+    --secondaryBackgroundColor: #141414;
     --secondaryForegroundColor: #f0f8ff;
 
-    --secondaryLighterBackgroundColor:#44318e;
+    --secondaryLighterBackgroundColor:#202020;
     --secondaryLighterForegroundColor: #f0f8ff;
 
-    --secondaryDarkerBackgroundColor:#211a3d;
+    --secondaryDarkerBackgroundColor:#141414;
     --secondaryDarkerForegroundColor: #f0f8ff;
 
     --accentBackgroundColor: #ddb227;

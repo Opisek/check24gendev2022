@@ -160,5 +160,5 @@ a.link::before {
 }
 
 .shadow {
-    box-shadow: rgba(10, 10, 43, 0.886) 0px 7px 29px 0px; 
+    box-shadow: var(--primaryShadowColor) 0px 7px 29px 0px; 
 }

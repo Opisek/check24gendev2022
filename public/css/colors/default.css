@@ -11,6 +11,20 @@
     --primaryDarkerBackgroundColor: #3f2999;
     --primaryDarkerForegroundColor: #f0f8ff;
 
+    --primaryBackgroundColorCopy:#5a41bf;
+    --primaryForegroundColorCopy: #f0f8ff;
+
+    --primaryCommentBackgroundColorCopy:#5a41bf;
+    --primaryCommentForegroundColorCopy: #cfc8ed;
+
+    --primaryLighterBackgroundColorCopy: #8570d8;
+    --primaryLighterForegroundColorCopy: #f0f8ff;
+
+    --primaryDarkerBackgroundColorCopy: #3f2999;
+    --primaryDarkerForegroundColorCopy: #f0f8ff;
+
+    --primaryShadowColor: rgba(10, 10, 43, 0.886);
+
     --secondaryBackgroundColor: #3f2999;
     --secondaryForegroundColor: #f0f8ff;
 
