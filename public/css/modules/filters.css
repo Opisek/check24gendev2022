@@ -469,8 +469,8 @@ div.filterInput {
     color: var(--primaryForegroundColor);
 }
 .mainFilters > form > div:nth-child(even) .checkboxContainer:hover input ~ .checkbox {
-    background-color: var(--secondaryLighterBackgroundColor);
-    color: var(--secondaryLighterForegroundColor);
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
 }
 .mainFilters > form > div:nth-child(odd) .checkboxContainer:hover input ~ .checkbox {
     background-color: var(--primaryLighterBackgroundColor);
