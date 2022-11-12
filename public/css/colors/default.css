@@ -2,6 +2,9 @@
     --primaryBackgroundColor:#5a41bf;
     --primaryForegroundColor: #f0f8ff;
 
+    --primaryCommentBackgroundColor:#5a41bf;
+    --primaryCommentForegroundColor: #cfc8ed;
+
     --primaryLighterBackgroundColor: #8570d8;
     --primaryLighterForegroundColor: #f0f8ff;
 
@@ -31,4 +34,7 @@
 
     --plainCommentBackgroundColor: #ffffff;
     --plainCommentForegroundColor: #6d6d6d;
+
+    --errorBackgroundColor:#df4a4a;
+    --errorForegroundColor: #f0f8ff;
 }

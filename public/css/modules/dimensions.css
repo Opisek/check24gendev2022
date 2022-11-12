@@ -35,6 +35,7 @@
     --boxPaddingHuge: 20em;
     --boxBorderRadius: 1em;
     --boxBorderRadiusSmall: .5em;
+    --centerBoxMargin: 30vw;
 
     /* Decoration */
     --borderWidth: .3em;

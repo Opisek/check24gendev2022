@@ -16,5 +16,18 @@ const database = new (require("./private/js/database"))(process.env.DB_HOST, pro
     webServer.addEventListener("getRooms", async (filters, requestId, callback) => callback(await database.getRooms(filters, requestId)));
     webServer.addEventListener("getMeals", async (filters, requestId, callback) => callback(await database.getMeals(filters, requestId)));
 
+    webServer.addEventListener("login", async (filters, requestId, callback) => {
+        console.log("login");
+        callback("test");
+    });
+    webServer.addEventListener("register", async (filters, requestId, callback) => {
+        console.log("register");
+        callback("test");
+    });
+    webServer.addEventListener("recover", async (filters, requestId, callback) => {
+        console.log("recover");
+        callback("test");
+    });
+
     webServer.addEventListener("abortRequest", requestId => database.abortRequest(requestId));
 })();

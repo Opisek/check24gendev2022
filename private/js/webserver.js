@@ -31,21 +31,21 @@ module.exports = class WebServer {
     }
 
     async _newRequest(socket, event, filters, callback) {
-        if (!(event in this._currentRequest)) {
-            this._currentRequest[event] = null;
-            this._currentRequestIndex[event] = 0;
+        if (!(event in this._currentRequest[socket.id])) {
+            this._currentRequest[socket.id][event] = null;
+            this._currentRequestIndex[socket.id][event] = 0;
         }
 
-        let requestIndex = this._currentRequestIndex[event]++;
-        let lastCurrentRequest = this._currentRequest[event];
-        this._currentRequest[event] = requestIndex;
+        let requestIndex = this._currentRequestIndex[socket.id][event]++;
+        let lastCurrentRequest = this._currentRequest[socket.id][event];
+        this._currentRequest[socket.id][event] = requestIndex;
         setTimeout(async () => {
-            if (requestIndex != this._currentRequest[event]) return;
+            if (requestIndex != this._currentRequest[socket.id][event]) return;
             if (lastCurrentRequest) await this._emit("abortRequest", `${socket.id}/${event}/${lastCurrentRequest}`);
-            if (requestIndex != this._currentRequest[event]) return;
+            if (requestIndex != this._currentRequest[socket.id][event]) return;
             this._emit(event, filters, `${socket.id}/${event}/${requestIndex}`, result => {
-                if (requestIndex != this._currentRequest[event]) return;
-                this._currentRequest[event] = null;
+                if (requestIndex != this._currentRequest[socket.id][event]) return;
+                this._currentRequest[socket.id][event] = null;
                 callback(result);
             });
         }, 100);
@@ -90,20 +90,44 @@ module.exports = class WebServer {
             res.end();
         });
 
+        server.get("/account/", function(req, res) {
+            //if (authenticate(req, res)) return;
+
+            res.render("contact", { host: `${req.protocol}://${req.hostname}` });
+            res.end();
+        });
+
+        server.get("/auth/", function(req, res) {
+            //if (authenticate(req, res)) return;
+
+            res.render("auth", { host: `${req.protocol}://${req.hostname}` });
+            res.end();
+        });
+
         socketio(httpServer).on("connection", socket => {
+            this._currentRequest[socket.id] = {};
+            this._currentRequestIndex[socket.id] = {};
+            socket.on("disconnect", () => {
+                delete this._currentRequest[socket.id];
+                delete this._currentRequestIndex[socket.id]
+            });
+
             socket.on("authenticate", token => {
                 // not yet supported
             });
 
-            socket.on("getHotelsByFilters", (filters, callback) => this._newRequest(socket, "getHotelsByFilters", filters, callback));
-            socket.on("getHotelsByFiltersPages", (filters, callback) => this._newRequest(socket, "getHotelsByFiltersPages", filters, callback));
-            
-            socket.on("getOffersByHotel", (filters, callback) => this._newRequest(socket, "getOffersByHotel", filters, callback));
-            socket.on("getOffersByHotelPages", (filters, callback) => this._newRequest(socket, "getOffersByHotelPages", filters, callback));
-            
-            socket.on("getAirports", (filters, callback) => this._newRequest(socket, "getAirports", filters, callback));
-            socket.on("getRooms", (filters, callback) => this._newRequest(socket, "getRooms", filters, callback));
-            socket.on("getMeals", (filters, callback) => this._newRequest(socket, "getMeals", filters, callback));
+            for (const event of [
+                "getHotelsByFilters",
+                "getHotelsByFiltersPages",
+                "getOffersByHotel",
+                "getOffersByHotelPages",
+                "getAirports",
+                "getRooms",
+                "getMeals",
+                "login",
+                "register",
+                "recover"
+            ]) socket.on(event, (data, callback) => this._newRequest(socket, event, data, callback));
         });
 
 
