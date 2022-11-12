@@ -42,7 +42,9 @@ module.exports = class Database {
     }
 
     async getHotelsByFilters(filters, requestId) {
-        return await this._hotelsByFilters(filters, requestId, ["filtered.hotelid", "price", "amount", "name", "stars", "saved"]);
+        let rows = ["filtered.hotelid", "price", "amount", "name", "stars"];
+        if (filters.userId) rows.push("saved");
+        return await this._hotelsByFilters(filters, requestId, rows);
     }
 
     async getHotelsByFiltersPages(filters, requestId) {
@@ -77,7 +79,7 @@ module.exports = class Database {
             ${limit && filters.userId ? `LEFT OUTER JOIN (SELECT hotelId, true AS saved FROM hotelSaves WHERE userId=${filters.userId}) AS saves ON saves.hotelId=filtered.hotelid` : ''}
             WHERE stars>=$3
             AND stars<=$4
-            ${filters.saved && filters.userId ? `AND saved=true` : ''}
+            ${limit && filters.saved && filters.userId ? `AND saved=true` : ''}
             ${filters.query ? `AND POSITION($${++paramCount} IN name)>0` : ''}
             ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `;
@@ -88,7 +90,7 @@ module.exports = class Database {
     }
 
     async getOffersByHotel(filters, requestId) {
-        return await this._offersByHotel(filters, requestId, [
+        let rows = [
             "filtered.id",
             "departuredate",
             "returndate",
@@ -105,9 +107,10 @@ module.exports = class Database {
             "outboundarrivaldatetime",
             "mealtype",
             "oceanview",
-            "roomtype",
-            "saved"
-        ]);
+            "roomtype"
+        ];
+        if (filters.userId) rows.push("saved");
+        return await this._offersByHotel(filters, requestId, rows);
     }
 
     async getOffersByHotelPages(filters, requestId) {
@@ -138,7 +141,7 @@ module.exports = class Database {
                 ${filters.airport ? `AND outbounddepartureairport=$${++paramCount}` : ''}
                 ${filters.room ? `AND roomtype=$${++paramCount}` : ''}
                 ${filters.meal ? `AND mealtype=$${++paramCount}` : ''}
-                ${filters.saved && filters.userId ? `AND saved=true` : ''}
+                ${limit && filters.saved && filters.userId ? `AND saved=true` : ''}
                 ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
             ) AS filtered
             INNER JOIN airports AS outdepairport ON filtered.outbounddepartureairport=outdepairport.id
