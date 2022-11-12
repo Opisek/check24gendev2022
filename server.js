@@ -9,11 +9,17 @@ const auth = new (require("./private/js/auth"))(process.env.JWT_SECRET);
     console.log("database connected!");
 
     // Hotel Search
-    webServer.addEventListener("getHotelsByFilters", async (data, requestId, callback) => callback(await database.getHotelsByFilters(data, requestId)));
+    webServer.addEventListener("getHotelsByFilters", async (data, requestId, callback) => {
+        data.userId = await auth.verifyToken(data, requestId);
+        callback(await database.getHotelsByFilters(data, requestId))
+    });
     webServer.addEventListener("getHotelsByFiltersPages", async (data, requestId, callback) => callback(await database.getHotelsByFiltersPages(data, requestId)));
     
     // Offer Search
-    webServer.addEventListener("getOffersByHotel", async (data, requestId, callback) => callback(await database.getOffersByHotel(data, requestId)));
+    webServer.addEventListener("getOffersByHotel", async (data, requestId, callback) => {
+        data.userId = await auth.verifyToken(data, requestId);
+        callback(await database.getOffersByHotel(data, requestId))
+    });
     webServer.addEventListener("getOffersByHotelPages", async (data, requestId, callback) => callback(await database.getOffersByHotelPages(data, requestId)));
     
     // Filter Search
@@ -30,6 +36,44 @@ const auth = new (require("./private/js/auth"))(process.env.JWT_SECRET);
     auth.addEventListener("existsUserByEmail", async (data, requestId, callback) => callback(await database.existsUserByEmail(data, requestId)));
     auth.addEventListener("getUserByEmail", async (data, requestId, callback) => callback(await database.getUserByEmail(data, requestId)));
     auth.addEventListener("registerUser", async (data, requestId, callback) => callback(await database.registerUser(data, requestId)));
+
+    // Saving
+    webServer.addEventListener("saveHotel", async (data, requestId, callback) => {
+        const id = await auth.verifyToken(data, requestId);
+        if (id == null) callback(false);
+        else {
+            data.userId = id;
+            await database.saveHotel(data, requestId)
+            callback(true);
+        }
+    });
+    webServer.addEventListener("unsaveHotel", async (data, requestId, callback) => {
+        const id = await auth.verifyToken(data, requestId);
+        if (id == null) callback(false);
+        else {
+            data.userId = id;
+            await database.unsaveHotel(data, requestId)
+            callback(true);
+        }
+    });
+    webServer.addEventListener("saveOffer", async (data, requestId, callback) => {
+        const id = await auth.verifyToken(data, requestId);
+        if (id == null) callback(false);
+        else {
+            data.userId = id;
+            await database.saveOffer(data, requestId)
+            callback(true);
+        }
+    });
+    webServer.addEventListener("unsaveOffer", async (data, requestId, callback) => {
+        const id = await auth.verifyToken(data, requestId);
+        if (id == null) callback(false);
+        else {
+            data.userId = id;
+            await database.unsaveOffer(data, requestId)
+            callback(true);
+        }
+    });
 
     // Request Abortion
     webServer.addEventListener("abortRequest", requestId => database.abortRequest(requestId));

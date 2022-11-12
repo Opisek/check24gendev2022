@@ -52,11 +52,18 @@ module.exports = class Auth {
         if (isEmpty(data, "repeatPassword")) return error("repeatPasswordMissing");
         if (data.password != data.repeatPassword) return error("passwordUnequeal");
 
-        let id = await this._databaseRequest("registerUser", { email: data.email, password: bcrypt.hashSync(data.password, 10) }, requestId);
+        let id = (await this._databaseRequest("registerUser", { email: data.email, password: bcrypt.hashSync(data.password, 10) }, requestId))[0].id;
         return success(this._generateJwt(id));
     }
     async recover(data, requestId) {
         if (isEmpty(data, "email")) return error("missingEmail");
+    }
+    async verifyToken(data, requestId) {
+        try {
+            return jwt.verify(data.token, this._secret).id;
+        } catch(e) {
+            return null;
+        }
     }
 };
 

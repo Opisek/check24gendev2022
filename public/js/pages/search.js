@@ -17,6 +17,7 @@ function getOffers() {
         if (input.type == "checkbox") filterParameters[input.name] = input.checked;
         else if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
     }
+    filterParameters.token = getCookie("token");
 
     const page = filterParameters.page;
 
@@ -78,7 +79,8 @@ function displayOffers(offers, page) {
 
     for (let offer of offers) {
         const offerDiv = document.createElement("div");
-        offerDiv.className = "offer";
+        if (offer.saved) offerDiv.className = "offer saved";
+        else offerDiv.className = "offer"
 
         const offerName = document.createElement("h2");
         offerName.innerHTML = offer.name;
@@ -109,7 +111,7 @@ function displayOffers(offers, page) {
         const starButton = document.createElement("span");
         starButton.classList.add("starButton");
         starButton.innerHTML = '★';
-        starButton.addEventListener("click", () => starClick(offer.id, offerDiv));
+        starButton.addEventListener("click", () => starClick(offer.hotelid, offerDiv));
         offerDiv.appendChild(starButton);
 
         container.appendChild(offerDiv);
@@ -119,10 +121,18 @@ function displayOffers(offers, page) {
 }
 
 function starClick(id, offer) {
-    if (offer.classList.contains("saved")) {
-        offer.classList.remove("saved");
+    const token = getCookie("token");
+    if (token == null) {
+        setUrlParameter("redirect", "search");
+        switchPageWithParameters("/auth");
     } else {
-        offer.classList.add("saved");
+        if (offer.classList.contains("saved")) {
+            offer.classList.remove("saved");
+            socket.emit("unsaveHotel", { token: token, hotelId: id });
+        } else {
+            offer.classList.add("saved");
+            socket.emit("saveHotel", { token: token, hotelId: id });
+        }
     }
 }
 

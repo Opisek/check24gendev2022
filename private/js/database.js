@@ -42,97 +42,11 @@ module.exports = class Database {
     }
 
     async getHotelsByFilters(filters, requestId) {
-        return await this._hotelsByFilters(filters, requestId, ["hotelid", "price", "amount", "name", "stars"]);
+        return await this._hotelsByFilters(filters, requestId, ["filtered.hotelid", "price", "amount", "name", "stars", "saved"]);
     }
 
     async getHotelsByFiltersPages(filters, requestId) {
         return await this._hotelsByFilters(filters, requestId, ["COUNT(*)"], false);
-    }
-
-    async getOffersByHotel(filters, requestId) {
-        return await this._offersByHotel(filters, requestId, [
-            "filtered.id",
-            "departuredate",
-            "returndate",
-            "countadults",
-            "countchildren",
-            "price",
-            "indepairport.name AS inbounddepartureairport",
-            "inarrairport.name AS inboundarrivalairport",
-            "inboundairline",
-            "inboundarrivaldatetime",
-            "outdepairport.name AS outbounddepartureairport",
-            "outarrairport.name AS outboundarrivalairport",
-            "outboundairline",
-            "outboundarrivaldatetime",
-            "mealtype",
-            "oceanview",
-            "roomtype"
-        ]);
-    }
-
-    async getOffersByHotelPages(filters, requestId) {
-        return await this._offersByHotel(filters, requestId, ["COUNT(*)"], false);
-    }
-    
-    async getAirports(filters, requestId) {
-        return await this._beginRequest(`
-            SELECT *
-            FROM airports
-            ORDER BY name
-        `,
-        [],
-        requestId);
-    }
-
-    async getRooms(filters, requestId) {
-        return await this._beginRequest(`
-            SELECT *
-            FROM rooms
-            ORDER BY id
-        `,
-        [],
-        requestId);
-    }
-
-    async getMeals(filters, requestId) {
-        return await this._beginRequest(`
-            SELECT *
-            FROM meals
-            ORDER BY id
-        `,
-        [],
-        requestId);
-    }
-
-    async existsUserByEmail(filters, requestId) {
-        return await this._beginRequest(`
-            SELECT COUNT(*)
-            FROM users
-            WHERE email=$1
-        `,
-        [filters.email],
-        requestId);
-    }
-
-    async getUserByEmail(filters, requestId) {
-        return await this._beginRequest(`
-            SELECT *
-            FROM users
-            WHERE email=$1
-        `,
-        [filters.email],
-        requestId);
-    }
-
-    async registerUser(filters, requestId) {
-        return await this._beginRequest(`
-            INSERT INTO users(email, password)
-            VALUES ($1, $2)
-            RETURNING id
-        `,
-        [filters.email, filters.password],
-        requestId);
     }
 
     async _hotelsByFilters(filters, requestId, columns, limit=true) {
@@ -160,8 +74,10 @@ module.exports = class Database {
                 GROUP BY hotelid
             ) AS filtered
             INNER JOIN hotels ON filtered.hotelid=hotels.id
+            ${limit && filters.userId ? `LEFT OUTER JOIN (SELECT hotelId, true AS saved FROM hotelSaves WHERE userId=${filters.userId}) AS saves ON saves.hotelId=filtered.hotelid` : ''}
             WHERE stars>=$3
             AND stars<=$4
+            ${filters.saved && filters.userId ? `AND saved=true` : ''}
             ${filters.query ? `AND POSITION($${++paramCount} IN name)>0` : ''}
             ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
         `;
@@ -171,6 +87,33 @@ module.exports = class Database {
         return await this._beginRequest(query, parameters, requestId);
     }
 
+    async getOffersByHotel(filters, requestId) {
+        return await this._offersByHotel(filters, requestId, [
+            "filtered.id",
+            "departuredate",
+            "returndate",
+            "countadults",
+            "countchildren",
+            "price",
+            "indepairport.name AS inbounddepartureairport",
+            "inarrairport.name AS inboundarrivalairport",
+            "inboundairline",
+            "inboundarrivaldatetime",
+            "outdepairport.name AS outbounddepartureairport",
+            "outarrairport.name AS outboundarrivalairport",
+            "outboundairline",
+            "outboundarrivaldatetime",
+            "mealtype",
+            "oceanview",
+            "roomtype",
+            "saved"
+        ]);
+    }
+
+    async getOffersByHotelPages(filters, requestId) {
+        return await this._offersByHotel(filters, requestId, ["COUNT(*)"], false);
+    }
+    
     async _offersByHotel(filters, requestId, columns, limit=true) {
         this._parseFilters(filters);
 
@@ -186,6 +129,7 @@ module.exports = class Database {
             FROM (
                 SELECT *
                 FROM offers_${filters.adults}_${filters.children}
+                ${limit && filters.userId ? `LEFT OUTER JOIN (SELECT offerId, true AS saved FROM offerSaves WHERE userId=${filters.userId}) AS saves ON saves.offerId=offers_${filters.adults}_${filters.children}.id` : ''}
                 WHERE hotelid=$1
                 AND price<=$2
                 AND price>=$3
@@ -194,6 +138,7 @@ module.exports = class Database {
                 ${filters.airport ? `AND outbounddepartureairport=$${++paramCount}` : ''}
                 ${filters.room ? `AND roomtype=$${++paramCount}` : ''}
                 ${filters.meal ? `AND mealtype=$${++paramCount}` : ''}
+                ${filters.saved && filters.userId ? `AND saved=true` : ''}
                 ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
             ) AS filtered
             INNER JOIN airports AS outdepairport ON filtered.outbounddepartureairport=outdepairport.id
@@ -253,5 +198,101 @@ module.exports = class Database {
         if (!("airport" in filters) || filters.airport == "Any") filters.airport = null;
         if (!("room" in filters) || filters.room == "Any") filters.room = null;
         if (!("meal" in filters) || filters.meal == "Any") filters.meal = null;
+    }
+    
+    async getAirports(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT *
+            FROM airports
+            ORDER BY name
+        `,
+        [],
+        requestId);
+    }
+
+    async getRooms(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT *
+            FROM rooms
+            ORDER BY id
+        `,
+        [],
+        requestId);
+    }
+
+    async getMeals(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT *
+            FROM meals
+            ORDER BY id
+        `,
+        [],
+        requestId);
+    }
+
+    async existsUserByEmail(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT COUNT(*)
+            FROM users
+            WHERE email=$1
+        `,
+        [filters.email],
+        requestId);
+    }
+
+    async getUserByEmail(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT *
+            FROM users
+            WHERE email=$1
+        `,
+        [filters.email],
+        requestId);
+    }
+
+    async registerUser(data, requestId) {
+        return await this._beginRequest(`
+            INSERT INTO users(email, password)
+            VALUES ($1, $2)
+            RETURNING id
+        `,
+        [data.email, data.password],
+        requestId);
+    }
+
+    async saveHotel(data, requestId) {
+        console.log(data);
+        return await this._beginRequest(`
+            INSERT INTO hotelSaves(userId, hotelId)
+            VALUES ($1, $2)
+        `,
+        [Number.parseInt(data.userId), Number.parseInt(data.hotelId)],
+        requestId);
+    }
+    async unsaveHotel(data, requestId) {
+        return await this._beginRequest(`
+            DELETE FROM hotelSaves
+            WHERE userId=$1
+            AND hotelId=$2
+        `,
+        [Number.parseInt(data.userId), Number.parseInt(data.hotelId)],
+        requestId);
+    }
+    async saveOffer(data, requestId) {
+        return await this._beginRequest(`
+            INSERT INTO offerSaves(userId, offerId)
+            VALUES ($1, $2)
+        `,
+        [Number.parseInt(data.userId), Number.parseInt(data.offerId)],
+        requestId);
+    }
+    async unsaveOffer(data, requestId) {
+        return await this._beginRequest(`
+            DELETE FROM offerSaves
+            WHERE userId=$1
+            AND offerId=$2
+        `,
+        [Number.parseInt(data.userId), Number.parseInt(data.offerId)],
+        requestId);
     }
 }

@@ -17,6 +17,7 @@ function getOffers() {
         if (input.type == "checkbox") filterParameters[input.name] = input.checked;
         else if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
     }
+    filterParameters.token = getCookie("token");
 
     const page = filterParameters.page;
 
@@ -77,7 +78,9 @@ function displayOffers(offers, page) {
 
     for (let offer of offers) {
         const offerDiv = document.createElement("div");
-        offerDiv.className = "offer tripOffer";
+        if (offer.saved) offerDiv.className = "offer tripOffer saved";
+        else offerDiv.className = "offer tripOffer";
+
         const offerName = document.createElement("h2");
         const nights = Math.ceil(((new Date(offer.returndate)).valueOf() - (new Date(offer.outboundarrivaldatetime)).valueOf())/1000/60/60/24);
         offerName.innerHTML = `${nights} night${nights == 1 ? '' : 's'}`;
@@ -139,12 +142,21 @@ function displayOffers(offers, page) {
 }
 
 function starClick(id, offer) {
-    if (offer.classList.contains("saved")) {
-        offer.classList.remove("saved");
+    const token = getCookie("token");
+    if (token == null) {
+        setUrlParameter("redirect", "search");
+        switchPageWithParameters("/auth");
     } else {
-        offer.classList.add("saved");
+        if (offer.classList.contains("saved")) {
+            offer.classList.remove("saved");
+            socket.emit("unsaveOffer", { token: token, offerId: id });
+        } else {
+            offer.classList.add("saved");
+            socket.emit("saveOffer", { token: token, offerId: id });
+        }
     }
 }
+
 
 function addFlightData(parent, data) {
     parent.appendChild(createSpan(data[0], "airline"));

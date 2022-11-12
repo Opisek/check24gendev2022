@@ -27,7 +27,7 @@ module.exports = class WebServer {
         for (const listener of this._events[name]) listener(data, requestId, callback);
     }
 
-    async _newRequest(socket, event, filters, callback) {
+    async _newRequest(socket, event, filters, callback = () => {}) {
         if (!(event in this._currentRequest[socket.id])) {
             this._currentRequest[socket.id][event] = null;
             this._currentRequestIndex[socket.id][event] = 0;
@@ -41,7 +41,7 @@ module.exports = class WebServer {
             if (lastCurrentRequest) await this._emit("abortRequest", `${socket.id}/${event}/${lastCurrentRequest}`);
             if (requestIndex != this._currentRequest[socket.id][event]) return;
             this._emit(event, filters, `${socket.id}/${event}/${requestIndex}`, result => {
-                if (requestIndex != this._currentRequest[socket.id][event]) return;
+                if (!(socket.id in this._currentRequest) || !(event in this._currentRequest[socket.id]) || requestIndex != this._currentRequest[socket.id][event]) return;
                 this._currentRequest[socket.id][event] = null;
                 callback(result);
             });
@@ -125,7 +125,11 @@ module.exports = class WebServer {
                 "getMeals",
                 "login",
                 "register",
-                "recover"
+                "recover",
+                "saveHotel",
+                "unsaveHotel",
+                "saveOffer",
+                "unsaveOffer",
             ]) socket.on(event, (data, callback) => this._newRequest(socket, event, data, callback));
         });
 

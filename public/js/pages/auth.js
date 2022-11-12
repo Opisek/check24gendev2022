@@ -36,7 +36,8 @@ function submit(request, i) {
             document.cookie = `token=${result.data}`;
             const url = new URL(window.location.href);
             const redirect = url.searchParams.get("redirect");
-            window.location = redirect ? redirect : '/';
+            url.searchParams.delete("redirect");
+            window.location = redirect ? redirect : '/' + document.location.search;
         }
         authBusy[i] = false;
     });

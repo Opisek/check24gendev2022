@@ -169,7 +169,7 @@ async function mealtypes(sql) {
 
 async function users(sql) {
     console.log("reset users");
-    await sql.query("DROP TABLE IF EXISTS users");
+    await sql.query("DROP TABLE IF EXISTS users, offerSaves, hotelSaves");
 
     console.log("create users");
     await sql.query(`
@@ -180,6 +180,32 @@ async function users(sql) {
             password CHAR(60)
         )
     `);
+}
+
+async function saves(sql) {
+    console.log("reset saves");
+    await sql.query("DROP TABLE IF EXISTS hotelSaves, offerSaves");
+
+    console.log("create saves");
+    await sql.query(`
+        CREATE TABLE hotelSaves
+        (
+            userId INT,
+            hotelId INT,
+            CONSTRAINT viewerReference FOREIGN KEY(userId) REFERENCES users(id),
+            CONSTRAINT hotelReference FOREIGN KEY(hotelId) REFERENCES hotels(id)
+        )
+    `);
+    await sql.query(`
+        CREATE TABLE offerSaves
+        (
+            userId INT,
+            offerId INT,
+            CONSTRAINT userReference FOREIGN KEY(userId) REFERENCES users(id)
+        )
+    `);
+    console.log("indexing saves");
+    await progressReporting(sql, "CREATE INDEX offerSave_index on offerSaves USING btree (offerId)", "create_index", "tuples_total", "tuples_done");
 }
 
 async function main() {
@@ -195,12 +221,13 @@ async function main() {
     console.log("set utf8");
     await sql.query("SET client_encoding='UTF8'");
 
-    //await offers(sql);
-    //await hotels(sql);
-    //await airports(sql);
-    //await roomtypes(sql);
-    //await mealtypes(sql);
+    /*await offers(sql);
+    await hotels(sql);
+    await airports(sql);
+    await roomtypes(sql);
+    await mealtypes(sql);*/
     await users(sql);
+    await saves(sql);
 
     console.log("all done");
 }
