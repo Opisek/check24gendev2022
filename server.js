@@ -11,21 +11,22 @@ const auth = new (require("./private/js/auth"))(process.env.JWT_SECRET);
     // Hotel Search
     webServer.addEventListener("getHotelsByFilters", async (data, requestId, callback) => {
         data.userId = await auth.verifyToken(data, requestId);
-        callback(await database.getHotelsByFilters(data, requestId))
+        callback(await database.getHotelsByFilters(data, requestId));
     });
     webServer.addEventListener("getHotelsByFiltersPages", async (data, requestId, callback) => {
         data.userId = await auth.verifyToken(data, requestId);
-        callback(await database.getHotelsByFiltersPages(data, requestId))
+        callback(await database.getHotelsByFiltersPages(data, requestId));
     });
+    webServer.addEventListener("getHotelById", async (data, requestId, callback) => callback(await database.getHotelById(data, requestId)));
     
     // Offer Search
     webServer.addEventListener("getOffersByHotel", async (data, requestId, callback) => {
         data.userId = await auth.verifyToken(data, requestId);
-        callback(await database.getOffersByHotel(data, requestId))
+        callback(await database.getOffersByHotel(data, requestId));
     });
     webServer.addEventListener("getOffersByHotelPages", async (data, requestId, callback) => {
         data.userId = await auth.verifyToken(data, requestId);
-        callback(await database.getOffersByHotelPages(data, requestId))
+        callback(await database.getOffersByHotelPages(data, requestId));
     });
     
     // Filter Search

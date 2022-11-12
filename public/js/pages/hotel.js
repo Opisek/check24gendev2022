@@ -179,5 +179,5 @@ function createSpan(content, className="") {
 window.addEventListener("load", () => {
     const elements = document.getElementsByClassName("hotelFilter");
     for (let i = elements.length-1; i >= 0; --i) elements[i].remove();
-    document.getElementById("hotelName").innerHTML = "Test Hotel";
+    //document.getElementById("hotelName").innerHTML = "Test Hotel";
 });

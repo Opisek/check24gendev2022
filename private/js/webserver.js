@@ -76,10 +76,16 @@ module.exports = class WebServer {
             res.end();
         });
 
-        server.get("/hotel/:hotelId", (req, res) => {
+        server.get("/hotel/:hotelId", async (req, res) => {
             //if (authenticate(req, res)) return;
 
-            res.render("hotel", { host: `${req.protocol}://${req.hostname}`, hotelId: req.params.hotelId });
+            const hotelName = await new Promise(res => this._emit("getHotelById", { hotelId: req.params.hotelId }, null, id => res(id)));
+
+            res.render("hotel", { 
+                host: `${req.protocol}://${req.hostname}`,
+                hotelId: req.params.hotelId,
+                hotelName: hotelName.length == 0 ? "Invalid Hotel" : hotelName[0].name
+            });
             res.end();
         });
 

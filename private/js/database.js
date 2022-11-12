@@ -53,7 +53,7 @@ module.exports = class Database {
 
     async _hotelsByFilters(filters, requestId, columns, limit=true) {
         this._parseFilters(filters);
-        
+
         let offset = 1;
         if ("page" in filters && !Number.isNaN(Number.parseInt(filters.page)) && filters.page > 0) offset = filters.page;
         offset = (offset - 1) * pagination;
@@ -329,6 +329,16 @@ module.exports = class Database {
             AND offerId=$2
         `,
         [Number.parseInt(data.userId), Number.parseInt(data.offerId)],
+        requestId);
+    }
+
+    async getHotelById(filters, requestId) {
+        return await this._beginRequest(`
+            SELECT *
+            FROM hotels
+            WHERE id=$1
+        `,
+        [filters.hotelId],
         requestId);
     }
 }
