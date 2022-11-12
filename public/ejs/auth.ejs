@@ -4,7 +4,7 @@
     <%- include("partials/navbarHead.ejs") %>
     <%- include("partials/footerHead.ejs") %>
     <link rel="stylesheet" href="/css/pages/auth.css">
-    <link rel="stylesheet" href="/css/colors/default.css">
+    <link rel="stylesheet" href="/css/colors/<%=color%>.css">
 </head>
 <body>
     <%- include("partials/navbarBody.ejs") %>
@@ -52,7 +52,6 @@
             <button id="recoveryButton">Forgot Password</button>
         </div>
     </main>
-    <script type="text/javascript" src="/js/modules/cookies.js"></script>
     <script type="text/javascript" src="/js/pages/auth.js"></script>
     <%- include("partials/footerBody.ejs") %>
 </body>

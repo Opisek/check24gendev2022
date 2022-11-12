@@ -53,8 +53,13 @@ nav > .navRight {
     display: none;
 }
 
-.navExpand {
+nav img {
     margin-top: calc(.5 * var(--navPaddingHeight));
+    height: calc(var(--navHeight) - 4 * var(--navPaddingHeight));
+    width: calc(var(--navHeight) - 4 * var(--navPaddingHeight));
+}
+
+.navExpand {
     height: calc(var(--navHeight) - 3 * var(--navPaddingHeight));
     width: calc(var(--navHeight) - 3 * var(--navPaddingHeight));
     float: right;

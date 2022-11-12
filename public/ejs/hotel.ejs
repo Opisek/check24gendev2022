@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/css/modules/offers.css">
     <link rel="stylesheet" href="/css/modules/filters.css">
     <link rel="stylesheet" href="/css/modules/pagination.css">
-    <link rel="stylesheet" href="/css/colors/default.css">
+    <link rel="stylesheet" href="/css/colors/<%=color%>.css">
     <%- include("partials/navbarHead.ejs") %>
     <%- include("partials/footerHead.ejs") %>
 </head>
@@ -24,7 +24,6 @@
         <div class="mainList colorPlain"></div>
     </main>
     <script type="text/javascript">const hotelId = "<%= hotelId %>";</script>
-    <script type="text/javascript" src="/js/modules/cookies.js"></script>
     <script type="text/javascript" src="/js/modules/filters.js"></script>
     <script type="text/javascript" src="/js/pages/hotel.js"></script>
     <%- include("partials/footerBody.ejs") %>

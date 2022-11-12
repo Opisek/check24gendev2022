@@ -1,0 +1,40 @@
+:root {
+    --primaryBackgroundColor:#44318e;
+    --primaryForegroundColor: #f0f8ff;
+
+    --primaryCommentBackgroundColor:#44318e;
+    --primaryCommentForegroundColor: #cfc8ed;
+
+    --primaryLighterBackgroundColor: #523ea0;
+    --primaryLighterForegroundColor: #f0f8ff;
+
+    --primaryDarkerBackgroundColor: #392780;
+    --primaryDarkerForegroundColor: #f0f8ff;
+
+    --secondaryBackgroundColor: #392780;
+    --secondaryForegroundColor: #f0f8ff;
+
+    --secondaryLighterBackgroundColor:#44318e;
+    --secondaryLighterForegroundColor: #f0f8ff;
+
+    --secondaryDarkerBackgroundColor:#211a3d;
+    --secondaryDarkerForegroundColor: #f0f8ff;
+
+    --accentBackgroundColor: #ddb227;
+    --accentForegroundColor: #f0f8ff;
+
+    --plainBackgroundColor: #141414;
+    --plainForegroundColor: #f0f8ff;
+
+    --plainContrastBackgroundColor: #202020;
+    --plainContrastForegroundColor: #f0f8ff;
+
+    --plainContrastSecondBackgroundColor: #282828;
+    --plainContrastSecondForegroundColor: #f0f8ff;
+
+    --plainCommentBackgroundColor: #141414;
+    --plainCommentForegroundColor: #7a7a7a;
+
+    --errorBackgroundColor:#df4a4a;
+    --errorForegroundColor: #f0f8ff;
+}

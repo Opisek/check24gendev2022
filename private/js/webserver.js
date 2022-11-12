@@ -48,6 +48,10 @@ module.exports = class WebServer {
     async _isLoggedIn(cookies) {
         return await new Promise(res => this._emit("verifyToken", { token: cookies.token }, null, id => res(id)));
     }
+    _getColorScheme(cookies) {
+        const colorCookie = cookies.color;
+        return ["default", "dark"].includes(cookies.color) ? cookies.color : "default";
+    }
 
     constructor(port) {
         this._events = {};
@@ -65,14 +69,21 @@ module.exports = class WebServer {
         server.get("/", (req, res) => {
             //if (authenticate(req, res)) return;
 
-            res.render("index", { host: `${req.protocol}://${req.hostname}` });
+            res.render("index", { host: `${req.protocol}://${req.hostname}`, color: this._getColorScheme(req.cookies) });
+            res.end();
+        });
+
+        server.get("/", (req, res) => {
+            //if (authenticate(req, res)) return;
+
+            res.render("index", { host: `${req.protocol}://${req.hostname}`, color: this._getColorScheme(req.cookies) });
             res.end();
         });
 
         server.get("/search/", (req, res) => {
             //if (authenticate(req, res)) return;
 
-            res.render("search", { host: `${req.protocol}://${req.hostname}` });
+            res.render("search", { host: `${req.protocol}://${req.hostname}`, color: this._getColorScheme(req.cookies) });
             res.end();
         });
 
@@ -83,8 +94,9 @@ module.exports = class WebServer {
 
             res.render("hotel", { 
                 host: `${req.protocol}://${req.hostname}`,
+                color: this._getColorScheme(req.cookies),
                 hotelId: req.params.hotelId,
-                hotelName: hotelName.length == 0 ? "Invalid Hotel" : hotelName[0].name
+                hotelName: hotelName.length == 0 ? "Invalid Hotel" : hotelName[0].name,
             });
             res.end();
         });
@@ -92,29 +104,27 @@ module.exports = class WebServer {
         server.get("/contact/", (req, res) => {
             //if (authenticate(req, res)) return;
 
-            res.render("contact", { host: `${req.protocol}://${req.hostname}` });
+            res.render("contact", { host: `${req.protocol}://${req.hostname}`, color: this._getColorScheme(req.cookies) });
             res.end();
         });
 
         server.get("/account/", async (req, res) => {
-            console.log(req.cookies);
             if ((await this._isLoggedIn(req.cookies)) == null) {
                 res.redirect("/auth/");
                 res.end();
                 return;
             }
-            res.render("account", { host: `${req.protocol}://${req.hostname}` });
+            res.render("account", { host: `${req.protocol}://${req.hostname}`, color: this._getColorScheme(req.cookies) });
             res.end();
         });
 
         server.get("/auth/", async (req, res) => {
-            console.log(req.cookies);
             if (await this._isLoggedIn(req.cookies) != null) {
                 res.redirect("/account/");
                 res.end();
                 return;
             }
-            res.render("auth", { host: `${req.protocol}://${req.hostname}` });
+            res.render("auth", { host: `${req.protocol}://${req.hostname}`, color: this._getColorScheme(req.cookies) });
             res.end();
         });
 
