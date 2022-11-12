@@ -30,8 +30,8 @@
 .offer {
     display: grid !important;
     grid-template-rows: minmax(2fr, auto) 1fr;
-    grid-template-columns: auto 1fr;
-    grid-template-areas: "name price" "data button";
+    grid-template-columns: auto auto 1fr;
+    grid-template-areas: "name star price" "data data button";
     align-items: center;
     text-align: left;
     gap: var(--flexGap);
@@ -68,11 +68,35 @@
     color: var(--primaryLighterForegroundColor);
 }
 
+.starButton {
+    grid-area: star;
+    font-size: var(--headerFontSize);
+    line-height: var(--headerFontSize);
+    color: var(--plainCommentForegroundColor);
+    cursor: pointer;
+    user-select: none;
+    text-align: left;
+}
+.saved > .starButton {
+    color: var(--accentForegroundColor);
+}
+.starButton:hover {
+    color: var(--accentBackgroundColor);
+}
+
+.offer.saved {
+    background-color: var(--accentBackgroundColor) !important;
+    color: var(--accentForegroundColor) !important;
+}
+.offer.saved > .offerDetails {
+    color: var(--accentForegroundColor);
+}
+
 @media screen and (max-width: 1000px) {
     .offer {
         grid-template-rows: minmax(2fr, auto) 1fr 1fr;
-        grid-template-columns: auto 1fr;
-        grid-template-areas: "name price" "data data" "button button";
+        grid-template-columns: auto auto 1fr;
+        grid-template-areas: "name star price" "data data data" "button button button";
     }
     
 }
@@ -81,8 +105,8 @@
 
 .tripOffer {
     grid-template-rows: auto auto auto !important;
-    grid-template-columns: 1fr 1fr !important;
-    grid-template-areas: "name price" "flight flight" "data button";
+    grid-template-columns: auto auto 1fr !important;
+    grid-template-areas: "name star price" "flight flight flight" "data data button";
 }
 
 .tripOffer > .flightData {

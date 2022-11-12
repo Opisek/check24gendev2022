@@ -14,12 +14,8 @@ function getOffers() {
 
     let filterParameters = { "hotelid": hotelId };
     for (let input of document.getElementsByClassName("filterInput")) {
-        if (input.type == "checkbox") {
-            console.log(input.checked);
-            filterParameters[input.name] = input.checked;
-        } else if (input.name != undefined && input.name != "" && input.value != "") {
-            filterParameters[input.name] = input.value;
-        }
+        if (input.type == "checkbox") filterParameters[input.name] = input.checked;
+        else if (input.name != undefined && input.name != "" && input.value != "") filterParameters[input.name] = input.value;
     }
 
     const page = filterParameters.page;
@@ -129,10 +125,25 @@ function displayOffers(offers, page) {
         offerButton.innerHTML = "Book"; 
         offerButton.addEventListener("click", () => {});
         offerDiv.appendChild(offerButton);
+
+        const starButton = document.createElement("span");
+        starButton.classList.add("starButton");
+        starButton.innerHTML = '★';
+        starButton.addEventListener("click", () => starClick(offer.id, offerDiv));
+        offerDiv.appendChild(starButton);
+
         container.appendChild(offerDiv);
     }
 
     unlockPages();
+}
+
+function starClick(id, offer) {
+    if (offer.classList.contains("saved")) {
+        offer.classList.remove("saved");
+    } else {
+        offer.classList.add("saved");
+    }
 }
 
 function addFlightData(parent, data) {
