@@ -1,0 +1,25 @@
+main {
+    background-color: var(--secondaryBackgroundColor);
+    color: var(--secondaryForegroundColor);
+    padding: var(--boxPaddingLarge);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+}
+
+main > button {
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryForegroundColor);
+}
+main > button:hover {
+    background-color: var(--primaryLighterBackgroundColor);
+    color: var(--primaryLighterForegroundColor);
+}
+
+@media screen and (max-width: 1000px) {
+    main {
+        max-height: none;
+        text-align: left;
+    }
+}
