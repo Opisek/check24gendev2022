@@ -29,8 +29,8 @@
 
 .offer {
     display: grid !important;
-    grid-template-rows: minmax(2fr, auto) 1fr;
-    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: repeat(2, auto) 1fr;
     grid-template-areas: "name star price" "data data button";
     align-items: center;
     text-align: left;
@@ -98,19 +98,19 @@
         grid-template-columns: auto auto 1fr;
         grid-template-areas: "name star price" "data data data" "button button button";
     }
-    
 }
 
 /* Trip Offer Specific */
 
 .tripOffer {
-    grid-template-rows: auto auto auto !important;
-    grid-template-columns: auto auto 1fr !important;
+    grid-template-rows: repeat(3, auto) !important;
+    grid-template-columns: repeat(2, auto) 1fr !important;
     grid-template-areas: "name star price" "flight flight flight" "data data button";
 }
 
 .tripOffer > .flightData {
     display: flex;
+    flex-direction: row;
     gap: var(--flexGapLarger);
     grid-area: flight;
     padding-bottom: var(--boxPadding);
@@ -153,4 +153,18 @@
 .flightData > div > .arrow {
     grid-area: arrow;
     text-align: center;
+}
+
+@media screen and (max-width: 1000px) {
+    .tripOffer {
+        grid-template-rows: repeat(4, auto);
+        grid-template-columns: repeat(2, auto) 1fr;
+        grid-template-areas: "name star price" "flight flight flight" "data data data" "button button button";
+    }
+    .tripOffer > .flightData {
+        flex-direction: column;
+    }
+    .flightData > div {
+        width: 100%;
+    }
 }
