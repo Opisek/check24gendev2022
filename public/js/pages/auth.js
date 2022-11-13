@@ -29,7 +29,7 @@ function submit(request, i) {
                 }, 10);
             });
             errorField.classList.add("hidden");
-            errorField.innerHTML = result.data;
+            errorField.innerHTML = await localize(`auth.error.${result.data}`, "en");
             errorField.classList.remove("hidden");
             authError[i] = true;
         } else if (result.status == "success") {

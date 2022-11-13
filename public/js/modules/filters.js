@@ -391,7 +391,7 @@ window.addEventListener("load", async () => {
     for (let room of rooms) {
         const option = document.createElement("option");
         option.value = room.id;
-        option.innerHTML = room.id; // lang needed
+        localize(`rooms.${room.id}`, "en").then(result => { option.innerHTML = result; });
         roomList.appendChild(option);
     }
 
@@ -402,7 +402,7 @@ window.addEventListener("load", async () => {
     for (let meal of meals) {
         const option = document.createElement("option");
         option.value = meal.id;
-        option.innerHTML = meal.id; // lang needed
+        localize(`meals.${meal.id}`, "en").then(result => { option.innerHTML = result; });
         mealList.appendChild(option);
     }
     

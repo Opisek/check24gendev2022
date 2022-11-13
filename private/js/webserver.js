@@ -154,8 +154,10 @@ module.exports = class WebServer {
                 "saveHotel",
                 "unsaveHotel",
                 "saveOffer",
-                "unsaveOffer",
+                "unsaveOffer"
             ]) socket.on(event, (data, callback) => this._newRequest(socket, event, data, callback));
+
+            socket.on("localize", (data, callback) => this._emit("localize", data, null, callback));
         });
 
         httpServer.listen(port);

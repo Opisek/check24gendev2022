@@ -120,9 +120,20 @@ function displayOffers(offers, page) {
 
         const offerDetails = document.createElement("div");
         offerDetails.className = "offerDetails";
-        offerDetails.appendChild(createSpan(offer.roomtype));
-        if (offer.mealtype != "none") offerDetails.appendChild(createSpan(offer.mealtype));
-        if (offer.oceanview) offerDetails.appendChild(createSpan("oceanview"));
+        
+        const roomSpan = createSpan();
+        localize(`rooms.${offer.roomtype}`, "en").then(result => { roomSpan.innerHTML = result; });
+        offerDetails.appendChild(roomSpan);
+        if (offer.mealtype != "none") {
+            const mealSpan = createSpan();
+            localize(`meals.${offer.mealtype}`, "en").then(result => { mealSpan.innerHTML = result; });
+            offerDetails.appendChild(mealSpan);
+        }
+        if (offer.oceanview) {
+            const oceanviewSpan = createSpan();
+            localize(`offer.oceanview`, "en").then(result => { oceanviewSpan.innerHTML = result; });
+            offerDetails.appendChild(oceanviewSpan);
+        }
 
         offerDiv.appendChild(offerDetails);
         const offerButton = document.createElement("button");
@@ -169,7 +180,7 @@ function addFlightData(parent, data) {
     parent.appendChild(createSpan(data[6], "arrairport"));
     parent.appendChild(createSpan('⟶', "arrow"));
 };
-function createSpan(content, className="") {
+function createSpan(content="", className="") {
     const element = document.createElement("span");
     element.innerHTML = content;
     element.className = className;

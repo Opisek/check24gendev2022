@@ -3,6 +3,7 @@ require("dotenv").config();
 const webServer = new (require("./private/js/webserver"))(process.env.WEB_PORT);
 const database = new (require("./private/js/database"))(process.env.DB_HOST, process.env.DB_PORT, process.env.DB_USER, process.env.DB_PASSWORD, process.env.DB_DATABASE);
 const auth = new (require("./private/js/auth"))(process.env.JWT_SECRET);
+const lang = new (require("./private/js/lang"));
 
 (async () => {
     await database.connect();
@@ -86,6 +87,9 @@ const auth = new (require("./private/js/auth"))(process.env.JWT_SECRET);
 
     // Request Abortion
     webServer.addEventListener("abortRequest", requestId => database.abortRequest(requestId));
+
+    // Localization
+    webServer.addEventListener("localize", (data, requestId, callback) => callback(lang.localize(data.key, data.language, data.arguments)));
 })();
 
 /*function handleEvent(emitter, event, handler) {

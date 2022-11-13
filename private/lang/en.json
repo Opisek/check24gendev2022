@@ -1,0 +1,57 @@
+{
+    "rooms": {
+        "apartment": "Apartment",
+        "bungalow": "Bungalow",
+        "deluxe": "Deluxe",
+        "double": "Double",
+        "duplex": "Duplex",
+        "economy": "Economy",
+        "family": "Family",
+        "fourbedroom": "Four Bedroom",
+        "holidayhouse": "Holiday House",
+        "juniorsuite": "Junior Suite",
+        "multishare": "Multi-Share",
+        "program": "Program",
+        "single": "Single",
+        "studio": "Studio",
+        "suite": "Suite",
+        "superior": "Supierior",
+        "triple": "Triple",
+        "unknown": "Unknown",
+        "villa": "Villa"
+    },
+    "meals": {
+        "allinclusive": "All Inclusive",
+        "allinclusiveplus": "All Inclusive Plus",
+        "breakfast": "Breakfast",
+        "fullboard": "Full Board",
+        "fullboardplus": "Full Board Plus",
+        "halfboard": "Half Board",
+        "halfboardplus": "Half Board Plus",
+        "none": "No Meals",
+        "program": "Program",
+        "selfcatering": "Self-Catering"
+    },
+    "offer": {
+        "oceanview": "Oceanview"
+    },
+    "auth": {
+        "error": {
+            "emailMissing": "E-mail address field cannot be empty.",
+            "repeatEmailMissing": "E-mail address repeat field cannot be empty.",
+            "emailTooShort": "E-mail address must be at least 5 letters in length.",
+            "emailTooLong": "E-mail address must not be more than 128 letters in length.",
+            "emailUnequal": "E-mail addresses do not match.",
+            "emailExists": "There already exists an account with this e-mail address.",
+            "passwordMissing": "Password field cannot be empty.",
+            "repeatPasswordMissing": "Password repeat field cannot be empty.",
+            "passwordTooShort": "Password must be at least 5 letters in length.",
+            "passwordTooLong": "Password must not be more than 128 letters in length.",
+            "passwordUnequal": "Passwords do not match.",
+            "credentialsIncorrect": "Provided credentials are incorrect."
+        }
+    },
+    "err": {
+        "missingTranslation": "Missing Translation"
+    }
+}
