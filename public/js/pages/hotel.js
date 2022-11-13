@@ -94,7 +94,7 @@ function displayOffers(offers, page) {
         
         const outgoingFlight = document.createElement("div");
         addFlightData(outgoingFlight, [
-            offer.outboundairline,
+            offer.outairline,
             (new Date(offer.departuredate)).toLocaleDateString(),
             (new Date(offer.departuredate)).toLocaleTimeString(),
             offer.outbounddepartureairport,
@@ -106,7 +106,7 @@ function displayOffers(offers, page) {
 
         const incomingFlight = document.createElement("div");
         addFlightData(incomingFlight, [
-            offer.inboundairline,
+            offer.inairline,
             (new Date(offer.returndate)).toLocaleDateString(),
             (new Date(offer.returndate)).toLocaleTimeString(),
             offer.inbounddepartureairport,

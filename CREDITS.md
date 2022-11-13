@@ -5,4 +5,4 @@ Icons Used
 - Moon Icon: Good Ware - Flaticon
 
 Additonal Data
-- https://copylists.com/geography/list-airport-codes/
+- https://openflights.org/data.html

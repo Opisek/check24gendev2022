@@ -83,8 +83,9 @@ async function airports(sql) {
     await sql.query(`
         CREATE TABLE airports
         (
-            id CHAR(3) PRIMARY KEY,
-            name VARCHAR(64),
+            iata CHAR(3),
+            icao CHAR(4),
+            name VARCHAR(128),
             home BOOLEAN
         )
     `);
@@ -93,41 +94,113 @@ async function airports(sql) {
     await sql.query(`
         CREATE TABLE temp
         (
-            id CHAR(5),
-            name VARCHAR(64),
-            country VARCHAR(64)
+            id int,
+            name VARCHAR(128),
+            city VARCHAR(64),
+            country VARCHAR(64),
+            iata CHAR(3),
+            icao CHAR(4),
+            latitude NUMERIC(18, 15),
+            longitude NUMERIC(18, 15),
+            altitude NUMERIC(5, 0),
+            timezone VARCHAR(5),
+            dst VARCHAR(5),
+            timezoneCode VARCHAR(32),
+            type CHAR(7),
+            source VARCHAR(16)
         )
     `);
 
     console.log("load temp");
-    await progressReporting(sql, `COPY temp FROM '${path.join(process.env.DATA_PATH + "/airports.tsv")}' DELIMITER E'\t'`, "copy", "bytes_total", "bytes_processed");
+    await progressReporting(sql, `COPY temp FROM '${path.join(process.env.DATA_PATH + "/airports.dat")}' DELIMITER ',' ESCAPE  '\\' CSV`, "copy", "bytes_total", "bytes_processed");
     
     console.log("filter airports");
     await sql.query(`
         INSERT INTO airports 
-        SELECT DISTINCT temp.id, temp.name, true AS home
+        SELECT DISTINCT temp.iata, temp.icao, temp.name, true AS home
         FROM (
             SELECT DISTINCT outbounddepartureairport as id FROM offers
             UNION
             SELECT DISTINCT inboundarrivalairport as id FROM offers
         ) as ids
-        INNER JOIN temp ON ids.id=temp.id
+        INNER JOIN temp ON ids.id=temp.iata OR ids.id=temp.icao
         ON CONFLICT DO NOTHING;`
     );
     await sql.query(`
         INSERT INTO airports 
-        SELECT DISTINCT temp.id, temp.name, false AS home
+        SELECT DISTINCT temp.iata, temp.icao, temp.name, false AS home
         FROM (
             SELECT DISTINCT outboundarrivalairport as id FROM offers
             UNION
             SELECT DISTINCT inbounddepartureairport as id FROM offers
         ) as ids
-        INNER JOIN temp ON ids.id=temp.id
+        INNER JOIN temp ON ids.id=temp.iata OR ids.id=temp.icao
         ON CONFLICT DO NOTHING;`
     );
 
     console.log("delete temp");
     await sql.query("DROP TABLE temp");
+
+    console.log("create iata index");
+    await progressReporting(sql, "CREATE INDEX airport_iata_index ON airports USING btree (iata)", "create_index", "tuples_total", "tuples_done");
+
+    console.log("create icao index");
+    await progressReporting(sql, "CREATE INDEX airport_icao_index ON airports USING btree (icao)", "create_index", "tuples_total", "tuples_done");
+}
+
+async function airlines(sql) {
+    console.log("reset airlines");
+    await sql.query("DROP TABLE IF EXISTS airlines, temp");
+
+    console.log("create airlines");
+    await sql.query(`
+        CREATE TABLE airlines
+        (
+            iata CHAR(2),
+            icao CHAR(3),
+            name VARCHAR(64)
+        )
+    `);
+
+    console.log("create temp");
+    await sql.query(`
+        CREATE TABLE temp
+        (
+            id int,
+            name VARCHAR(128),
+            alias VARCHAR(64),
+            iata VARCHAR(2),
+            icao CHAR(3),
+            callsign VARCHAR(64),
+            country VARCHAR(64),
+            active CHAR(1)
+        )
+    `);
+
+    console.log("load temp");
+    await progressReporting(sql, `COPY temp FROM '${path.join(process.env.DATA_PATH + "/airlines.dat")}' DELIMITER ',' ESCAPE  '\\' CSV`, "copy", "bytes_total", "bytes_processed");
+    
+    console.log("filter airlines");
+    await sql.query(`
+        INSERT INTO airlines 
+        SELECT DISTINCT temp.iata, temp.icao, temp.name
+        FROM (
+            SELECT DISTINCT outboundairline as id FROM offers
+            UNION
+            SELECT DISTINCT inboundairline as id FROM offers
+        ) as ids
+        INNER JOIN temp ON ids.id=temp.iata OR ids.id=temp.icao
+        ON CONFLICT DO NOTHING;`
+    );
+
+    console.log("delete temp");
+    await sql.query("DROP TABLE temp");
+
+    console.log("create iata index");
+    await progressReporting(sql, "CREATE INDEX airline_iata_index ON airlines USING btree (iata)", "create_index", "tuples_total", "tuples_done");
+
+    console.log("create icao index");
+    await progressReporting(sql, "CREATE INDEX airline_icao_index ON airlines USING btree (icao)", "create_index", "tuples_total", "tuples_done");
 }
 
 async function roomtypes(sql) {
@@ -228,9 +301,12 @@ async function main() {
     await hotels(sql);
     await airports(sql);
     await roomtypes(sql);
-    await mealtypes(sql);*/
+    await mealtypes(sql);
     await users(sql);
-    await saves(sql);
+    await saves(sql);*/
+
+    await airports(sql);
+    await airlines(sql);
 
     console.log("all done");
 }

@@ -100,11 +100,11 @@ module.exports = class Database {
             "price",
             "indepairport.name AS inbounddepartureairport",
             "inarrairport.name AS inboundarrivalairport",
-            "inboundairline",
+            "inairline.name AS inairline",
             "inboundarrivaldatetime",
             "outdepairport.name AS outbounddepartureairport",
             "outarrairport.name AS outboundarrivalairport",
-            "outboundairline",
+            "outairline.name AS outairline",
             "outboundarrivaldatetime",
             "mealtype",
             "oceanview",
@@ -146,10 +146,12 @@ module.exports = class Database {
                 ${filters.saved && filters.userId ? `AND saved=true` : ''}
                 ${limit ? `ORDER BY ${filters.sort} LIMIT ${dbPagination} OFFSET ${offset}` : ""}
             ) AS filtered
-            INNER JOIN airports AS outdepairport ON filtered.outbounddepartureairport=outdepairport.id
-            INNER JOIN airports AS outarrairport ON filtered.outboundarrivalairport=outarrairport.id
-            INNER JOIN airports AS indepairport ON filtered.inbounddepartureairport=indepairport.id
-            INNER JOIN airports AS inarrairport ON filtered.inboundarrivalairport=inarrairport.id
+            INNER JOIN airports AS outdepairport ON filtered.outbounddepartureairport=outdepairport.iata OR filtered.outbounddepartureairport=outdepairport.icao
+            INNER JOIN airports AS outarrairport ON filtered.outboundarrivalairport=outarrairport.iata OR filtered.outboundarrivalairport=outarrairport.icao
+            INNER JOIN airports AS indepairport ON filtered.inbounddepartureairport=indepairport.iata OR filtered.inbounddepartureairport=indepairport.icao
+            INNER JOIN airports AS inarrairport ON filtered.inboundarrivalairport=inarrairport.iata OR filtered.inboundarrivalairport=inarrairport.icao
+            INNER JOIN airlines AS outairline ON filtered.outboundairline=outairline.iata OR filtered.outboundairline=outairline.icao
+            INNER JOIN airlines AS inairline ON filtered.inboundairline=inairline.iata OR filtered.inboundairline=inairline.icao
         `;
 
         for (let key of ["departureDate", "returnDate", "airport", "room", "meal"]) if (filters[key]) parameters.push(filters[key]);
