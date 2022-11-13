@@ -378,7 +378,7 @@ window.addEventListener("load", async () => {
     for (let airport of airports) {
         if (airport.home) {
             const option = document.createElement("option");
-            option.value = airport.id;
+            option.value = airport.iata ? airport.iata : airport.icao;
             option.innerHTML = airport.name;
             airportList.appendChild(option);
         }
