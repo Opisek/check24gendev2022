@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRESS_DB: check24
+      POSTGRES_DB: check24
     networks:
       - check24
     restart: unless-stopped

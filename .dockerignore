@@ -1,2 +1,5 @@
 /src/node_modules
 /src/npm-debug.log
+/data/offers.csv
+/data/hotels.csv
+/docker-compose.yml
