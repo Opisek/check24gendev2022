@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - /opt/gendev:/opt/gendev
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRESS_DB: check24
+    networks:
+      - check24
+    restart: unless-stopped
+  gendev:
+    image: opisek/check24gendev2022
+    ports:
+      - 80:80
+    volumes:
+      - /opt/gendev:/opt/gendev
+    environment:
+      WEB_PORT: 80
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_DATABASE: check24
+      DATA_PATH: /opt/gendev/data
+    networks:
+      - default
+      - check24
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+networks:
+  check24:
