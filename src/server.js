@@ -2,12 +2,29 @@ require("dotenv").config();
 
 const webServer = new (require("./private/js/webserver"))(process.env.WEB_PORT);
 const database = new (require("./private/js/database"))(process.env.DB_HOST, process.env.DB_PORT, process.env.DB_USER, process.env.DB_PASSWORD, process.env.DB_DATABASE);
+const dataLoader = new (require("./private/js/dataLoader"))(process.env.DB_HOST, process.env.DB_PORT, process.env.DB_USER, process.env.DB_PASSWORD, process.env.DB_DATABASE, process.env.DATA_PATH);
 const auth = new (require("./private/js/auth"))(process.env.JWT_SECRET);
 const lang = new (require("./private/js/lang"));
 
 (async () => {
-    await database.connect();
-    console.log("database connected!");
+    console.log("Connecting data loader");
+    if (!(await dataLoader.connect())) return;
+    console.log("Data loader connected");
+    if (await dataLoader.checkTables()) console.log("All tables present");
+    else {
+        console.log("Database incomplete");
+        console.log("Checking files");
+        if (!dataLoader.checkFiles()) return;
+        console.log("Purging incomplete database");
+        await dataLoader.resetData();
+        console.log("Loading data");
+        await dataLoader.loadData();
+        console.log("All data loaded");
+    }
+
+    console.log("Connecting database");
+    if (!(await database.connect())) return;
+    console.log("Database connected");
 
     // Hotel Search
     webServer.addEventListener("getHotelsByFilters", async (data, requestId, callback) => {

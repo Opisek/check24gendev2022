@@ -161,6 +161,6 @@ module.exports = class WebServer {
         });
 
         httpServer.listen(port);
-        console.log("listening on " + port);
+        console.log(`Webserver listening on port ${port}`);
     }
 }

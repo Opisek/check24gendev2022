@@ -1,15 +1,68 @@
-require("dotenv").config();
-const path = require("path");
-
-const postgress = require("pg");
-
+const postgres = require("pg");
 const moment = require("moment-timezone");
+const path = require("path");
+const fs = require("fs");
+
+const tables = ["offers", "hotels", "airports", "airlines", "rooms", "meals", "users", "hotelSaves", "offerSaves"];
+const files = ["hotels.csv", "offers.csv", "airports.dat", "airlines.dat"];
+
+module.exports = class DataLoader {
+    constructor(host, port, user, password, database, dataPath) {
+        this._sql = new postgres.Pool({
+            host: host,
+            port: port,
+            user: user,
+            password: password,
+            database: database
+        });
+        this._dataPath = dataPath;
+    }
+
+    async connect() {
+        try {
+            await this._sql.connect();
+            await this._sql.query(`SET client_encoding='UTF8'`);
+            return true;
+        } catch(e) {
+            console.log(`Could not connect to database: ${e}`);
+            return false;
+        }
+    }
+
+    async checkTables() {
+        return (await this._sql.query(`SELECT COUNT(*) FROM pg_tables WHERE schemaname='public' AND (${tables.map(t => `tablename='${t.toLowerCase()}'`).join(" OR ")})`)).rows[0].count == tables.length;
+    }
+
+    checkFiles() {
+        for (const file of files) {
+            if (!fs.existsSync(path.join(this._dataPath, file))) {
+                console.log(`File "${file}" could not be found in "${this._dataPath}"`);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    async resetData() {
+        await this._sql.query(`DROP TABLE IF EXISTS ${tables.join(", ")}`);
+    }
+
+    async loadData() {
+        await this._sql.query("SET client_encoding='UTF8'");
+    
+        await offers(this._sql);
+        await hotels(this._sql);
+        await airports(this._sql);
+        await airlines(this._sql);
+        await roomtypes(this._sql);
+        await mealtypes(this._sql);
+        await users(this._sql);
+        await saves(this._sql);
+    }
+}
 
 async function offers(sql) {
-    console.log("reset offers");
-    await sql.query("DROP TABLE IF EXISTS offers");
-
-    console.log("create offers");
+    console.log("Creating offers");
     const maxAdultsCount = 6;
     const maxChildrenCount = 6;
     await sql.query(`
@@ -38,29 +91,26 @@ async function offers(sql) {
     // id should technically be PRIMARY KEY but that is not possible due no partitions
     // CONSTRAINT hotelreference FOREIGN KEY(hotelid) REFERENCES hotels(id), // not supported by partitions
 
-    console.log("partition offers");
+    console.log("Partitioning offers");
     for (let i = 1; i <= maxAdultsCount; ++i) {
         await sql.query(`CREATE TABLE ${`offers_${i}`} PARTITION OF offers FOR VALUES IN (${i}) PARTITION BY LIST(countchildren)`);
         for (let j = 0; j <= maxChildrenCount; ++j) await sql.query(`CREATE TABLE ${`offers_${i}_${j}`} PARTITION OF offers_${i} FOR VALUES IN (${j})`);
     }
 
-    console.log("load offers");
+    console.log("Loading offers");
     await progressReporting(sql, `COPY offers (hotelid, departuredate, returndate, countadults, countchildren, price, inbounddepartureairport, inboundarrivalairport, inboundairline, inboundarrivaldatetime, outbounddepartureairport, outboundarrivalairport, outboundairline, outboundarrivaldatetime, mealtype, oceanview, roomtype) FROM '${path.join(process.env.DATA_PATH + "/offers.csv")}' DELIMITER ',' CSV HEADER`, "copy", "bytes_total", "bytes_processed");
 
-    console.log("create offerid index");
+    console.log("Indexing offers (1/3)");
     await progressReporting(sql, "CREATE INDEX offer_index ON offers USING btree (id)", "create_index", "tuples_total", "tuples_done");
 
-    console.log("create hotelid index");
+    console.log("Indexing offers (2/3)");
     await progressReporting(sql, "CREATE INDEX hotel_index ON offers USING btree (hotelid)", "create_index", "tuples_total", "tuples_done");
     
-    console.log("create search index");
+    console.log("Indexing offers (3/3)");
     await progressReporting(sql, "CREATE INDEX hotel_search_index ON offers USING btree(hotelid, price, countadults, countchildren)", "create_index", "tuples_total", "tuples_done");
 }
 async function hotels(sql) {
-    console.log("reset hotels");
-    await sql.query("DROP TABLE IF EXISTS hotels");
-
-    console.log("create hotels");
+    console.log("Creating hotels");
     await sql.query(`
         CREATE TABLE hotels
         (
@@ -72,14 +122,11 @@ async function hotels(sql) {
         )`
     );
 
-    console.log("load hotels");
+    console.log("Loading hotels");
     await progressReporting(sql, `COPY hotels FROM '${path.join(process.env.DATA_PATH + "/hotels.csv")}' DELIMITER ',' CSV HEADER`, "copy", "bytes_total", "bytes_processed");
 }
 async function airports(sql) {
-    console.log("reset airports");
-    await sql.query("DROP TABLE IF EXISTS airports, temp");
-
-    console.log("create airports");
+    console.log("Creating airports");
     await sql.query(`
         CREATE TABLE airports
         (
@@ -90,7 +137,7 @@ async function airports(sql) {
         )
     `);
 
-    console.log("create temp");
+    console.log("Creating temporary airports");
     await sql.query(`
         CREATE TABLE temp
         (
@@ -111,10 +158,10 @@ async function airports(sql) {
         )
     `);
 
-    console.log("load temp");
+    console.log("Loading temporary airports");
     await progressReporting(sql, `COPY temp FROM '${path.join(process.env.DATA_PATH + "/airports.dat")}' DELIMITER ',' ESCAPE  '\\' CSV`, "copy", "bytes_total", "bytes_processed");
     
-    console.log("filter airports");
+    console.log("Filtering airports");
     await sql.query(`
         INSERT INTO airports 
         SELECT DISTINCT temp.iata, temp.icao, temp.name, true AS home
@@ -138,21 +185,21 @@ async function airports(sql) {
         ON CONFLICT DO NOTHING;`
     );
 
-    console.log("delete temp");
+    console.log("Deleting temporary airports");
     await sql.query("DROP TABLE temp");
 
-    console.log("create iata index");
-    await progressReporting(sql, "CREATE INDEX airport_iata_index ON airports USING btree (iata)", "create_index", "tuples_total", "tuples_done");
+    console.log("Indexing airports (1/2)");
+    await progressReporting(sql, "CREATE INDEX airport_iata_index ON airports USING btree (iata)", "create_index", "tuples_done", "tuples_total");
 
-    console.log("create icao index");
-    await progressReporting(sql, "CREATE INDEX airport_icao_index ON airports USING btree (icao)", "create_index", "tuples_total", "tuples_done");
+    console.log("Indexing airports (2/2)");
+    await progressReporting(sql, "CREATE INDEX airport_icao_index ON airports USING btree (icao)", "create_index", "tuples_done", "tuples_total");
 }
 
 async function airlines(sql) {
-    console.log("reset airlines");
+    console.log("Resetting airlines");
     await sql.query("DROP TABLE IF EXISTS airlines, temp");
 
-    console.log("create airlines");
+    console.log("Creating airlines");
     await sql.query(`
         CREATE TABLE airlines
         (
@@ -162,7 +209,7 @@ async function airlines(sql) {
         )
     `);
 
-    console.log("create temp");
+    console.log("Creating temporary airlines");
     await sql.query(`
         CREATE TABLE temp
         (
@@ -177,10 +224,10 @@ async function airlines(sql) {
         )
     `);
 
-    console.log("load temp");
+    console.log("Loading temporary airlines");
     await progressReporting(sql, `COPY temp FROM '${path.join(process.env.DATA_PATH + "/airlines.dat")}' DELIMITER ',' ESCAPE  '\\' CSV`, "copy", "bytes_total", "bytes_processed");
     
-    console.log("filter airlines");
+    console.log("Filtering airlines");
     await sql.query(`
         INSERT INTO airlines 
         SELECT DISTINCT temp.iata, temp.icao, temp.name
@@ -193,21 +240,18 @@ async function airlines(sql) {
         ON CONFLICT DO NOTHING;`
     );
 
-    console.log("delete temp");
+    console.log("Deleting temporary airlines");
     await sql.query("DROP TABLE temp");
 
-    console.log("create iata index");
-    await progressReporting(sql, "CREATE INDEX airline_iata_index ON airlines USING btree (iata)", "create_index", "tuples_total", "tuples_done");
+    console.log("Indexing airlines (1/2)");
+    await progressReporting(sql, "CREATE INDEX airline_iata_index ON airlines USING btree (iata)", "create_index", "tuples_done", "tuples_total");
 
-    console.log("create icao index");
-    await progressReporting(sql, "CREATE INDEX airline_icao_index ON airlines USING btree (icao)", "create_index", "tuples_total", "tuples_done");
+    console.log("Indexing airlines (2/2)");
+    await progressReporting(sql, "CREATE INDEX airline_icao_index ON airlines USING btree (icao)", "create_index", "tuples_done", "tuples_total");
 }
 
 async function roomtypes(sql) {
-    console.log("reset roomtypes");
-    await sql.query("DROP TABLE IF EXISTS rooms");
-
-    console.log("create roomtypes");
+    console.log("Creating room types");
     await sql.query(`
         CREATE TABLE rooms
         (
@@ -215,7 +259,7 @@ async function roomtypes(sql) {
         )
     `);
 
-    console.log("load roomtypes");
+    console.log("Loading room types");
     await sql.query(`
         INSERT INTO rooms
         SELECT DISTINCT roomtype
@@ -224,10 +268,7 @@ async function roomtypes(sql) {
 }
 
 async function mealtypes(sql) {
-    console.log("reset mealtypes");
-    await sql.query("DROP TABLE IF EXISTS meals");
-
-    console.log("create mealtypes");
+    console.log("Creating meal types");
     await sql.query(`
         CREATE TABLE meals
         (
@@ -235,7 +276,7 @@ async function mealtypes(sql) {
         )
     `);
 
-    console.log("load mealtypes");
+    console.log("Loading meal types");
     await sql.query(`
         INSERT INTO meals
         SELECT DISTINCT mealtype
@@ -244,10 +285,7 @@ async function mealtypes(sql) {
 }
 
 async function users(sql) {
-    console.log("reset users");
-    await sql.query("DROP TABLE IF EXISTS users, offerSaves, hotelSaves");
-
-    console.log("create users");
+    console.log("Creating users");
     await sql.query(`
         CREATE TABLE users
         (
@@ -259,10 +297,7 @@ async function users(sql) {
 }
 
 async function saves(sql) {
-    console.log("reset saves");
-    await sql.query("DROP TABLE IF EXISTS hotelSaves, offerSaves");
-
-    console.log("create saves");
+    console.log("Creating hotel saves");
     await sql.query(`
         CREATE TABLE hotelSaves
         (
@@ -272,6 +307,7 @@ async function saves(sql) {
             CONSTRAINT hotelReference FOREIGN KEY(hotelId) REFERENCES hotels(id)
         )
     `);
+    console.log("Creating offer saves");
     await sql.query(`
         CREATE TABLE offerSaves
         (
@@ -280,35 +316,8 @@ async function saves(sql) {
             CONSTRAINT userReference FOREIGN KEY(userId) REFERENCES users(id)
         )
     `);
-    console.log("indexing saves");
-    await progressReporting(sql, "CREATE INDEX offerSave_index on offerSaves USING btree (offerId)", "create_index", "tuples_total", "tuples_done");
-}
-
-async function main() {
-    const sql = new postgress.Pool({
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT, 
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE
-    });
-    await sql.connect();
-
-    console.log("set utf8");
-    await sql.query("SET client_encoding='UTF8'");
-
-    /*await offers(sql);
-    await hotels(sql);
-    await airports(sql);
-    await roomtypes(sql);
-    await mealtypes(sql);
-    await users(sql);
-    await saves(sql);*/
-
-    await airports(sql);
-    await airlines(sql);
-
-    console.log("all done");
+    console.log("Indexing offer saves");
+    await progressReporting(sql, "CREATE INDEX offerSave_index on offerSaves USING btree (offerId)", "create_index", "tuples_done", "tuples_total");
 }
 
 async function progressReporting(sql, query, type, totalColumn, doneColumn) {
@@ -343,5 +352,3 @@ async function progressReporting(sql, query, type, totalColumn, doneColumn) {
         resolve();
     });
 }
-
-main();

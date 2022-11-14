@@ -6,7 +6,7 @@ const dbPagination = 100;
 
 module.exports = class Database {
     constructor(host, port, user, password, database) {
-        this._sql = new postgres.Client({
+        this._sql = new postgres.Pool({
             host: host,
             port: port,
             user: user,
@@ -16,9 +16,16 @@ module.exports = class Database {
         this._requests = {};
     }
 
+
     async connect() {
-        await this._sql.connect();
-        await this._sql.query(`SET client_encoding='UTF8'`);
+        try {
+            await this._sql.connect();
+            await this._sql.query(`SET client_encoding='UTF8'`);
+            return true;
+        } catch(e) {
+            console.log(`Could not connect to database: ${e}`);
+            return false;
+        }
     }
 
     async abortRequest(requestId) {
