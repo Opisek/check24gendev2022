@@ -320,12 +320,16 @@ module.exports = class Database {
     async saveHotelByOffer(data, requestId) {
         return await this._beginRequest(`
             INSERT INTO hotelSaves(userId, hotelId)
-            SELECT $1 as userId, hotels.id as hotelId
+            SELECT $1 AS userId, hotels.id AS hotelId
             FROM hotels
             INNER JOIN (
                 SELECT hotelid
                 FROM offers
                 WHERE offers.id=$2
+                AND NOT EXISTS(
+                    SELECT hotelId FROM hotelSaves AS existingSaves
+                    WHERE existingSaves.hotelId=offers.hotelId
+                )
             ) AS filtered ON hotels.id=filtered.hotelid
         `,
         [Number.parseInt(data.userId), Number.parseInt(data.offerId)],
