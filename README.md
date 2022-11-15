@@ -63,7 +63,8 @@ This project runs in two docker containers that need to share a common directory
 8. Adjust the volumes and ports in the `docker-compose.yml` file as needed. The environment variables need not be changed in a testing environment except for `DATA_PATH`
 9. Start the app
 `docker-compose up`
-10. The website is now accessible via the published port
+10. The first start-up may take a few minutes. General progress and errors can be found in docker logs.
+11. The website is now accessible via the published port
 
 ## Limitations and Expandability
 This chapter dives into concurrent issues that could not be solved by the application deadline as well as planned, but not implemented features.
