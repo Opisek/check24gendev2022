@@ -23,20 +23,20 @@ module.exports = class Database {
             await this._sql.query(`SET client_encoding='UTF8'`);
             return true;
         } catch(e) {
-            console.log(`Could not connect to database: ${e}`);
+            console.error(`Could not connect to database: ${e}`);
             return false;
         }
     }
 
     async abortRequest(requestId) {
-        console.log("aborting request: " + requestId);
+        console.log("Aborting request: " + requestId);
         if (!(requestId in this._requests)) return;
         //try {await this._requests[requestId].cancel();} catch(e) {}
         delete this._requests[requestId];
     }
 
     async _beginRequest(query, parameters, requestId) {
-        console.log("beginning request: " + requestId);
+        console.log("Beginning request: " + requestId);
         const request = this._sql.query(query, parameters);
         this._requests[requestId] = request;
         let result;

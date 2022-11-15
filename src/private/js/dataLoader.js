@@ -24,7 +24,7 @@ module.exports = class DataLoader {
             await this._sql.query(`SET client_encoding='UTF8'`);
             return true;
         } catch(e) {
-            console.log(`Could not connect to database: ${e}`);
+            console.error(`Could not connect to database: ${e}`);
             return false;
         }
     }
@@ -36,7 +36,7 @@ module.exports = class DataLoader {
     checkFiles() {
         for (const file of files) {
             if (!fs.existsSync(path.join(this._dataPath, file))) {
-                console.log(`File "${file}" could not be found in "${this._dataPath}"`);
+                console.error(`File "${file}" could not be found in "${this._dataPath}"`);
                 return false;
             }
         }
@@ -340,15 +340,16 @@ async function progressReporting(sql, query, type, totalColumn, doneColumn) {
 
             let remaining = (1-currentProgress) / mean;
 
-            process.stdout.clearLine();
-            process.stdout.cursorTo(0);
-            process.stdout.write(`${Math.floor(currentProgress * 1000)/10}%\t${moment.duration(remaining, "seconds").humanize()} remaining`);
+            /*process.stdout.clearLine();
+            process.stdout.cursorTo(0);*/
+            console.log(`${Math.floor(currentProgress * 1000)/10}%\t${moment.duration(remaining, "seconds").humanize()} remaining`);
 
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
-        process.stdout.clearLine();
+        /*process.stdout.clearLine();
         process.stdout.cursorTo(0);
-        process.stdout.write(`100%\n`);
+        process.stdout.write(`100%\n`);*/
+        console.log("100%");
         resolve();
     });
 }

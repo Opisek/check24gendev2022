@@ -12,7 +12,7 @@ const lang = new (require("./private/js/lang"));
     console.log("Data loader connected");
     if (await dataLoader.checkTables()) console.log("All tables present");
     else {
-        console.log("Database incomplete");
+        console.warn("Database incomplete");
         console.log("Checking files");
         if (!dataLoader.checkFiles()) return;
         console.log("Purging incomplete database");
