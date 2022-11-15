@@ -27,6 +27,7 @@ services:
       DB_PASSWORD: password
       DB_DATABASE: check24
       DATA_PATH: /opt/gendev/data
+      JWT_SECRET: 0fK6VRNac9Eh/fAVIt+IRhMv2/7GSMty
     networks:
       - default
       - check24
