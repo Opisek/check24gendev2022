@@ -77,7 +77,7 @@ This project runs in two docker containers that need to share a common directory
 9. Start the app
 `docker-compose up`
 10. The first start-up may take a few minutes. General progress and errors can be found in docker logs.
-11. The website is now accessible via the published port
+11. The website is now accessible via the published port.
 
 ## Limitations and Expandability
 This chapter dives into concurrent issues that could not be solved by the application deadline as well as planned, but not implemented features.
@@ -148,7 +148,7 @@ This section accredits third-party content creators or mainainers for their work
 ![filters-mobile-dark](https://user-images.githubusercontent.com/40141286/202013179-2874b5c4-498e-4455-86cd-76b353787d89.png)
 
 ### Mobile Navigation
-Note: The background should be blurred, but my browser removed that from the screenshot
+Note: The background should be blurred, but my browser removed that from the screenshot.
 
 ![navigation-mobile-dark](https://user-images.githubusercontent.com/40141286/202013250-ed5320f4-f327-4075-b4a4-e61b37397d36.png)
 ![navigation-mobile-light](https://user-images.githubusercontent.com/40141286/202013260-26324875-1c45-4ce5-87c0-e1796e9236bd.png)
