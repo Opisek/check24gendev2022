@@ -13,6 +13,7 @@ The teck stack of the project has been kept minimalistic. The finished entry is 
   - [Performance](#performance)
  - [Installation](#installation)
  - [Limitations and Expandability](#limitations-and-expandability)
+ - [Credits](#credits)
  - [Pictures](#pictures)
 
 ## Features
@@ -106,6 +107,16 @@ This chapter dives into concurrent issues that could not be solved by the applic
   - More efficient partitioning of the offers table and filter enforcement could be looked into. The current partitioning by adults and children count, unfortunately, still leaves ~40 million entries in a single table in worst case scenario, however those two properties have been chosen to be the only enforced filters for this submission.
   - Smarter caching techniques could be implemented
   - Common queries could be precalculated
+
+## Credits
+This section accredits third-party content creators or mainainers for their work used in this project
+### Icons
+- Close Icon: ariefstudio - Flaticon
+- Menu Icon: ariefstudio - Flaticon
+- Arrow Icons: Roundicons - Flaticon
+- Moon Icon: Good Ware - Flaticon
+### Airports and airlines data
+- https://openflights.org/data.html
 
 ## Pictures
 ### Home Page
