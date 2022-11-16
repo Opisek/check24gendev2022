@@ -1,7 +1,19 @@
 # check24gendev2022
-A concept website for comparing hotels. Created as an entry for CHECK24 GenDev 2022.
+A concept website for comparing hotels and vacation offers. Created as an entry for CHECK24 GenDev 2022.
 
 The teck stack of the project has been kept minimalistic. The finished entry is a website with pure HTML5 + CSS3 + JavaScript frontend, Node.js backend (with a few necessary libraries), and a PostgreSQL database. All code in the repository has been written entirely from scratch.
+
+## Contents
+- [Features](#features)
+  - [Browsing](#browsing)
+  - [Filtering](#filtering)
+  - [Accounts and Saving](#accounts-and-saving)
+  - [Responsiveness](#responsiveness)
+  - [Modular Design](#modular-design)
+  - [Performance](#performance)
+ - [Installation](#installation)
+ - [Limitations and Expandability](#limitations-and-expandability)
+ - [Pictures](#pictures)
 
 ## Features
 ### Browsing
@@ -45,7 +57,7 @@ A considerable amount of time has been spent on optimizing the performance for a
 - The results for hotels and offers are pulled 100 at a time (10 pages). Upon reaching a previously unvisited page, the correlating chunk of 100 entries is pulled again. All the previous data, provided no filters have changed, still remain in the client's cache, so that the pages can be viewed quickly and without the involvement of the server.
 
 ## Installation
-This project runs in two docker containers that need to share a common directory together with the host OS, so as to load the initial data.
+This project runs in two docker containers that need to share a common directory together with the host OS, so as to load the initial data. Please note that the CHECK24 data sets are not included in this repository and have to be added manually accourding to the following guide.
 1. Choose a directory for the project
 `mkdir /opt/gendev`
 2. Create a `data` subdirectory within the project's directory
@@ -94,3 +106,39 @@ This chapter dives into concurrent issues that could not be solved by the applic
   - More efficient partitioning of the offers table and filter enforcement could be looked into. The current partitioning by adults and children count, unfortunately, still leaves ~40 million entries in a single table in worst case scenario, however those two properties have been chosen to be the only enforced filters for this submission.
   - Smarter caching techniques could be implemented
   - Common queries could be precalculated
+
+## Pictures
+### Home Page
+<img src="https://user-images.githubusercontent.com/40141286/202013193-0855520e-8a11-40bc-91e5-27db7e7370dc.png" alt="home desktop light" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013188-cef78709-1418-483b-b5f0-6d9a435ed1d5.png" alt="home desktop dark" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013206-f3416228-2d9b-4c93-9a80-48047f412472.png" alt="home phone light" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013203-f5b09e6c-e6f8-4e46-8c51-71df5a3d2c04.png" alt="home phone dark" height=600px>
+
+### Hotel Search
+<img src="https://user-images.githubusercontent.com/40141286/202013271-cbeb7410-d425-41de-8dd9-7525a665e29a.png" alt="search desktop light" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013264-3c054cf1-e2a8-4009-8c51-6f5fd855005b.png" alt="search desktop dark" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013275-d242890f-14bf-4d21-ac9f-ff36ce4d8fc3.png" alt="search phone light" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013262-272338ce-a54e-4882-8d04-0cf30e5b80c7.png" alt="search phone dark" height=600px>
+
+### Offer Search
+<img src="https://user-images.githubusercontent.com/40141286/202013215-91dec0bd-3d38-48cc-b236-621da9fad046.png" alt="hotel desktop light" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013208-497da5ca-ecc8-47c9-9549-a0c20a832f78.png" alt="hotel desktop dark" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013223-e4935587-ed3a-4c29-8f98-4726799372c3.png" alt="hotel phone light" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013222-49aba3d6-178e-4746-8cc8-d22be3b882a7.png" alt="hotel phone dark" height=600px>
+
+### Login
+<img src="https://user-images.githubusercontent.com/40141286/202013234-fcfdacce-9caa-4f1f-95e9-21cece90efa9.png" alt="login desktop light" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013231-99d0b1f4-a341-4576-aa55-b86d7e93e45c.png" alt="login desktop dark" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013244-1ac4da6b-397b-4cfe-824b-8ebd241d160d.png" alt="login phone light" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013241-e2379d38-33f8-4305-9eed-746b65df2ceb.png" alt="login phone dark" height=600px>
+
+### Mobile filters
+<img src="https://user-images.githubusercontent.com/40141286/202013183-d4772e78-bcb4-467a-95d3-9e13b8036fbd.png" alt="filters mobile light" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013179-2874b5c4-498e-4455-86cd-76b353787d89.png" alt="filters mobile dark" height=600px>
+
+### Mobile Navigation
+Note: The background should be blurred, but my browser removed that from the screenshot
+
+<img src="https://user-images.githubusercontent.com/40141286/202013250-ed5320f4-f327-4075-b4a4-e61b37397d36.png" alt="navigation mobile dark" height=600px>
+<img src="https://user-images.githubusercontent.com/40141286/202013260-26324875-1c45-4ce5-87c0-e1796e9236bd.png" alt="navigation mobile light" height=600px>
+
