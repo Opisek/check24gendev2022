@@ -1,5 +1,5 @@
 # check24gendev2022
-A concept website for comparing hotels and vacation offers. Created as an entry for CHECK24 GenDev 2022.
+A concept website for comparing hotels and vacation offers. Created as an entry for [CHECK24 GenDev 2022](https://github.com/check24-scholarships/holiday-challenge).
 
 The teck stack of the project has been kept minimalistic. The finished entry is a website with pure HTML5 + CSS3 + JavaScript frontend, Node.js backend (with a few necessary libraries), and a PostgreSQL database. All code in the repository has been written entirely from scratch.
 
