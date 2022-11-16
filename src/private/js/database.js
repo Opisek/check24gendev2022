@@ -17,15 +17,27 @@ module.exports = class Database {
     }
 
 
-    async connect() {
-        try {
-            await this._sql.connect();
-            await this._sql.query(`SET client_encoding='UTF8'`);
-            return true;
-        } catch(e) {
-            console.error(`Could not connect to database: ${e}`);
-            return false;
-        }
+    connect() {
+        return new Promise(res => {
+            let repetition = 0;
+            let interval = setInterval(async () => {
+                try {
+                    await this._sql.connect();
+                    await this._sql.query(`SET client_encoding='UTF8'`);
+                    clearInterval(interval);
+                    res(true);
+                } catch(e) {
+                    repetition += 1;
+                    if (repetition == 6) {
+                        clearInterval(interval);
+                        res(false);
+                    } else {
+                        console.error(`Could not connect to database: ${e}`);
+                        console.error(`Retrying... (${repetition}/5)`);
+                    }
+                }
+            }, 1000);
+        });
     }
 
     async abortRequest(requestId) {
