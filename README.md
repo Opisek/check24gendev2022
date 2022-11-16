@@ -109,7 +109,7 @@ This chapter dives into concurrent issues that could not be solved by the applic
   - Common queries could be precalculated
 
 ## Credits
-This section accredits third-party content creators or mainainers for their work used in this project
+This section accredits third-party content creators or mainainers for their work used in this project.
 ### Icons
 - Close Icon: ariefstudio - Flaticon
 - Menu Icon: ariefstudio - Flaticon
