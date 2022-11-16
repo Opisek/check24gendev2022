@@ -25,7 +25,7 @@ Both the hotel and the subsequent offer search support extensive filters that ca
 - Sorting order
 - Saved by the user
 - Count of adults
-- Cound of children
+- Count of children
 - Price range (min and max)
 - Hotel stars range (min and max)
 - Date (earliest departure and latest return)
