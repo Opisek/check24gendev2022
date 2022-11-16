@@ -120,36 +120,36 @@ This section accredits third-party content creators or mainainers for their work
 
 ## Pictures
 ### Home Page
-<img src="https://user-images.githubusercontent.com/40141286/202013193-0855520e-8a11-40bc-91e5-27db7e7370dc.png" alt="home desktop light" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013188-cef78709-1418-483b-b5f0-6d9a435ed1d5.png" alt="home desktop dark" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013206-f3416228-2d9b-4c93-9a80-48047f412472.png" alt="home phone light" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013203-f5b09e6c-e6f8-4e46-8c51-71df5a3d2c04.png" alt="home phone dark" height=600px>
+![home-desktop-light](https://user-images.githubusercontent.com/40141286/202013193-0855520e-8a11-40bc-91e5-27db7e7370dc.png)
+![home-desktop-dark](https://user-images.githubusercontent.com/40141286/202013188-cef78709-1418-483b-b5f0-6d9a435ed1d5.png)
+![home-phone-light](https://user-images.githubusercontent.com/40141286/202013206-f3416228-2d9b-4c93-9a80-48047f412472.png)
+![home-phone-dark](https://user-images.githubusercontent.com/40141286/202013203-f5b09e6c-e6f8-4e46-8c51-71df5a3d2c04.png)
 
 ### Hotel Search
-<img src="https://user-images.githubusercontent.com/40141286/202013271-cbeb7410-d425-41de-8dd9-7525a665e29a.png" alt="search desktop light" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013264-3c054cf1-e2a8-4009-8c51-6f5fd855005b.png" alt="search desktop dark" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013275-d242890f-14bf-4d21-ac9f-ff36ce4d8fc3.png" alt="search phone light" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013262-272338ce-a54e-4882-8d04-0cf30e5b80c7.png" alt="search phone dark" height=600px>
+![search-desktop-light](https://user-images.githubusercontent.com/40141286/202013271-cbeb7410-d425-41de-8dd9-7525a665e29a.png)
+![search-desktop-dark](https://user-images.githubusercontent.com/40141286/202013264-3c054cf1-e2a8-4009-8c51-6f5fd855005b.png)
+![search-phone-light](https://user-images.githubusercontent.com/40141286/202013275-d242890f-14bf-4d21-ac9f-ff36ce4d8fc3.png)
+![search-phone-dark](https://user-images.githubusercontent.com/40141286/202013262-272338ce-a54e-4882-8d04-0cf30e5b80c7.png)
 
 ### Offer Search
-<img src="https://user-images.githubusercontent.com/40141286/202013215-91dec0bd-3d38-48cc-b236-621da9fad046.png" alt="hotel desktop light" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013208-497da5ca-ecc8-47c9-9549-a0c20a832f78.png" alt="hotel desktop dark" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013223-e4935587-ed3a-4c29-8f98-4726799372c3.png" alt="hotel phone light" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013222-49aba3d6-178e-4746-8cc8-d22be3b882a7.png" alt="hotel phone dark" height=600px>
+![hotel-desktop-light](https://user-images.githubusercontent.com/40141286/202013215-91dec0bd-3d38-48cc-b236-621da9fad046.png)
+![hotel-desktop-dark](https://user-images.githubusercontent.com/40141286/202013208-497da5ca-ecc8-47c9-9549-a0c20a832f78.png)
+![hotel-phone-light](https://user-images.githubusercontent.com/40141286/202013223-e4935587-ed3a-4c29-8f98-4726799372c3.png)
+![hotel-phone-dark](https://user-images.githubusercontent.com/40141286/202013222-49aba3d6-178e-4746-8cc8-d22be3b882a7.png)
 
 ### Login
-<img src="https://user-images.githubusercontent.com/40141286/202013234-fcfdacce-9caa-4f1f-95e9-21cece90efa9.png" alt="login desktop light" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013231-99d0b1f4-a341-4576-aa55-b86d7e93e45c.png" alt="login desktop dark" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013244-1ac4da6b-397b-4cfe-824b-8ebd241d160d.png" alt="login phone light" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013241-e2379d38-33f8-4305-9eed-746b65df2ceb.png" alt="login phone dark" height=600px>
+![login-desktop-light](https://user-images.githubusercontent.com/40141286/202013234-fcfdacce-9caa-4f1f-95e9-21cece90efa9.png)
+![login-desktop-dark](https://user-images.githubusercontent.com/40141286/202013231-99d0b1f4-a341-4576-aa55-b86d7e93e45c.png)
+![login-phone-light](https://user-images.githubusercontent.com/40141286/202013244-1ac4da6b-397b-4cfe-824b-8ebd241d160d.png)
+![login-phone-dark](https://user-images.githubusercontent.com/40141286/202013241-e2379d38-33f8-4305-9eed-746b65df2ceb.png)
 
 ### Mobile filters
-<img src="https://user-images.githubusercontent.com/40141286/202013183-d4772e78-bcb4-467a-95d3-9e13b8036fbd.png" alt="filters mobile light" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013179-2874b5c4-498e-4455-86cd-76b353787d89.png" alt="filters mobile dark" height=600px>
+![filters-mobile-light](https://user-images.githubusercontent.com/40141286/202013183-d4772e78-bcb4-467a-95d3-9e13b8036fbd.png)
+![filters-mobile-dark](https://user-images.githubusercontent.com/40141286/202013179-2874b5c4-498e-4455-86cd-76b353787d89.png)
 
 ### Mobile Navigation
 Note: The background should be blurred, but my browser removed that from the screenshot
 
-<img src="https://user-images.githubusercontent.com/40141286/202013250-ed5320f4-f327-4075-b4a4-e61b37397d36.png" alt="navigation mobile dark" height=600px>
-<img src="https://user-images.githubusercontent.com/40141286/202013260-26324875-1c45-4ce5-87c0-e1796e9236bd.png" alt="navigation mobile light" height=600px>
+![navigation-mobile-dark](https://user-images.githubusercontent.com/40141286/202013250-ed5320f4-f327-4075-b4a4-e61b37397d36.png)
+![navigation-mobile-light](https://user-images.githubusercontent.com/40141286/202013260-26324875-1c45-4ce5-87c0-e1796e9236bd.png)
 
