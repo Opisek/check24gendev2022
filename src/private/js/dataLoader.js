@@ -4,7 +4,8 @@ const path = require("path");
 const fs = require("fs");
 
 const tables = ["offers", "hotels", "airports", "airlines", "rooms", "meals", "users", "hotelSaves", "offerSaves"];
-const files = ["hotels.csv", "offers.csv", "airports.dat", "airlines.dat"];
+const manualFiles = ["hotels.csv", "offers.csv"];
+const automaticFiles = ["airports.dat", "airlines.dat"];
 
 module.exports = class DataLoader {
     constructor(host, port, user, password, database, dataPath) {
@@ -34,10 +35,21 @@ module.exports = class DataLoader {
     }
 
     checkFiles() {
-        for (const file of files) {
+        for (const file of manualFiles) {
             if (!fs.existsSync(path.join(this._dataPath, file))) {
                 console.error(`File "${file}" could not be found in "${this._dataPath}"`);
                 return false;
+            }
+        }
+        for (const file of automaticFiles) {
+            if (!fs.existsSync(path.join(this._dataPath, file))) {
+                console.error(`Copying "${file}"`);
+                try {
+                    fs.copyFileSync(path.join("/usr/src/app/data", file), path.join(this._dataPath, file));
+                } catch(e) {
+                    console.error(`Could no copy file "${file}" into "${this._dataPath}": ${e}`);
+                    return false;
+                }
             }
         }
         return true;

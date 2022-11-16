@@ -4,6 +4,6 @@ WORKDIR /usr/src/app
 COPY ./src/package.json ./
 RUN npm install
 ADD ./src ./
-COPY ./data /opt/gendev/data
+COPY ./data ./data
 
 CMD ["node", "server.js"]
